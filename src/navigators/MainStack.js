@@ -12,6 +12,7 @@ import EditRevenue from '../pages/editRevenue/EditRevenue';
 import EditExpense from '../pages/editExpense/EditExpense';
 import Revenue from '../pages/revenue/Revenue';
 import Expenses from '../pages/expenses/Expenses';
+import Profile from '../pages/profile/Profile';
 
 import DrawerNavigation from './DrawerNavigation';
 
@@ -30,5 +31,6 @@ export default () => (
         <MainStack.Screen name="EditExpense" component={EditExpense} options={{ headerShown: false }} />
         <MainStack.Screen name="Revenue" component={Revenue} options={{ headerShown: false }} />
         <MainStack.Screen name="Expenses" component={Expenses} options={{ headerShown: false }} />
+        <MainStack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
     </MainStack.Navigator>
 );

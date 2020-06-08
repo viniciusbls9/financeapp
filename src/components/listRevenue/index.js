@@ -10,15 +10,16 @@ export default function Expenses(props) {
 
     const navigation = useNavigation();
 
-
     function handleEdit() {
         navigation.navigate('EditRevenue', {
             category: props.data.category,
             description: props.data.description,
+            remember: props.data.remember,
             tag: props.data.tag,
             toggle: props.data.toggle,
             value: props.data.value,
-            key:props.data.key
+            date: props.data.date,
+            key: props.data.key
         });
     }
 
@@ -27,7 +28,13 @@ export default function Expenses(props) {
     let dayDateRevenue = dateRevenue.getDate();
     let monthDateRevenue = dateRevenue.getMonth();
     let yearDateRevenue = dateRevenue.getFullYear();
+    // let hour = dateRevenue.getHours();
+    // let minutes = dateRevenue.getMinutes();
+    // let seconds = dateRevenue.getSeconds();
 
+    let rememberRevenue = props.data.remember
+    let dateRemember = new Date(rememberRevenue).getDate();
+    
     dayDateRevenue = dayDateRevenue < 10 ? '0' + dayDateRevenue : dayDateRevenue;
     monthDateRevenue = (monthDateRevenue + 1) < 10 ? '0' + (monthDateRevenue + 1) : (monthDateRevenue + 1);
 
@@ -58,6 +65,9 @@ export default function Expenses(props) {
                             currency: 'BRL'
                         }).format(props.data.value)}
                     </Text>
+                    {dateRemember == new Date(Date.now()).getDate() &&
+                        <Text style={styles.dateRemember}>Dia de receber</Text>
+                    }
                     {props.data.toggle === false &&
                         <Image source={Alert} style={styles.iconPay} />
                     }

@@ -10,7 +10,6 @@ export default function Expenses(props) {
 
     const navigation = useNavigation();
 
-
     function handleEdit() {
         navigation.navigate('EditExpense', {
             category: props.data.category,
@@ -18,15 +17,18 @@ export default function Expenses(props) {
             tag: props.data.tag,
             toggle: props.data.toggle,
             value: props.data.value,
-            key:props.data.key
+            key: props.data.key
         });
     }
+    let rememberExpense = props.data.remember
+    let dateRemember = new Date(rememberExpense).getDate();
 
     let revenueRegister = props.data.date;
     let dateRevenue = new Date(revenueRegister);
     let dayDateRevenue = dateRevenue.getDate();
     let monthDateRevenue = dateRevenue.getMonth();
     let yearDateRevenue = dateRevenue.getFullYear();
+
 
     dayDateRevenue = dayDateRevenue < 10 ? '0' + dayDateRevenue : dayDateRevenue;
     monthDateRevenue = (monthDateRevenue + 1) < 10 ? '0' + (monthDateRevenue + 1) : (monthDateRevenue + 1);
@@ -55,9 +57,13 @@ export default function Expenses(props) {
                     <Text style={styles.valueRevenue}>
                         {Intl.NumberFormat('pt-BR', {
                             style: 'currency',
-                            currency: 'BRL'
+                            currency: 'BRL',
+                            maximumFractionDigits: 4
                         }).format(props.data.value)}
                     </Text>
+                    {dateRemember == new Date(Date.now()).getDate() &&
+                        <Text style={styles.dateRemember}>Dia de pagar</Text>
+                    }
                     {props.data.toggle === false &&
                         <Image source={Alert} style={styles.iconPay} />
                     }

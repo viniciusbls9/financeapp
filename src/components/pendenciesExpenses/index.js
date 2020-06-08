@@ -1,45 +1,76 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image } from 'react-native';
 import styles from './styles';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 
+import Expense from '../../assets/expenses-active.png';
 
-import Expenses from '../../assets/expenses-active.png';
+export default function PendenceExpense(props) {
+    const id = auth().currentUser.uid;
 
+    const [pendenciesExpense, setPendenciesExpense] = useState([]);
+    const [count, setCount] = useState('');
 
-export default function ActivityHistory(props) {
+    /**
+     * Fetches information on added expense to see which ones are pending
+     */
+    useEffect(() => {
+        database().ref('finance_expense')
+            .child(id)
+            .once('value')
+            .then((snapshot) => {
+                snapshot.forEach((item) => {
+                    pendenciesExpense.push({
+                        value: item.val().value,
+                        toggle: item.val().toggle
+                    });
+                });
+                /**
+                 * Filters all recipes registered in the user's account to return
+                 */
+                const filterPendenceExpense = pendenciesExpense.map((val) => {
+                    if (val.toggle != true) {
+                        return parseFloat(val.value);
+                    }
+                });
+                /**
+                 * Filters all undefined items found in the expense recipe array
+                 */
+                let indexRemove = undefined;
+                let index = filterPendenceExpense.indexOf(indexRemove);
 
-    const [pendenciesRevenue, setPendenciesRevenue] = useState([
-        { key: '1', value: 1500 },
-        { key: '2', value: 1000 },
-        { key: '3', value: 1500 },
-    ]);
+                while (index >= 0) {
+                    filterPendenceExpense.splice(index, 1);
+                    index = filterPendenceExpense.indexOf(indexRemove);
+                }
 
-    const v0 = pendenciesRevenue[0].value;
-    const v1 = pendenciesRevenue[1].value;
-    const v2 = pendenciesRevenue[2].value;
+                setCount(filterPendenceExpense.length);
+                if (filterPendenceExpense.length == 0) {
+                    setPendenciesExpense('0');
+                }
+                let sumPendenceExpense = filterPendenceExpense.reduce((t, v) => t + v, 0);
+                setPendenciesExpense(sumPendenceExpense);
 
-    const vtotal = v0 + v1 + v2
-
-    const total = pendenciesRevenue.length
+            });
+    }, []);
 
     return (
         <View style={styles.containerActivity}>
             <View style={{ flexDirection: 'row' }}>
-                <Image source={Expenses} style={styles.iconActivity} />
+                <Image source={Expense} style={styles.iconActivity} />
                 <View style={styles.countPendenciesRevenue}>
-                    <Text style={styles.valueActivity}>{total}</Text>
+                    <Text style={styles.valueActivity}>{count}</Text>
                 </View>
             </View>
 
             <View style={styles.TextsActivity}>
-                <Text style={styles.titleActivity}>Despesas pendentes</Text>
+                <Text style={styles.titleActivity}>Receitas pendentes</Text>
                 <Text style={styles.descActivity}>
                     {Intl.NumberFormat('pt-BR', {
                         style: 'currency',
                         currency: 'BRL'
-                    }).format(vtotal)}
+                    }).format(pendenciesExpense)}
                 </Text>
             </View>
         </View>

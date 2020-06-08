@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image } from 'react-native';
 import styles from './styles';
-
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 
-
 import Revenue from '../../assets/revenue-active.png';
 
-
-export default function ActivityHistory(props) {
+export default function PendencesRevenue(props) {
     const id = auth().currentUser.uid;
-
 
     const [pendenciesRevenue, setPendenciesRevenue] = useState([]);
     const [count, setCount] = useState('');
 
+    /**
+     * Fetches information on added recipes to see which ones are pending
+     */
     useEffect(() => {
         database().ref('finance_revenue')
             .child(id)
@@ -27,12 +26,17 @@ export default function ActivityHistory(props) {
                         toggle: item.val().toggle
                     });
                 });
+                /**
+                 * Filters all recipes registered in the user's account to return
+                 */
                 const filterPendenceRevenue = pendenciesRevenue.map((val) => {
                     if(val.toggle != true) {
                         return parseFloat(val.value);
                     }
                 });
-
+                /**
+                 * Filters all undefined items found in the pending recipe array
+                 */
                 let indexRemove = undefined;
                 let index = filterPendenceRevenue.indexOf(indexRemove);
                 
@@ -40,14 +44,14 @@ export default function ActivityHistory(props) {
                     filterPendenceRevenue.splice(index, 1);
                     index = filterPendenceRevenue.indexOf(indexRemove);
                 }
+                setCount(filterPendenceRevenue.length);
+                if(filterPendenceRevenue.length == 0) {
+                    setPendenciesRevenue('0');
+                }
                 let sumPendenceRevenue = filterPendenceRevenue.reduce((t, v) => t + v);
                 setPendenciesRevenue(sumPendenceRevenue);
             });
     }, []);
-
-    /**
-     * FALTA FAZER A SOMA DE QUANTAS RECEITAS TEM PENDENTES
-     */
 
     return (
         <View style={styles.containerActivity}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableHighlight, Image, TouchableOpacity, FlatList, StatusBar, ScrollView, RefreshControl } from 'react-native';
+import { View, Text, TouchableHighlight, Image, TouchableOpacity, FlatList, StatusBar, ScrollView } from 'react-native';
 import styles from './styles';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -15,7 +15,6 @@ import Mastercard from '../../assets/mastercard.png';
 
 import PendenciesRevenue from '../../components/pendenciesRevenue';
 import PendenciesExpenses from '../../components/pendenciesExpenses';
-import ActivityHistory from '../../components/activityhistory';
 import Cards from '../../components/cards';
 
 export default function Login(props) {
@@ -25,21 +24,22 @@ export default function Login(props) {
     const [totalRevenue, setTotalRevenue] = useState([]);
     const [totalExpense, setTotalExpense] = useState([]);
     const [sumTotal, setSumTotal] = useState([]);
+    
 
     const id = auth().currentUser.uid;
 
     useEffect(() => {
         database().ref('finance_revenue')
-        .child(id)
-        .once('value')
-        .then((snapshot) => {
-            snapshot.forEach((item) => {
-                totalRevenue.push({
-                    value: item.val().value,
-                    toggle: item.val().toggle
+            .child(id)
+            .once('value')
+            .then((snapshot) => {
+                snapshot.forEach((item) => {
+                    totalRevenue.push({
+                        value: item.val().value,
+                        toggle: item.val().toggle
+                    });
                 });
             });
-        });
         database().ref('finance_expense')
             .child(id)
             .once('value')
@@ -51,13 +51,13 @@ export default function Login(props) {
                     });
                 });
                 const filterTotalRevenue = totalRevenue.map((val) => {
-                    if(val.toggle == true) {
+                    if (val.toggle == true) {
                         return parseFloat(val.value);
                     }
                 });
                 const filterTotalExpense = totalExpense.map((val) => {
-                    if(val.toggle == true) {
-                        return parseFloat('-'+val.value);
+                    if (val.toggle == true) {
+                        return parseFloat('-' + val.value);
                     }
                 });
 
@@ -65,7 +65,7 @@ export default function Login(props) {
                 let indexRemove = undefined;
                 let index = conc.indexOf(indexRemove);
 
-                while(index >= 0) {
+                while (index >= 0) {
                     conc.splice(index, 1);
                     index = conc.indexOf(indexRemove);
                 }
@@ -88,12 +88,6 @@ export default function Login(props) {
         navigation.navigate('AddRevenue');
     }
 
-    const [activity, setActivity] = useState([
-        { key: '1', icon: Food, title: 'Despesas', date: '12/05/2020', value: -200 },
-        { key: '2', icon: Pig, title: 'Receita', date: '05/05/2020', value: 10 },
-        { key: '3', icon: Pig, title: 'Despesas', date: '08/03/2020', value: -160 },
-    ]);
-
     const [cards, setCards] = useState([
         { key: '1', flag: Mastercard, nameCard: 'Nubank', closeDate: '12/jun', value: 250, valueTotal: 250 },
     ]);
@@ -107,11 +101,11 @@ export default function Login(props) {
                         <TouchableHighlight underlayColor="transparent" onPress={handleDrawer}>
                             <Image source={Bars} style={styles.bars} />
                         </TouchableHighlight>
-                        <TouchableHighlight>
+                        <TouchableHighlight onPress={() => navigation.navigate('Profile')} underlayColor="transparent">
                             <Image source={Users} style={styles.users} />
                         </TouchableHighlight>
                     </View>
-                    <Text style={styles.labelInfoMoney}>Receita:</Text>
+                    <Text style={styles.labelInfoMoney}>Receita em conta:</Text>
                     <View style={styles.infoMoney}>
                         <Text style={styles.totalMoney}>
                             {Intl.NumberFormat('pt-BR', {
@@ -138,15 +132,6 @@ export default function Login(props) {
                         <PendenciesExpenses />
                     </ScrollView>
 
-                    <Text style={styles.labelinfoActivity}>Historico de atividade</Text>
-                    <View style={{ flexDirection: 'row' }}>
-                        <FlatList
-                            horizontal={true}
-                            showsHorizontalScrollIndicator={false}
-                            renderItem={({ item }) => <ActivityHistory data={item} />}
-                            data={activity}
-                        />
-                    </View>
 
                     <Text style={styles.labelinfoActivity}>Cartões de crédito</Text>
                     <FlatList
@@ -154,9 +139,21 @@ export default function Login(props) {
                         showsHorizontalScrollIndicator={false}
                         renderItem={({ item }) => <Cards data={item} />}
                         data={cards}
-                        
+
                     />
                 </View>
+                {/* <View style={{margin:20}}>
+                    <Text style={styles.labelinfoActivity}>Historico de atividade</Text>
+                    <ActivityHistory />
+                </View> */}
+                {/* <View style={{ flexDirection: 'row' }}>
+                        <FlatList
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                            renderItem={({ item }) => <ActivityHistory data={item} />}
+                            data={activity}
+                        />
+                    </View> */}
             </View>
             <TouchableOpacity onPress={handleLogout}>
                 <Text>Sair</Text>

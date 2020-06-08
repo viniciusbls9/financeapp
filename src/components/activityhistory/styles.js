@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     containerActivity: {
         flex: 1,
-        flexDirection: 'row',
+        flexDirection: 'column',
         marginTop: 20,
         marginRight: 20,
         marginBottom: 50,
@@ -13,6 +13,13 @@ export default StyleSheet.create({
         borderWidth: 1,
         backgroundColor: '#fff',
         elevation: 4,
+    },
+    containerInfo: {
+        paddingBottom: 10,
+        paddingTop: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+        flexDirection: 'row'
     },
     iconActivity: {
         width: 34,

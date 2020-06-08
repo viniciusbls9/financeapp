@@ -26,6 +26,7 @@ export default function AddExpenses() {
                     category: childItem.val().category,
                     date: childItem.val().date,
                     description: childItem.val().description,
+                    remember: childItem.val().remember,
                     tag: childItem.val().tag,
                     toggle: childItem.val().toggle,
                     value: childItem.val().value,

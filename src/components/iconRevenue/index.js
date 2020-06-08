@@ -44,6 +44,9 @@ export default (tag) => {
         case 'Educação':
             iconRevenue = require('../../assets/book.png');
         break;
+        case 'Celular':
+            iconRevenue = require('../../assets/smartphone.png');
+        break;
 
     }
 

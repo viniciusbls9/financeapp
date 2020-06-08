@@ -35,6 +35,10 @@ export default StyleSheet.create({
         fontSize: 13,
         color: '#848181'
     },
+    dateRemember: {
+        color: '#27B635',
+        fontWeight: 'bold'
+    },
     infoValueRevenue: {
         justifyContent: 'center',
         alignItems: 'flex-end'

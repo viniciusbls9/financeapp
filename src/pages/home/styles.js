@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { StatusBar, Dimensions } from 'react-native';
 
-const screenWidth = Math.round(Dimensions.get('window').width)
+const screenWidth = Math.round(Dimensions.get('window').width);
 
 export default StyleSheet.create({
     container:{
@@ -68,5 +68,12 @@ export default StyleSheet.create({
         color: '#1c2e35',
         fontWeight: 'bold',
         fontSize: 15,
+    },
+    containerChart: {
+        backgroundColor: '#fff',
+        marginHorizontal: 20,
+        borderRadius: 25,
+        borderWidth: 1,
+        borderColor: '#ccc'
     },
 });

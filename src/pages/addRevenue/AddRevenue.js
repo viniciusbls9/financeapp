@@ -90,7 +90,7 @@ export default function AddRevenue() {
                 category: picker,
                 tag: picker,
                 date: date,
-                remember: remember != new Date(Date.now()).getDate() ? remember : ''
+                remember: remember < new Date(Date.now()).getDate() ? remember : ''
             });
             setValue('');
             setDescription('');

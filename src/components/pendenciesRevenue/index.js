@@ -55,6 +55,7 @@ export default function PendencesRevenue(props) {
 
     return (
         <View style={styles.containerActivity}>
+            
             <View style={{ flexDirection: 'row' }}>
 
                 <Image source={Revenue} style={styles.iconActivity} />

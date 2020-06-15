@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableHighlight, TouchableOpacity, Image, TextInput, Switch, Modal } from 'react-native';
+import { View, Text, TouchableHighlight, TouchableOpacity, Image, TextInput, Switch, Modal, ScrollView } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
@@ -88,7 +88,7 @@ export default function AddRevenue() {
                 category: picker,
                 tag: picker,
                 date: date,
-                remember: remember != new Date(Date.now()).getDate() ? remember : ''
+                remember: remember < new Date(Date.now()).getDate() ? remember : ''
             });
             setValue('');
             setDescription('');
@@ -157,7 +157,7 @@ export default function AddRevenue() {
                 <TouchableHighlight underlayColor="transparent" onPress={handlebackExpense} style={styles.backExpense}>
                     <>
                         <Image source={Arrow} style={styles.backImage} />
-                        <Text style={styles.textHeader}>Receitas</Text>
+                        <Text style={styles.textHeader}>Despesas</Text>
                     </>
                 </TouchableHighlight>
             </View>
@@ -175,7 +175,7 @@ export default function AddRevenue() {
                 />
             </View>
 
-            <View style={styles.containerInputs}>
+            <ScrollView style={styles.containerInputs}>
                 <View style={styles.containerSwitch}>
                     <Text style={styles.labelSwitch}>Pago</Text>
                     <Switch
@@ -297,7 +297,7 @@ export default function AddRevenue() {
                     </View>
                 </Modal>
 
-            </View>
+            </ScrollView>
         </View>
     );
 }

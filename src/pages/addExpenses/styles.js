@@ -125,7 +125,6 @@ export default StyleSheet.create({
         width: width,
         height: height,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        // opacity: 0.5,
         alignItems: 'center',
         justifyContent: 'center'
     },

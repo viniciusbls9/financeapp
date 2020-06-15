@@ -9,13 +9,12 @@ import auth from '@react-native-firebase/auth';
 import Bars from '../../assets/bars.png';
 import Users from '../../assets/users.png';
 import Button from '../../assets/button.png';
-import Food from '../../assets/food.png';
-import Pig from '../../assets/pig.png';
 import Mastercard from '../../assets/mastercard.png';
 
 import PendenciesRevenue from '../../components/pendenciesRevenue';
 import PendenciesExpenses from '../../components/pendenciesExpenses';
 import Cards from '../../components/cards';
+import Chart from '../../components/chart/Chart';
 
 export default function Login(props) {
 
@@ -24,7 +23,6 @@ export default function Login(props) {
     const [totalRevenue, setTotalRevenue] = useState([]);
     const [totalExpense, setTotalExpense] = useState([]);
     const [sumTotal, setSumTotal] = useState([]);
-    
 
     const id = auth().currentUser.uid;
 
@@ -133,28 +131,20 @@ export default function Login(props) {
                     </ScrollView>
 
 
-                    <Text style={styles.labelinfoActivity}>Cartões de crédito</Text>
+                    <Text style={styles.labelinfoActivity}>Cartões</Text>
                     <FlatList
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                         renderItem={({ item }) => <Cards data={item} />}
                         data={cards}
-
                     />
                 </View>
-                {/* <View style={{margin:20}}>
-                    <Text style={styles.labelinfoActivity}>Historico de atividade</Text>
-                    <ActivityHistory />
-                </View> */}
-                {/* <View style={{ flexDirection: 'row' }}>
-                        <FlatList
-                            horizontal={true}
-                            showsHorizontalScrollIndicator={false}
-                            renderItem={({ item }) => <ActivityHistory data={item} />}
-                            data={activity}
-                        />
-                    </View> */}
             </View>
+            
+            <View style={styles.containerChart}>
+                <Chart />
+            </View>
+            
             <TouchableOpacity onPress={handleLogout}>
                 <Text>Sair</Text>
             </TouchableOpacity>

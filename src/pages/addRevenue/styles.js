@@ -37,6 +37,18 @@ export default StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 13
     },
+    containerTooltip: {
+        width: 20,
+        marginLeft: 10,
+        borderColor: '#fff',
+        borderWidth: 1,
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    tooltip: {
+        color: '#fff',
+    },
     inputValue: {
         color: '#fff',
         fontSize: 30,
@@ -122,6 +134,10 @@ export default StyleSheet.create({
     },
     textBtnSave: {
         color: '#fff'
+    },
+    textMessageError: {
+        color: '#ff4f5a',
+        marginTop: 5
     },
     modalBox: {
         width: width,

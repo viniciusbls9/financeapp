@@ -5,10 +5,10 @@ import database from '@react-native-firebase/database';
 import { useNavigation, CommonActions } from '@react-navigation/native';
 
 import styles from './styles';
-// import TrashBlack from '../../assets/trash-black.png';
-// import Edit from '../../assets/edit.png';
+import TrashBlack from '../../assets/trash-black.png';
+import Edit from '../../assets/edit.png';
 
-export default function CategoryRevenueList(props) {
+export default function CategoryExpenseList(props) {
     const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
     const [newCategory, setNewCategory] = useState(props.data.category);
@@ -51,14 +51,14 @@ export default function CategoryRevenueList(props) {
                 {
                     text: 'Sim',
                     onPress: () => {
-                        database().ref('finance_revenue_category').child(uid).child(key).remove();
-                        navigation.dispatch(
-                            CommonActions.reset({
-                                index: 1,
-                                routes: [
-                                    { name: 'Category' },
-                                ]
-                            }));
+                        database().ref('finance_expense_category').child(uid).child(key).remove();
+                        // navigation.dispatch(
+                        //     CommonActions.reset({
+                        //         index: 1,
+                        //         routes: [
+                        //             { name: 'Category' },
+                        //         ]
+                        //     }));
                     },
                     style: 'cancel',
                 },
@@ -73,15 +73,17 @@ export default function CategoryRevenueList(props) {
 
     return (
         <View style={styles.container} underlayColor="#transparent">
-            <View style={styles.btns}>
-                <TouchableHighlight onPress={handleEdit} underlayColor="transparent">
-                    <Image source={require('../../assets/edit.png')} style={styles.iconBtns} />
-                </TouchableHighlight>
+            <TouchableHighlight style={styles.btns}>
+                <>
+                    <TouchableHighlight onPress={handleEdit} underlayColor="transparent">
+                        <Image source={Edit} style={styles.iconBtns} />
+                    </TouchableHighlight>
 
-                <TouchableHighlight onPress={handleDelete} underlayColor="transparent">
-                    <Image source={require('../../assets/trash-black.png')} style={styles.iconBtns} />
-                </TouchableHighlight>
-            </View>
+                    <TouchableHighlight onPress={handleDelete} underlayColor="transparent">
+                        <Image source={TrashBlack} style={styles.iconBtns} />
+                    </TouchableHighlight>
+                </>
+            </TouchableHighlight>
             <Text style={styles.categoryName}>{props.data.category}</Text>
             <Modal
                 visible={modalVisible}

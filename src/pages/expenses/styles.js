@@ -11,7 +11,7 @@ export default StyleSheet.create({
         backgroundColor: '#ff4f5a',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     iconMoreExpenses: {
         width: 16,
@@ -29,10 +29,7 @@ export default StyleSheet.create({
     containerInfo: {
         paddingTop: 25,
         flex: 1,
-        paddingHorizontal: 20,
-        backgroundColor: '#fff',
-        borderTopLeftRadius: 25,
-        borderTopRightRadius: 25,
+        backgroundColor: '#f7f7f7',
     },
     containerTotalExpenses: {
         flexDirection: 'row',

@@ -1,9 +1,13 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const width = Dimensions.get('window').width; //full width
+const height = Dimensions.get('window').height; //full height
+
 
 export default StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#27B635',
+        backgroundColor: '#f7f7f7',
     },
     header: {
         padding: 20,
@@ -11,7 +15,7 @@ export default StyleSheet.create({
         backgroundColor: '#27B635',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     iconMoreExpenses: {
         width: 16,
@@ -29,10 +33,7 @@ export default StyleSheet.create({
     containerInfo: {
         paddingTop: 25,
         flex: 1,
-        paddingHorizontal: 20,
-        backgroundColor: '#fff',
-        borderTopLeftRadius: 25,
-        borderTopRightRadius: 25,
+        backgroundColor: '#f7f7f7',
     },
     containerTotalExpenses: {
         flexDirection: 'row',
@@ -56,5 +57,43 @@ export default StyleSheet.create({
         fontSize: 16,
         color: '#27B635',
         fontWeight: 'bold',
+    },
+    modalBox: {
+        width: width,
+        height: height,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    modalBody: {
+        width: width,
+        height: height,
+        marginTop: 200,
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        backgroundColor: '#fff',
+        padding:10
+    },
+    inputNewCategory: {
+        fontSize: 21,
+        borderBottomWidth: 1,
+        borderBottomColor: "#ccc",
+        padding: 10,
+    },
+    btnNewCategory: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10,
+        marginTop: 20,
+        backgroundColor: '#ff4f5a',
+        borderRadius: 5,
+    },
+    btnCancel: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    textBtnCancel: {
+        fontSize: 12,
     },
 });

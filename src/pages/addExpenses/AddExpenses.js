@@ -101,7 +101,7 @@ export default function AddRevenue() {
                     ]
                 }));
         } else {
-            setMessageError('Preencha todos os campos');
+            setMessageError('Preencha todos os campos obrigatórios');
         }
     }
 
@@ -269,6 +269,7 @@ export default function AddRevenue() {
                     <TouchableOpacity onPress={addNewExpense} style={styles.btnSave}>
                         <Text style={styles.textBtnSave}>Salvar</Text>
                     </TouchableOpacity>
+                    <Text style={styles.textMessageError}>{messageError}</Text>
                 </View>
 
                 <Modal
@@ -290,7 +291,7 @@ export default function AddRevenue() {
                                 <Text style={styles.textBtnSave}>Salvar</Text>
                             </TouchableOpacity>
 
-                            <TouchableHighlight style={styles.btnCancel} onPress={() => setModalVisible(false)}>
+                            <TouchableHighlight style={styles.btnCancel} onPress={() => setModalVisible(false)} underlayColor="transparent">
                                 <Text style={styles.textBtnCancel}>Cancelar</Text>
                             </TouchableHighlight>
                         </View>

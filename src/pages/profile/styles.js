@@ -57,4 +57,9 @@ export default StyleSheet.create({
     userCards: {
         paddingHorizontal: 20
     },
+    btnLogout: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20
+    },
 });

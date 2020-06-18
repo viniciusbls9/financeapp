@@ -28,9 +28,7 @@ export default function Expenses(props) {
     let dayDateRevenue = dateRevenue.getDate();
     let monthDateRevenue = dateRevenue.getMonth();
     let yearDateRevenue = dateRevenue.getFullYear();
-    // let hour = dateRevenue.getHours();
-    // let minutes = dateRevenue.getMinutes();
-    // let seconds = dateRevenue.getSeconds();
+
 
     let rememberRevenue = props.data.remember
     let dateRemember = new Date(rememberRevenue).getDate();

@@ -14,6 +14,8 @@ import Revenue from '../pages/revenue/Revenue';
 import Expenses from '../pages/expenses/Expenses';
 import Profile from '../pages/profile/Profile';
 import Category from '../pages/category/Category';
+import Wallet from '../pages/wallet/Wallet';
+import AddWallet from '../pages/addWallet/AddWallet';
 
 import DrawerNavigation from './DrawerNavigation';
 
@@ -34,5 +36,7 @@ export default () => (
         <MainStack.Screen name="Expenses" component={Expenses} options={{ headerShown: false }} />
         <MainStack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
         <MainStack.Screen name="Category" component={Category} options={{ headerShown: false }} />
+        <MainStack.Screen name="Wallet" component={Wallet} options={{ headerShown: false }} />
+        <MainStack.Screen name="AddWallet" component={AddWallet} options={{ headerShown: false }} />
     </MainStack.Navigator>
 );

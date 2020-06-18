@@ -8,6 +8,8 @@ export default StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
+        // borderBottomColor: '#ccc',
+        // borderBottomWidth: 1,
         paddingBottom: 10,
         paddingTop: 10,
     },
@@ -21,7 +23,7 @@ export default StyleSheet.create({
     },
     categoryName: {
         fontSize: 15,
-        color: '#27B635'
+        color: '#ff4f5a',
     },
     modalBox: {
         width: width,
@@ -49,7 +51,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         padding: 10,
         marginTop: 20,
-        backgroundColor: '#27B635',
+        backgroundColor: '#ff4f5a',
         borderRadius: 5,
     },
     textBtnSave: {

@@ -70,17 +70,56 @@ export default StyleSheet.create({
         borderColor: '#ccc',
         marginBottom: 20
     },
+    picker: {
+        borderBottomColor: '#ccc',
+        borderBottomWidth: 1,
+        paddingBottom: 20,
+        marginBottom: 20
+    },
+    containerCalendar: {
+        borderBottomColor: '#ccc',
+        borderBottomWidth: 1,
+        paddingBottom: 20,
+        marginBottom: 20
+    },
+    btnCalendar: {
+        flexDirection:'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#ff4f5a',
+        padding: 10,
+        marginTop: 10, 
+        width: '50%',
+        borderRadius: 10
+    },
+    calendarImage: {
+        width: 25,
+        height: 25,
+        marginRight: 10
+    },
+    btnTextCalendar: {
+        color: '#fff',
+        justifyContent: 'center'
+    },
+    containerRemember: {
+        borderBottomColor: '#ccc',
+        borderBottomWidth: 1,
+        paddingBottom: 20,
+        marginBottom: 20
+    },
     containerbtnSave: {
         alignItems: 'center',
-        marginTop: 100,
+        justifyContent: 'flex-end',
+        marginTop: 20,
+        marginBottom: 120
     },
     btnSave: {
         backgroundColor: '#ff4f5a',
-        width: 60,
-        height:60,
+        width: '90%',
+        height: 45,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 30,
+        borderRadius: 10,
     },
     textBtnSave: {
         color: '#fff'

@@ -22,7 +22,7 @@ export default StyleSheet.create({
         height: 25,
         marginRight: 20
     },
-    deleteExpense: {
+    deleteRevenue: {
         width: 25,
         height: 25,
     },

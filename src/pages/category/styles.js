@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 export default StyleSheet.create({
     container: {
@@ -12,6 +12,11 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
+    },
+    backImage: {
+        width: 25,
+        height: 25,
+        marginRight: 20
     },
     textHeader: {
         fontSize: 16,
@@ -28,12 +33,14 @@ export default StyleSheet.create({
     label: {
         color: '#1c2e35',
         fontSize: 15,
-        marginBottom: 10
-    },
-    containerRevenue: {
+        marginBottom: 10,
+        paddingBottom: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
-        paddingBottom: 15,
+    },
+    containerRevenue: {
+        marginBottom: 15,
+        paddingBottom: 10
     },
     containerExpense: {
         borderBottomWidth: 1,

@@ -1,60 +1,78 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableHighlight, Image, FlatList, StatusBar } from 'react-native';
-import { useNavigation, CommonActions } from '@react-navigation/native';
+import { View, Text, TouchableHighlight, FlatList, Image } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
+import { useNavigation } from '@react-navigation/native';
 
 import styles from './styles';
-import Users from '../../assets/users.png';
 import CategoryRevenueList from '../../components/categoryRevenueList/CategoryRevenueList';
+import CategoryExpenseList from '../../components/categoryExpenseList/CategoryExpenseList';
+import Arrow from '../../assets/arrows.png';
 
-
-export default function Profile(props) {
+export default function Category() {
   const navigation = useNavigation();
-  let uid = auth().currentUser.uid
 
   const [categoryRevenue, setCategoryRevenue] = useState([]);
+  const [categoryExpense, setCategoryExpense] = useState([]);
 
   useEffect(() => {
+    let uid = auth().currentUser.uid
     database().ref('finance_revenue_category')
     .child(uid)
     .once('value')
     .then((snapshot) => {
-      snapshot.forEach((item) => {
+      snapshot.forEach((childItem) => {
         categoryRevenue.push({
-          category: item.val().category,
-          key: item.key
+          category: childItem.val().category,
+          key: childItem.key
         });
       });
-      setCategoryRevenue(categoryRevenue);
+      console.log(categoryRevenue);
+    });
+  }, []);
+
+  useEffect(() => {
+    let uid = auth().currentUser.uid
+    database().ref('finance_expense_category')
+    .child(uid)
+    .once('value')
+    .then((snapshot) => {
+      snapshot.forEach((childItem) => {
+        categoryExpense.push({
+          category: childItem.val().category,
+          key: childItem.key
+        });
+      });
     });
   }, []);
 
   return (
     <View style={styles.container}>
 
-      <StatusBar barStyle="dark-content" />
-
       <View style={styles.header}>
-        <TouchableHighlight underlayColor="transparent">
-          <Text style={styles.textHeader}>Categorias</Text>
+        <TouchableHighlight underlayColor="transparent" style={{flexDirection: 'row'}} onPress={() => navigation.navigate('Profile')}>
+          <>
+            <Image source={Arrow} style={styles.backImage} />
+            <Text style={styles.textHeader}>Categorias</Text>
+          </>
         </TouchableHighlight>
       </View>
 
       <View style={styles.containerInfo}>
 
-        <View style={styles.containerRevenue}>
-          <Text style={styles.label}>Receita</Text>
-          <FlatList
-            renderItem={({ item }) => <CategoryRevenueList data={item} />}
-            data={categoryRevenue}
-          />
-        </View>
+        <Text style={styles.label}>Receita</Text>
+        <FlatList
+          // style={styles.containerRevenue}
+          data={categoryRevenue}
+          renderItem={({ item }) => <CategoryRevenueList data={item} />}
+        />
 
-        <View style={styles.containerExpense}>
-          <Text style={styles.label}>Despesas</Text>
-          <FlatList />
-        </View>
+        <Text style={styles.label}>Despesas</Text>
+        <FlatList
+          style={styles.containerRevenue}
+          data={categoryExpense}
+          renderItem={({ item }) => <CategoryExpenseList data={item} />}
+        />
 
       </View>
 

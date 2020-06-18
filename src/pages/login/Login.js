@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, StatusBar } from 'react-native';
+import { View, Text, Image, TextInput, TouchableOpacity, StatusBar, KeyboardAvoidingView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Sistema from '../../Sistema';
@@ -41,7 +41,11 @@ export default function Login() {
     }
 
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView
+            style={styles.container}
+            behavior={Platform.OS == 'ios' ? '' : 'padding'}
+            keyboardVerticalOffset={100}
+        >
             <View style={styles.header}>
                 <Image source={Logo} style={styles.logo} />
             </View>
@@ -81,6 +85,6 @@ export default function Login() {
                     </Text>
                 </TouchableOpacity>
             </View>
-        </View>
+        </KeyboardAvoidingView>
     );
 }

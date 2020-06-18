@@ -121,6 +121,10 @@ export default StyleSheet.create({
     textBtnSave: {
         color: '#fff'
     },
+    textMessageError: {
+        color: '#ff4f5a',
+        marginTop: 5
+    },
     modalBox: {
         width: width,
         height: height,
@@ -146,7 +150,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         padding: 10,
         marginTop: 20,
-        backgroundColor: '#27B635',
+        backgroundColor: '#ff4f5a',
         borderRadius: 5,
     },
     btnCancel: {

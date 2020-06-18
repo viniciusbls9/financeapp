@@ -14,9 +14,11 @@ export default function Expenses(props) {
         navigation.navigate('EditExpense', {
             category: props.data.category,
             description: props.data.description,
+            remember: props.data.remember,
             tag: props.data.tag,
             toggle: props.data.toggle,
             value: props.data.value,
+            date: props.data.date,
             key: props.data.key
         });
     }
@@ -36,7 +38,7 @@ export default function Expenses(props) {
     let dateRevenueRegisterFormated = dayDateRevenue + '/' + monthDateRevenue + '/' + yearDateRevenue
 
     return (
-        <TouchableHighlight style={styles.container} underlayColor="transparent" onPress={handleEdit}>
+        <TouchableHighlight style={styles.container} underlayColor="#transparent" onPress={handleEdit}>
             <>
                 <View style={styles.infoRevenue}>
                     <View style={{ flexDirection: 'row' }}>

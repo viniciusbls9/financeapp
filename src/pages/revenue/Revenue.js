@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableHighlight, TouchableOpacity, Image, FlatList, StatusBar } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
@@ -10,34 +10,41 @@ import Wallet from '../../assets/wallet.png';
 import ListRevenue from '../../components/listRevenue';
 import MoreExpenses from '../../assets/more.png';
 
-export default function AddExpenses() {
-    
+
+export default function Revenue() {
+
     const [activity, setActivity] = useState([]);
     const [totalRevenue, setTotalRevenue] = useState([]);
 
     useEffect(() => {
-        let uid = auth().currentUser.uid
-        database().ref('finance_revenue')
-        .child(uid)
-        .once('value')
-        .then((snapshot) => {
-            snapshot.forEach((childItem) => {
-                activity.push({
-                    category: childItem.val().category,
-                    date: childItem.val().date,
-                    description: childItem.val().description,
-                    remember: childItem.val().remember,
-                    tag: childItem.val().tag,
-                    toggle: childItem.val().toggle,
-                    value: childItem.val().value,
-                    key: childItem.key
+        /** LOOP PARA RODAR 4 VEZES, QUE SÃO OS VALUES DE CADA CONTA ADICIONADA PELO USUÁRIO */
+        let uid = auth().currentUser.uid;
+        let n = 1;
+        for(let i = n; i <= 4; i++) {
+            let int = n++
+            database().ref('finance_wallet')
+            .child(uid)
+            .child(int.toString())
+            .child('finance_revenue').once('value')
+            .then((snapshot) => {
+                snapshot.forEach(childItem => {
+                    activity.push({
+                        category: childItem.val().category,
+                        date: childItem.val().date,
+                        description: childItem.val().description,
+                        remember: childItem.val().remember,
+                        tag: childItem.val().tag,
+                        toggle: childItem.val().toggle,
+                        value: childItem.val().value,
+                        key: childItem.key
+                    });
                 });
+                let total = activity.reduce((t, v) => t + (parseFloat(v.value)), 0);
+                setTotalRevenue(total);
             });
-            let total = activity.reduce((t, v) => t + (parseFloat(v.value)), 0);
-            setTotalRevenue(total);
-        });
+        }
     }, []);
-    
+
     const navigation = useNavigation();
 
     function handleBack() {
@@ -45,7 +52,7 @@ export default function AddExpenses() {
             CommonActions.reset({
                 index: 0,
                 routes: [
-                    { name: 'Home'},
+                    { name: 'Home' },
                 ]
             }));
     }
@@ -82,7 +89,7 @@ export default function AddExpenses() {
                 </View>
 
                 {activity == '' &&
-                    <View  style={{justifyContent: 'center', alignItems: 'center'}}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
                         <Text>Ops! Nenhuma receita adicionada até o momento</Text>
                     </View>
                 }

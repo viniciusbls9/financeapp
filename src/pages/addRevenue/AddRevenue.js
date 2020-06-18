@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableHighlight, TouchableOpacity, Image, StatusBar, TextInput, Switch, Modal, ScrollView, Button } from 'react-native';
+import { View, Text, TouchableHighlight, TouchableOpacity, Image, StatusBar, TextInput, Switch, Modal, ScrollView, Animated } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import database from '@react-native-firebase/database';
@@ -53,13 +53,13 @@ export default function AddRevenue() {
         showModeRemember('date');
     };
 
-
     /** CONSTANT FOR ADD NEW REVENUE */
     const [value, setValue] = useState('');
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const [isEnabled, setIsEnabled] = useState(true);
     const [description, setDescription] = useState('');
     const [picker, setPicker] = useState('');
+    const [account, setAccount] = useState('');
 
     /**CONSTANT FOR VISIBLE ERROR MESSAGE */
     const [messageError, setMessageError] = useState('');
@@ -69,8 +69,14 @@ export default function AddRevenue() {
 
     /**CONSTANT FOR ADD NEW CATEGORY */
     const [newCategory, setNewCategory] = useState('');
-
     const [getNewCategory, setGetNewCategory] = useState([]);
+
+    /**CONSTANT TO RECEIVE VALUES ​​FROM THE BANK REGARDING THE ACCOUNTS CREATED BY THE USER  */
+    const [getAccount, setGetAccouunt] = useState([]);
+
+    /** CONSTANT FOR ANIMATION THE TOOLTIP */
+    const [width, setWidth] = useState(new Animated.Value(0));
+    const [opacity, setOpacity] = useState(new Animated.Value(0));
 
 
     function handlebackRevenue() {
@@ -78,7 +84,7 @@ export default function AddRevenue() {
     }
 
     function addNewRevenue() {
-        let newRevenue = database().ref('finance_revenue').child(uid);
+        let newRevenue = database().ref('finance_wallet').child(uid).child(account).child('finance_revenue');
 
         if (value != '' && description != '' && picker != 'Selecione...') {
             // CADASTRO DA RECEITA
@@ -104,10 +110,11 @@ export default function AddRevenue() {
                 }));
             // navigation.navigate('Revenue');
         } else {
-            console.log('Não foi possível cadastrar a receita por estar recebida em uma data futura');
+            setMessageError('Preencha todos os campos obrigatórios');
         }
     }
 
+    /** RECOVERING INFORMATION IN THE BANK RELATING TO USER'S REVENUE CATEGORIES */
     useEffect(() => {
         database().ref('finance_revenue_category')
             .child(uid)
@@ -123,6 +130,27 @@ export default function AddRevenue() {
                     return <Picker.Item key={k.key} value={item.category} label={item.category} />
                 });
                 setGetNewCategory(mapCategory);
+            });
+    }, []);
+
+    /** RECOVERING INFORMATION IN THE BANK RELATING TO USER ACCOUNTS */
+    useEffect(() => {
+        database().ref('finance_user')
+            .child(uid)
+            .once('value')
+            .then((snapshot) => {
+                snapshot.forEach(item => {
+                    getAccount.push({
+                        typeAccount: item.val().typeAccount,
+                        bankName: item.val().bank
+                    });
+                });
+                let mapAccount = getAccount.map((item) => {
+                    if (item.typeAccount != undefined) {
+                        return <Picker.Item key={item.typeAccount} value={item.typeAccount} label={item.bankName} />
+                    }
+                });
+                setGetAccouunt(mapAccount);
             });
     }, []);
 
@@ -154,6 +182,25 @@ export default function AddRevenue() {
         }
     }
 
+    function handleAnimation() {
+        Animated.sequence([
+            Animated.timing(
+                width,
+                {
+                    toValue: 150,
+                    useNativeDriver: false
+                }
+            ),
+            Animated.timing(
+                opacity,
+                {
+                    toValue: 1,
+                    useNativeDriver: false
+                }
+            )
+        ]).start();
+    }
+
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor="#27B635" barStyle="light-content" />
@@ -166,8 +213,18 @@ export default function AddRevenue() {
                 </TouchableHighlight>
             </View>
 
+            <Animated.View style={{ width: width, height: 50, backgroundColor: '#fff', padding: 10, opacity: opacity, left:130, bottom: 10 }}>
+                <Text style={{ textAlign: 'center', color: '#222', fontSize: 12 }}>Separe os centavos colocando ponto</Text>
+            </Animated.View>
+
             <View style={styles.containerInputValue}>
-                <Text style={styles.labelFormValue}>Valor da receita (apenas números)</Text>
+                <View style={{ flexDirection: 'row' }}>
+                    <Text style={styles.labelFormValue}>Valor da receita</Text>
+                    <TouchableHighlight style={styles.containerTooltip} onPress={handleAnimation}>
+                        <Text style={styles.tooltip}>?</Text>
+                    </TouchableHighlight>
+                </View>
+
                 <TextInput
                     style={styles.inputValue}
                     placeholder=" R$ 00,00"
@@ -212,7 +269,7 @@ export default function AddRevenue() {
                         value={setPicker}
                         mode="dropdown"
                     >
-                        <Picker.Item key={0} value={'Selecione...'} label={'Selecione...'} />
+                        <Picker.Item key={0} value={'Selecione a categoria'} label={'Selecione a categoria'} />
                         <Picker.Item key={1} value={'Salário'} label={'Salário'} />
                         <Picker.Item key={2} value={'Prêmio'} label={'Prêmio'} />
                         <Picker.Item key={3} value={'Investimento'} label={'Investimento'} />
@@ -221,6 +278,28 @@ export default function AddRevenue() {
                         {getNewCategory}
                         <Picker.Item key={1} value={'Nova categoria'} label={'Nova categoria'} />
 
+                    </Picker>
+                </View>
+
+                <View style={styles.picker}>
+                    <Text style={styles.labelInputs}>Carteira</Text>
+                    <Picker
+                        selectedValue={account}
+                        onValueChange={(itemValue) => {
+                            if (itemValue == 'Adicionar conta') {
+                                navigation.navigate('AddWallet');
+                            } else {
+                                setAccount(itemValue);
+                            }
+                        }}
+                        value={setAccount}
+                        mode="dropdown"
+                    >
+                        <Picker.Item key={0} value={'Selecione sua carteira'} label={'Selecione sua carteira'} />
+                        {getAccount}
+                        {getAccount == '' &&
+                            <Picker.Item key={0} value={'Adicionar conta'} label={'Adicionar conta'} />
+                        }
                     </Picker>
                 </View>
 
@@ -269,6 +348,7 @@ export default function AddRevenue() {
                     <TouchableOpacity onPress={addNewRevenue} style={styles.btnSave}>
                         <Text style={styles.textBtnSave}>Salvar</Text>
                     </TouchableOpacity>
+                    <Text style={styles.textMessageError}>{messageError}</Text>
                 </View>
 
                 <Modal

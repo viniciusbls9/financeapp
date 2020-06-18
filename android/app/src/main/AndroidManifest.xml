@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.financeapp">
+  package="com.myfinanceapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
 

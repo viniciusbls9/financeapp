@@ -91,7 +91,7 @@ export default function EditRevenue() {
                     style: 'cancel',
                 },
                 {
-                    text: 'Cancel',
+                    text: 'Cancelar',
                     onPress: () => { }
                 },
             ],
@@ -132,7 +132,7 @@ export default function EditRevenue() {
     }
 
     useEffect(() => {
-        database().ref('finance_expense_category')
+        database().ref('finance_revenue_category')
             .child(uid)
             .once('value')
             .then((snapshot) => {
@@ -154,7 +154,7 @@ export default function EditRevenue() {
     }
 
     function addNewCategory() {
-        let cat = database().ref('finance_expense_category').child(uid);
+        let cat = database().ref('finance_revenue_category').child(uid);
 
         if (newCategory != '') {
             // CADASTRO DA RECEITA
@@ -188,7 +188,7 @@ export default function EditRevenue() {
                     </>
                 </TouchableHighlight>
 
-                <TouchableHighlight underlayColor="transparent" onPress={deleteRevenue} style={styles.deleteExpense}>
+                <TouchableHighlight underlayColor="transparent" onPress={deleteRevenue} style={styles.deleteRevenue}>
                     <Image source={Trash} style={styles.backImage} />
                 </TouchableHighlight>
             </View>

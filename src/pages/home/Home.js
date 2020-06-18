@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableHighlight, Image, TouchableOpacity, FlatList, StatusBar, ScrollView } from 'react-native';
 import styles from './styles';
-import AsyncStorage from '@react-native-community/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
@@ -72,12 +71,6 @@ export default function Login(props) {
             });
     }, []);
 
-    async function handleLogout() {
-        await AsyncStorage.clear();
-
-        props.navigation.navigate('Welcome');
-    }
-
     function handleDrawer() {
         props.navigation.openDrawer();
     }
@@ -91,8 +84,8 @@ export default function Login(props) {
     ]);
 
     return (
-        <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.container}>
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+            <View>
                 <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                 <View style={styles.header}>
                     <View style={styles.headerButtons}>
@@ -103,7 +96,7 @@ export default function Login(props) {
                             <Image source={Users} style={styles.users} />
                         </TouchableHighlight>
                     </View>
-                    <Text style={styles.labelInfoMoney}>Receita em conta:</Text>
+                    <Text style={styles.labelInfoMoney}>Valor em contas:</Text>
                     <View style={styles.infoMoney}>
                         <Text style={styles.totalMoney}>
                             {Intl.NumberFormat('pt-BR', {
@@ -131,23 +124,19 @@ export default function Login(props) {
                     </ScrollView>
 
 
-                    <Text style={styles.labelinfoActivity}>Cartões</Text>
+                    {/* <Text style={styles.labelinfoActivity}>Cartões</Text>
                     <FlatList
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                         renderItem={({ item }) => <Cards data={item} />}
                         data={cards}
-                    />
+                    /> */}
                 </View>
             </View>
             
-            <View style={styles.containerChart}>
+            {/* <View style={styles.containerChart}>
                 <Chart />
-            </View>
-            
-            <TouchableOpacity onPress={handleLogout}>
-                <Text>Sair</Text>
-            </TouchableOpacity>
+            </View> */}
         </ScrollView>
     );
 }

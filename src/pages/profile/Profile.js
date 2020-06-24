@@ -6,17 +6,18 @@ import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 
 import styles from './styles';
-import Users from '../../assets/users.png';
-import UserWallet from '../../components/userWallet/UserWallet';
+import UserMale from '../../assets/user-male.png';
+import UserFemale from '../../assets/user-female.png';
 import Mastercard from '../../assets/mastercard.png';
 import Cards from '../../components/cards';
 
 export default function Profile() {
 
+  let uid = auth().currentUser.uid;
   const [userName, setUserName] = useState('');
+  const [gender, setGenter] = useState('');
 
   useEffect(() => {
-    let uid = auth().currentUser.uid;
     database().ref('finance_user')
       .child(uid)
       .once('value')
@@ -24,6 +25,15 @@ export default function Profile() {
         setUserName(snapshot.val().userName);
       });
   }, [])
+
+  useEffect(() => {
+    database().ref('finance_user')
+        .child(uid)
+        .once('value')
+        .then((snapshot) => {
+            setGender(snapshot.val().gender);
+        });
+}, []);
 
   const navigation = useNavigation();
 
@@ -53,7 +63,7 @@ export default function Profile() {
       </View>
 
       <View style={styles.userInfo}>
-        <Image source={Users} style={styles.userImg} />
+        <Image source={gender === 'Feminino' ? UserFemale : UserMale} style={styles.userImg} />
         <Text style={styles.userName}>{userName}</Text>
         {/* <Text style={styles.typeUserAccount}>Conta Premium</Text> */}
       </View>

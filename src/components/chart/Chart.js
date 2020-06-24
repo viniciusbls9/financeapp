@@ -50,6 +50,11 @@ export default function Chart() {
 
     return (
         <View>
+            {totalExpense == '' &&
+                <View style={{ alignItems: 'center', marginTop: 50 }}>
+                    <Text>Você ainda não possui gastos cadastrados</Text>
+                </View>
+            }
             <PieChart
                 data={totalExpense}
                 width={Dimensions.get('window').width}
@@ -57,7 +62,7 @@ export default function Chart() {
                 chartConfig={chartConfig}
                 accessor='value'
                 backgroundColor="transparent"
-                paddingLeft="-20"
+                paddingLeft="-30"
                 // absolute
             />
         </View>

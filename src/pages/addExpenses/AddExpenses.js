@@ -267,12 +267,12 @@ export default function AddRevenue() {
                         <Picker.Item key={3} value={'Lazer'} label={'Lazer'} />
                         <Picker.Item key={4} value={'Moradia'} label={'Moradia'} />
                         <Picker.Item key={5} value={'Pagamentos'} label={'Pagamentos'} />
-                        <Picker.Item key={5} value={'Roupas'} label={'Roupas'} />
-                        <Picker.Item key={5} value={'Saúde'} label={'Saúde'} />
-                        <Picker.Item key={5} value={'Transporte'} label={'Transporte'} />
-                        <Picker.Item key={5} value={'Outros'} label={'Outros'} />
+                        <Picker.Item key={6} value={'Roupas'} label={'Roupas'} />
+                        <Picker.Item key={7} value={'Saúde'} label={'Saúde'} />
+                        <Picker.Item key={8} value={'Transporte'} label={'Transporte'} />
+                        <Picker.Item key={9} value={'Outros'} label={'Outros'} />
                         {getNewCategory}
-                        <Picker.Item key={1} value={'Nova categoria'} label={'Nova categoria'} />
+                        <Picker.Item key={10} value={'Nova categoria'} label={'Nova categoria'} />
 
                     </Picker>
                 </View>
@@ -362,7 +362,7 @@ export default function AddRevenue() {
                                 onChangeText={setNewCategory}
                             />
 
-                            <TouchableOpacity onPress={addNewCategory} style={styles.btnNewCategory}>
+                            <TouchableOpacity onPress={addNewCategory} style={styles.btnNewCategory} activeOpacity={0.8}>
                                 <Text style={styles.textBtnSave}>Salvar</Text>
                             </TouchableOpacity>
 

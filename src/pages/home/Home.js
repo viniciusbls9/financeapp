@@ -6,7 +6,8 @@ import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 
 import Bars from '../../assets/bars.png';
-import Users from '../../assets/user-male.png';
+import UserMale from '../../assets/user-male.png';
+import UserFemale from '../../assets/user-female.png';
 import Button from '../../assets/button.png';
 import Mastercard from '../../assets/mastercard.png';
 
@@ -22,8 +23,18 @@ export default function Login(props) {
     const [totalRevenue, setTotalRevenue] = useState([]);
     const [totalExpense, setTotalExpense] = useState([]);
     const [sumTotal, setSumTotal] = useState([]);
+    const [gender, setGender] = useState('');
 
     const id = auth().currentUser.uid;
+
+    useEffect(() => {
+        database().ref('finance_user')
+            .child(id)
+            .once('value')
+            .then((snapshot) => {
+                setGender(snapshot.val().gender);
+            });
+    }, []);
 
     useEffect(() => {
         let n = 1;
@@ -101,7 +112,7 @@ export default function Login(props) {
                             <Image source={Bars} style={styles.bars} />
                         </TouchableHighlight>
                         <TouchableHighlight onPress={() => navigation.navigate('Profile')} underlayColor="transparent">
-                            <Image source={Users} style={styles.users} />
+                            <Image source={gender === 'Feminino' ? UserFemale : UserMale} style={styles.users} />
                         </TouchableHighlight>
                     </View>
                     <Text style={styles.labelInfoMoney}>Valor em contas:</Text>
@@ -144,7 +155,6 @@ export default function Login(props) {
                     <View style={styles.containerChart}>
                         <Chart />
                     </View>
-
                 </View>
             </View>
 

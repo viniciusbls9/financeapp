@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 import Sistema from '../../Sistema'
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
-
+import { Picker } from '@react-native-community/picker';
 
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
@@ -14,6 +14,7 @@ export default function Login() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [gender, setGender] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [load, setLoad] = useState(false);
 
@@ -22,10 +23,11 @@ export default function Login() {
     async function handleRegister() {
         try {
             setLoad(true);
-            if(name != '' && email != '' && password != '') {
+            if (name != '' && email != '' && password != '' && gender != '') {
                 await Sistema.registerConfirme(email, password);
                 await database().ref('finance_user').child(auth().currentUser.uid).set({
-                    userName: name
+                    userName: name,
+                    gender: gender
                 });
                 navigation.navigate('Home');
             } else {
@@ -33,16 +35,16 @@ export default function Login() {
                 setLoad(false);
             }
         } catch (error) {
-            switch(error.code) {
+            switch (error.code) {
                 case 'auth/email-already-in-use':
                     setErrorMessage('E-mail já cadastrado no aplicativo');
-                break;
+                    break;
                 case 'auth/invalid-email':
-                   setErrorMessage('É obrigatório inserir um e-mail válido');
-                break;
+                    setErrorMessage('É obrigatório inserir um e-mail válido');
+                    break;
                 case 'auth/weak-password':
-                setErrorMessage('Sua senha deve ter ao menos 6 digitos');
-                break;
+                    setErrorMessage('Sua senha deve ter ao menos 6 digitos');
+                    break;
             }
             setLoad(false);
         }
@@ -85,11 +87,22 @@ export default function Login() {
                     onChangeText={setPassword}
                     style={styles.input}
                 />
+                <Picker
+                    style={styles.picker}
+                    selectedValue={gender}
+                    onValueChange={(itemValue) => setGender(itemValue)}
+                    value={setGender}
+                    mode="dropdown"
+                >
+                    <Picker.Item key={0} value={'Feminino'} label={'Feminino'} />
+                    <Picker.Item key={1} value={'Masculino'} label={'Masculino'} />
+                </Picker>
+
                 {errorMessage != '' &&
                     <Text style={styles.errorMessage}>{errorMessage}</Text>
                 }
                 {load &&
-                    <ActivityIndicator size="large" color="#5c8efe" style={{marginBottom:20}} />
+                    <ActivityIndicator size="large" color="#5c8efe" style={{ marginBottom: 20 }} />
                 }
 
                 <TouchableOpacity style={styles.submitBtn} onPress={handleRegister}>

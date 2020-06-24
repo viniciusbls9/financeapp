@@ -13,14 +13,15 @@ export default function AddWallet() {
     let uid = auth().currentUser.uid;
 
     const [bank, setBank] = useState([
-        { key: '1', name: 'Nubank', initial: 'N', bgColor: '#8A17BE' },
-        { key: '2', name: 'Itaú', initial: 'I', bgColor: '#EC7001' },
-        { key: '3', name: 'Bradesco', initial: 'B', bgColor: '#FD352A' },
-        { key: '4', name: 'Santander', initial: 'S', bgColor: '#CC2900' },
-        { key: '5', name: 'Banco do Brasil', initial: 'BB', bgColor: '#F8D117' },
-        { key: '6', name: 'Caixa Econômica', initial: 'C', bgColor: '#185E9C' },
+        { key: '1', name: 'Nubank', initial: 'N', bgColor: '#8A17BE', active: false },
+        { key: '2', name: 'Itaú', initial: 'I', bgColor: '#EC7001', active: false  },
+        { key: '3', name: 'Bradesco', initial: 'B', bgColor: '#FD352A', active: false },
+        { key: '4', name: 'Santander', initial: 'S', bgColor: '#CC2900', active: false },
+        { key: '5', name: 'Banco do Brasil', initial: 'BB', bgColor: '#F8D117', active: false },
+        { key: '6', name: 'Caixa Econômica', initial: 'C', bgColor: '#185E9C', active: false },
     ]);
     const [bankName, setBankName] = useState('');
+    const [initial, setInitial] = useState('');
     const [typeAccount, setTypeAccount] = useState('Selecione...');
     const [accountName, setAccountName] = useState('');
 
@@ -31,6 +32,7 @@ export default function AddWallet() {
                 bank: bankName,
                 typeAccount: typeAccount,
                 accountName: accountName,
+                initial: initial,
                 date: new Date(Date.now()).getTime()
             });
             database().ref('finance_user').child(uid).child(typeAccount).set({
@@ -45,6 +47,12 @@ export default function AddWallet() {
                     ]
                 }));
         }
+    }
+
+    function toggleWallet(index) {
+        let newBank = [...bank];
+        setBankName(newBank[index].name);
+        setInitial(newBank[index].initial);
     }
 
     return (
@@ -63,8 +71,8 @@ export default function AddWallet() {
                 <FlatList
                     horizontal={true}
                     data={bank}
-                    renderItem={({ item }) =>
-                        <TouchableHighlight style={styles.typeBank} onPress={() => setBankName(item.name)} underlayColor="transparent">
+                    renderItem={({ item, index }) =>
+                        <TouchableHighlight style={styles.typeBank} onPress={() => toggleWallet(index)} underlayColor="transparent">
                             <>
                                 <View style={[styles.containerInitialBank, { backgroundColor: item.bgColor }]}>
                                     <Text style={styles.textInitialBank}>{item.name.substr(0,1)}</Text>

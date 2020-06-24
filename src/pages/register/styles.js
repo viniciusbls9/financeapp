@@ -11,17 +11,17 @@ export default StyleSheet.create({
     },
     registerImage: {
         width: 350,
-        height: 466
+        height: 466,
     },
     titleRegister: {
         marginTop: 50,
         textAlign: 'center',
         fontSize: 20,
-        marginHorizontal: 20
+        marginHorizontal: 20,
     },
     containerInput: {
         marginTop: 50,
-        marginHorizontal: 20
+        marginHorizontal: 20,
     },
     input: {
         borderColor: '#E1E1E1',
@@ -29,19 +29,27 @@ export default StyleSheet.create({
         padding: 13,
         marginBottom: 20,
         borderRadius: 10,
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+    },
+    picker: {
+        marginBottom: 20,
+    },
+    errorMessage: {
+        textAlign: 'center',
+        marginVertical: 10,
+        color: '#ff4f5a',
     },
     submitBtn: {
         backgroundColor: '#ff4f5a',
         padding: 15,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 10
+        borderRadius: 10,
     },
     textBtnSubmit: {
         color: '#fff',
         textTransform: 'uppercase',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     registerBtn: {
         alignItems: 'center',
@@ -50,6 +58,6 @@ export default StyleSheet.create({
     },
     textBtnRegister: {
         color: '#ff4f5a',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     }
 });

@@ -14,6 +14,13 @@ export default StyleSheet.create({
         backgroundColor: '#fff',
         elevation: 4,
     },
+    containerInitialBank: {
+        width: 30,
+        height: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10
+    },
     iconActivity: {
         width: 30,
         height: 30,

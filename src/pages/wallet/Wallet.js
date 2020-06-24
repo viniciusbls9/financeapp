@@ -13,6 +13,8 @@ export default function Wallet() {
 
     const [walletRevenue, setWalletRevenue] = useState([]);
     const [total, setTotal] = useState([]);
+    const [nameBank, setNameBank] = useState([]);
+    const [initial, setInitial] = useState([]);
     const [walletExpense, setWalletExpense] = useState([]);
 
     useEffect(() => {
@@ -56,6 +58,21 @@ export default function Wallet() {
             // });
         // }
     }, []);
+
+    useEffect(() => {
+        // let n = 1;
+        // for(let i = n; i <= 4; i++) {
+        //     let int = n++;
+            database().ref('finance_wallet')
+            .child(uid)
+            .child('2')
+            .once('value')
+            .then((snapshot) => {
+                setNameBank(snapshot.val().bank);
+                setInitial(snapshot.val().initial);
+            });
+        // }
+        }, []);
     
     return (
         <View style={styles.container}>
@@ -67,13 +84,13 @@ export default function Wallet() {
                     <Text style={styles.textHeader}>Nova Carteira</Text>
                 </TouchableOpacity>
             </View>
-            {/* <View style={styles.userWallet}> */}
+            <View style={styles.userWallet}>
                 <FlatList
                     showsHorizontalScrollIndicator={false}
-                    renderItem={({ item }) => <UserWallet data={item} total={total} />}
+                    renderItem={({ item }) => <UserWallet data={item} total={total} nameBank={nameBank} initial={initial} />}
                     data={walletRevenue}
                 />
-            {/* </View> */}
+            </View>
         </View>
     );
 }

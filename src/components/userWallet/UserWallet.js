@@ -4,15 +4,39 @@ import styles from './styles';
 // import database from '@react-native-firebase/database';
 // import auth from '@react-native-firebase/auth';
 
-import Wallet from '../../assets/wallet.png';
-
 export default function PendencesRevenue(props) {
+
+    let bg = props.nameBank;
+    let color = '';
+
+    switch (bg) {
+        case 'Nubank':
+            color = '#8A17BE';
+        break;
+        case 'Itaú':
+            color = '#EC7001';
+        break;
+        case 'Bradesco':
+            color = '#FD352A';
+        break;
+        case 'Santander':
+            color = '#CC2900';
+        break;
+        case 'Banco do Brasil':
+            color = '#F8D117';
+        break;
+        case 'Caixa Econômica':
+            color = '#185E9C';
+        break;
+    }
 
     return (
         <View style={styles.containerActivity}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Image source={Wallet} style={styles.iconActivity} />
-                <Text style={styles.walletName}>{props.data.bank}</Text>
+                <View style={[styles.containerInitialBank, { backgroundColor: color}]}>
+                    <Text style={{color: '#fff'}}>{props.initial}</Text>
+                </View>
+                <Text style={styles.walletName}>{props.nameBank}</Text>
             </View>
             <View style={styles.TextsActivity}>
                 <Text style={{ color: props.data.value >= 0 ? '#27B635' : '#ff4f5a', fontSize: 18, fontWeight: 'bold' }}>

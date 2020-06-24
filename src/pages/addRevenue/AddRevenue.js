@@ -269,7 +269,7 @@ export default function AddRevenue() {
                         <Picker.Item key={4} value={'Presente'} label={'Presente'} />
                         <Picker.Item key={5} value={'Outros'} label={'Outros'} />
                         {getNewCategory}
-                        <Picker.Item key={1} value={'Nova categoria'} label={'Nova categoria'} />
+                        <Picker.Item key={6} value={'Nova categoria'} label={'Nova categoria'} />
 
                     </Picker>
                 </View>
@@ -290,7 +290,7 @@ export default function AddRevenue() {
                     >
                         <Picker.Item key={0} value={''} label={'Selecione sua carteira'} />
                         {getAccount}
-                        {getAccount == '' &&
+                        {getAccount == null &&
                             <Picker.Item key={0} value={'Adicionar conta'} label={'Adicionar conta'} />
                         }
                     </Picker>
@@ -359,7 +359,7 @@ export default function AddRevenue() {
                                 onChangeText={setNewCategory}
                             />
 
-                            <TouchableOpacity onPress={addNewCategory} style={styles.btnNewCategory}>
+                            <TouchableOpacity onPress={addNewCategory} style={styles.btnNewCategory} activeOpacity={0.8}>
                                 <Text style={styles.textBtnSave}>Salvar</Text>
                             </TouchableOpacity>
 

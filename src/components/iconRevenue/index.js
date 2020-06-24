@@ -47,7 +47,9 @@ export default (tag) => {
         case 'Celular':
             iconRevenue = require('../../assets/smartphone.png');
         break;
-
+        default:
+            iconRevenue = require('../../assets/more-balls.png');
+        break;
     }
 
     return iconRevenue

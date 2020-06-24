@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, Image, TouchableHighlight } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -7,6 +7,24 @@ import RevenueIcon from '../iconRevenue';
 import Alert from '../../assets/alert.png';
 
 export default function Expenses(props) {
+
+    let account = props.data.account;
+    let translate = '';
+
+    switch (account) {
+        case '1':
+            translate = 'Conta Corrente';
+        break;
+        case '2':
+            translate = 'Poupança';
+        break;
+        case '3':
+            translate = 'Investimento';
+        break;
+        case '4':
+            translate = 'Outros';
+        break;
+    }
 
     const navigation = useNavigation();
 
@@ -19,6 +37,7 @@ export default function Expenses(props) {
             toggle: props.data.toggle,
             value: props.data.value,
             date: props.data.date,
+            account: props.data.account,
             key: props.data.key
         });
     }
@@ -29,7 +48,7 @@ export default function Expenses(props) {
     let dateRevenue = new Date(revenueRegister);
     let dayDateRevenue = dateRevenue.getDate();
     let monthDateRevenue = dateRevenue.getMonth();
-    let yearDateRevenue = dateRevenue.getFullYear();
+    let yearDateRevenue = dateRevenue.getFullYear().toString().substr(2,2);
 
 
     dayDateRevenue = dayDateRevenue < 10 ? '0' + dayDateRevenue : dayDateRevenue;
@@ -49,7 +68,8 @@ export default function Expenses(props) {
                             <Text style={styles.descRevenue} numberOfLines={1} ellipsizeMode="tail">{props.data.description}</Text>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={styles.catRevenue}>{props.data.category} | </Text>
-                                <Text style={styles.dateRevenue}>{dateRevenueRegisterFormated}</Text>
+                                <Text style={styles.dateRevenue}>{dateRevenueRegisterFormated} | </Text>
+                                <Text style={styles.dateRevenue}>{translate}</Text>
                             </View>
                         </View>
                     </View>

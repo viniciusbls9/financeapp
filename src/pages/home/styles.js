@@ -71,9 +71,10 @@ export default StyleSheet.create({
     },
     containerChart: {
         backgroundColor: '#fff',
-        marginHorizontal: 20,
+        // marginHorizontal: 20,
         borderRadius: 25,
         borderWidth: 1,
-        borderColor: '#ccc'
+        borderColor: '#ccc',
+        marginTop: 20
     },
 });

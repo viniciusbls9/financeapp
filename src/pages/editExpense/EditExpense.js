@@ -22,7 +22,6 @@ export default function EditExpense() {
     const [remember, setRemember] = useState(new Date(Date.now()).getTime());
     const [showRemember, setShowRemember] = useState(false);
 
-
     /**CONSTANT FOR OPEN MODAL */
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -61,12 +60,18 @@ export default function EditExpense() {
 
     const [editCategory, setEditCategory] = useState(route.params.category);
     const [editDescription, setEditDescription] = useState(route.params.description);
-    const [editTag, setEditTag] = useState(route.params.tag);
-    const [editPicker, setEditPicker] = useState('');
     const [editToggle, setEditToogle] = useState(route.params.toggle);
     const [editValue, setEditValue] = useState(route.params.value);
     const [editRemember, setEditRemember] = useState(route.params.remember);
     const [editDate, setEditDate] = useState(route.params.date);
+    const [account, setAccount] = useState(route.params.account);
+
+    /**CONSTANT TO RECEIVE VALUES ​​FROM THE BANK REGARDING THE ACCOUNTS CREATED BY THE USER  */
+    const [getAccount, setGetAccouunt] = useState([]);
+
+    /** CONSTANT FOR ANIMATION THE TOOLTIP */
+    const [showTooltip, setShowTooltip] = useState(false);
+
     const key = route.params.key;
     const uid = auth().currentUser.uid;
 
@@ -78,7 +83,7 @@ export default function EditExpense() {
                 {
                     text: 'Sim',
                     onPress: () => {
-                        database().ref('finance_expense').child(uid).child(key).remove()
+                        database().ref('finance_wallet').child(uid).child(account).child('finance_expense').child(key).remove();
                         navigation.dispatch(
                             CommonActions.reset({
                                 index: 0,
@@ -105,7 +110,7 @@ export default function EditExpense() {
 
     function editExpense() {
         //INFORMAÇÕES DO USUÁRIO
-        let newEditExpense = database().ref('finance_expense').child(uid).child(key);
+        let newEditExpense = database().ref('finance_wallet').child(uid).child(account).child('finance_expense').child(key);
 
         if (editValue != '' && editDescription != '' && editCategory != '') {
             // CADASTRO DA RECEITA
@@ -116,7 +121,8 @@ export default function EditExpense() {
                 category: editCategory,
                 tag: editCategory,
                 date: date,
-                remember: remember != new Date(Date.now()).getDate() ? remember : ''
+                remember: remember < new Date(Date.now()).getDate() ? remember : '',
+                account: account
             });
 
             navigation.dispatch(
@@ -131,6 +137,7 @@ export default function EditExpense() {
         }
     }
 
+    /** RECOVERING INFORMATION IN THE BANK RELATING TO USER'S REVENUE CATEGORIES */
     useEffect(() => {
         database().ref('finance_expense_category')
             .child(uid)
@@ -146,6 +153,27 @@ export default function EditExpense() {
                     return <Picker.Item key={k.key} value={item.category} label={item.category} />
                 });
                 setGetNewCategory(mapCategory);
+            });
+    }, []);
+
+    /** RECOVERING INFORMATION IN THE BANK RELATING TO USER ACCOUNTS */
+    useEffect(() => {
+        database().ref('finance_user')
+            .child(uid)
+            .once('value')
+            .then((snapshot) => {
+                snapshot.forEach(item => {
+                    getAccount.push({
+                        typeAccount: item.val().typeAccount,
+                        bankName: item.val().bank
+                    });
+                });
+                let mapAccount = getAccount.map((item) => {
+                    if (item.typeAccount != undefined) {
+                        return <Picker.Item key={item.typeAccount} value={item.typeAccount} label={item.bankName} />
+                    }
+                });
+                setGetAccouunt(mapAccount);
             });
     }, []);
 
@@ -177,6 +205,13 @@ export default function EditExpense() {
         }
     }
 
+    function handleAnimation() {
+        setShowTooltip(true);
+        setTimeout(() => {
+            setShowTooltip(false);
+        }, 3000);
+    }
+
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor="#ff4f5a" barStyle="light-content" />
@@ -193,8 +228,22 @@ export default function EditExpense() {
                 </TouchableHighlight>
             </View>
 
+            {showTooltip ? (
+                <View style={styles.containerTooltip}>
+                    <View style={styles.tooltip}>
+                        <Text style={styles.tooltipMessage}>Separe os centavos incluindo ponto</Text>
+                    </View>
+                    <View style={styles.tooltipTriangle} />
+                </View>
+            ) : null}
+
             <View style={styles.containerInputValue}>
-                <Text style={styles.labelFormValue}>Valor da receita (apenas números)</Text>
+                <View style={{ flexDirection: 'row' }}>
+                    <Text style={styles.labelFormValue}>Valor da receita</Text>
+                    <TouchableHighlight style={styles.containerBtnTooltip} onPress={handleAnimation} underlayColor="#transparent">
+                        <Text style={styles.textTooltip}>?</Text>
+                    </TouchableHighlight>
+                </View>
                 <TextInput
                     style={styles.inputValue}
                     placeholder=" R$ 00,00"
@@ -228,15 +277,15 @@ export default function EditExpense() {
                 <View style={styles.picker}>
                     <Text style={styles.labelInputs}>Categoria</Text>
                     <Picker
-                        selectedValue={editPicker}
+                        selectedValue={editCategory}
                         onValueChange={(itemValue, itemIndex) => {
                             if (itemValue == 'Nova categoria') {
                                 openModal(itemValue);
                             } else {
-                                setEditPicker(itemValue);
+                                setEditCategory(itemValue);
                             }
                         }}
-                        value={setEditPicker}
+                        value={setEditCategory}
                         mode="dropdown"
                     >
                         <Picker.Item key={0} value={'Selecione...'} label={'Selecione...'} />
@@ -255,8 +304,30 @@ export default function EditExpense() {
                     </Picker>
                 </View>
 
+                <View style={styles.picker}>
+                    <Text style={styles.labelInputs}>Carteira</Text>
+                    <Picker
+                        selectedValue={account}
+                        onValueChange={(itemValue) => {
+                            if (itemValue == 'Adicionar conta') {
+                                navigation.navigate('AddWallet');
+                            } else {
+                                setAccount(itemValue);
+                            }
+                        }}
+                        value={setAccount}
+                        mode="dropdown"
+                    >
+                        <Picker.Item key={0} value={'Selecione sua carteira'} label={'Selecione sua carteira'} />
+                        {getAccount}
+                        {getAccount == '' &&
+                            <Picker.Item key={0} value={'Adicionar conta'} label={'Adicionar conta'} />
+                        }
+                    </Picker>
+                </View>
+
                 <View style={styles.containerCalendar}>
-                    <Text style={styles.labelInputs}>Data de recebimento</Text>
+                    <Text style={styles.labelInputs}>Data de pagamento</Text>
                     <TouchableOpacity onPress={showDatepickerDate} style={styles.btnCalendar}>
                         <>
                             <Image source={Calendar} style={styles.calendarImage} />

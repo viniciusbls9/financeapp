@@ -32,11 +32,11 @@ export default StyleSheet.create({
         fontWeight: '700'
     },
     catRevenue: {
-        fontSize: 13,
+        fontSize: 12,
         color: '#848181'
     },
     dateRevenue: {
-        fontSize: 13,
+        fontSize: 12,
         color: '#848181'
     },
     dateRemember: {

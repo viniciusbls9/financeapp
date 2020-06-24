@@ -1,42 +1,62 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Animated } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
 
 import UserWallet from '../../components/userWallet/UserWallet';
 import styles from './styles';
 
 export default function Wallet() {
     const navigation = useNavigation();
+    const uid = auth().currentUser.uid;
 
-    const [wallet, setWallet] = useState([
-        { key: '1', name: 'Conta Corrente Nubank', value: 10055.05 },
-        { key: '2', name: 'Poupança', value: 10055.05 },
-        { key: '3', name: 'Investimento', value: -15 },
-    ]);
+    const [walletRevenue, setWalletRevenue] = useState([]);
+    const [total, setTotal] = useState([]);
+    const [walletExpense, setWalletExpense] = useState([]);
 
-    const [width, setWidth] = useState(new Animated.Value(0));
-    const [opacity, setOpacity] = useState(new Animated.Value(0));
-
-    function handleAnimation() {
-        Animated.sequence([
-            Animated.timing(
-                width,
-                {
-                    toValue: 150,
-                    useNativeDriver: false
-                }
-            ),
-            Animated.timing(
-                opacity,
-                {
-                    toValue: 1,
-                    useNativeDriver: false
-                }
-            )
-        ]).start();
-    }
-
+    useEffect(() => {
+        // let n = 1;
+        // for(let i = n; i <= 4; i++) {
+        //     let int = n++;
+            database().ref('finance_wallet')
+            .child(uid)
+            .child('2')
+            .child('finance_revenue')
+            .once('value')
+            .then((snapshot) => {
+                snapshot.forEach(item => {
+                    walletRevenue.push({
+                        bank: item.val().account,
+                        value: item.val().value,
+                        key: item.key,
+                    });
+                });
+                /** MAPEAR SOMENTE OS VALORES DE CADA CARTEIRA */
+                let fill = walletRevenue.map((val) => {
+                    return parseFloat(val.value);
+                });
+                /** SOMAR TODOS OS VALORES INCLUIDOS NA CARTEIRA */
+                let red = fill.reduce((v1, v2) => v1 + v2);
+                setTotal(red);
+            });
+            // database().ref('finance_wallet')
+            // .child(uid)
+            // .child(int.toString())
+            // .child('finance_expense')
+            // .once('value')
+            // .then((snapshot) => {
+            //     snapshot.forEach(item => {
+            //         walletExpense.push({
+            //             accountName: item.val().account,
+            //             value: item.val().value
+            //         });
+            //     });
+            //     console.log(walletExpense);
+            // });
+        // }
+    }, []);
+    
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -47,23 +67,13 @@ export default function Wallet() {
                     <Text style={styles.textHeader}>Nova Carteira</Text>
                 </TouchableOpacity>
             </View>
-            <View style={styles.userWallet}>
+            {/* <View style={styles.userWallet}> */}
                 <FlatList
                     showsHorizontalScrollIndicator={false}
-                    renderItem={({ item }) => <UserWallet data={item} />}
-                    data={wallet}
+                    renderItem={({ item }) => <UserWallet data={item} total={total} />}
+                    data={walletRevenue}
                 />
-            </View>
-            <View>
-
-                <TouchableOpacity onPress={handleAnimation}>
-                    <Text>?</Text>
-                </TouchableOpacity>
-
-                <Animated.View style={{ width: width, backgroundColor: '#fff', padding: 10, opacity: opacity }}>
-                    <Text style={{ textAlign: 'center', color: '#222', fontSize: 12 }}>Separe os centavos colocando ponto</Text>
-                </Animated.View>
-            </View>
+            {/* </View> */}
         </View>
     );
 }

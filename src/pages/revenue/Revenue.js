@@ -10,7 +10,6 @@ import Wallet from '../../assets/wallet.png';
 import ListRevenue from '../../components/listRevenue';
 import MoreExpenses from '../../assets/more.png';
 
-
 export default function Revenue() {
 
     const [activity, setActivity] = useState([]);
@@ -25,7 +24,8 @@ export default function Revenue() {
             database().ref('finance_wallet')
             .child(uid)
             .child(int.toString())
-            .child('finance_revenue').once('value')
+            .child('finance_revenue')
+            .once('value')
             .then((snapshot) => {
                 snapshot.forEach(childItem => {
                     activity.push({
@@ -36,6 +36,7 @@ export default function Revenue() {
                         tag: childItem.val().tag,
                         toggle: childItem.val().toggle,
                         value: childItem.val().value,
+                        account: childItem.val().account,
                         key: childItem.key
                     });
                 });

@@ -33,6 +33,52 @@ export default StyleSheet.create({
     containerInputValue: {
         paddingHorizontal: 20
     },
+    containerBtnTooltip: {
+        width: 20,
+        marginLeft: 10,
+        borderColor: '#fff',
+        borderWidth: 1,
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    textTooltip: {
+        color: '#fff',
+    },
+    containerTooltip: {
+        backgroundColor: 'transparent',
+        position: 'absolute',
+        zIndex: 2, // <- zIndex here
+        // flex: 1,
+        left: 58,
+        top: 30
+    },
+    tooltip: {
+        width: 150,
+        height: 50,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    tooltipTriangle: {
+        position: 'absolute',
+        bottom: -20,
+        left: 55,
+        width: 0,
+        height: 0,
+        borderLeftWidth: 20,
+        borderRightWidth: 20,
+        borderTopWidth: 20,
+        borderLeftColor: 'transparent',
+        borderRightColor: 'transparent',
+        borderTopColor: '#fff',
+    },
+    tooltipMessage: {
+        marginHorizontal: 20,
+        textAlign: 'center',
+        fontSize: 12
+    },
     labelFormValue: {
         color: '#fff',
         fontWeight: 'bold',

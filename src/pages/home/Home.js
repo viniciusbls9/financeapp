@@ -6,7 +6,7 @@ import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 
 import Bars from '../../assets/bars.png';
-import Users from '../../assets/users.png';
+import Users from '../../assets/user-male.png';
 import Button from '../../assets/button.png';
 import Mastercard from '../../assets/mastercard.png';
 
@@ -26,50 +26,58 @@ export default function Login(props) {
     const id = auth().currentUser.uid;
 
     useEffect(() => {
-        database().ref('finance_revenue')
-            .child(id)
-            .once('value')
-            .then((snapshot) => {
-                snapshot.forEach((item) => {
-                    totalRevenue.push({
-                        value: item.val().value,
-                        toggle: item.val().toggle
+        let n = 1;
+        for (let i = n; i <= 4; i++) {
+            let int = n++;
+            database().ref('finance_wallet')
+                .child(id)
+                .child(int.toString())
+                .child('finance_revenue')
+                .once('value')
+                .then((snapshot) => {
+                    snapshot.forEach((item) => {
+                        totalRevenue.push({
+                            value: item.val().value,
+                            toggle: item.val().toggle
+                        });
                     });
                 });
-            });
-        database().ref('finance_expense')
-            .child(id)
-            .once('value')
-            .then((snapshot) => {
-                snapshot.forEach((item) => {
-                    totalExpense.push({
-                        value: item.val().value,
-                        toggle: item.val().toggle
+            database().ref('finance_wallet')
+                .child(id)
+                .child(int.toString())
+                .child('finance_expense')
+                .once('value')
+                .then((snapshot) => {
+                    snapshot.forEach((item) => {
+                        totalExpense.push({
+                            value: item.val().value,
+                            toggle: item.val().toggle
+                        });
                     });
-                });
-                const filterTotalRevenue = totalRevenue.map((val) => {
-                    if (val.toggle == true) {
-                        return parseFloat(val.value);
-                    }
-                });
-                const filterTotalExpense = totalExpense.map((val) => {
-                    if (val.toggle == true) {
-                        return parseFloat('-' + val.value);
-                    }
-                });
+                    const filterTotalRevenue = totalRevenue.map((val) => {
+                        if (val.toggle == true) {
+                            return parseFloat(val.value);
+                        }
+                    });
+                    const filterTotalExpense = totalExpense.map((val) => {
+                        if (val.toggle == true) {
+                            return parseFloat('-' + val.value);
+                        }
+                    });
 
-                let conc = filterTotalRevenue.concat(filterTotalExpense);
-                let indexRemove = undefined;
-                let index = conc.indexOf(indexRemove);
+                    let conc = filterTotalRevenue.concat(filterTotalExpense);
+                    let indexRemove = undefined;
+                    let index = conc.indexOf(indexRemove);
 
-                while (index >= 0) {
-                    conc.splice(index, 1);
-                    index = conc.indexOf(indexRemove);
-                }
-                let sumValue = conc.reduce((t, v) => t + v);
-                setSumTotal(sumValue);
-            });
-    }, []);
+                    while (index >= 0) {
+                        conc.splice(index, 1);
+                        index = conc.indexOf(indexRemove);
+                    }
+                    let sumValue = conc.reduce((t, v) => t + v, 0);
+                    setSumTotal(sumValue);
+                });
+        }
+    }, [totalRevenue]);
 
     function handleDrawer() {
         props.navigation.openDrawer();
@@ -79,9 +87,9 @@ export default function Login(props) {
         navigation.navigate('AddRevenue');
     }
 
-    const [cards, setCards] = useState([
-        { key: '1', flag: Mastercard, nameCard: 'Nubank', closeDate: '12/jun', value: 250, valueTotal: 250 },
-    ]);
+    // const [cards, setCards] = useState([
+    //     { key: '1', flag: Mastercard, nameCard: 'Nubank', closeDate: '12/jun', value: 250, valueTotal: 250 },
+    // ]);
 
     return (
         <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
@@ -131,12 +139,15 @@ export default function Login(props) {
                         renderItem={({ item }) => <Cards data={item} />}
                         data={cards}
                     /> */}
+
+                    <Text style={styles.labelinfoActivity}>Despesas por categoria</Text>
+                    <View style={styles.containerChart}>
+                        <Chart />
+                    </View>
+
                 </View>
             </View>
-            
-            {/* <View style={styles.containerChart}>
-                <Chart />
-            </View> */}
+
         </ScrollView>
     );
 }

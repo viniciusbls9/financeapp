@@ -75,8 +75,7 @@ export default function AddRevenue() {
     const [getAccount, setGetAccouunt] = useState([]);
 
     /** CONSTANT FOR ANIMATION THE TOOLTIP */
-    const [width, setWidth] = useState(new Animated.Value(0));
-    const [opacity, setOpacity] = useState(new Animated.Value(0));
+    const [showTooltip, setShowTooltip] = useState(false);
 
 
     function handlebackRevenue() {
@@ -85,8 +84,7 @@ export default function AddRevenue() {
 
     function addNewRevenue() {
         let newRevenue = database().ref('finance_wallet').child(uid).child(account).child('finance_revenue');
-
-        if (value != '' && description != '' && picker != 'Selecione...') {
+        if (value != '' && description != '' && picker != '' && account != '') {
             // CADASTRO DA RECEITA
             let key = newRevenue.push().key;
             newRevenue.child(key).set({
@@ -96,7 +94,9 @@ export default function AddRevenue() {
                 category: picker,
                 tag: picker,
                 date: date,
-                remember: remember < new Date(Date.now()).getDate() ? remember : ''
+                remember: remember < new Date(Date.now()).getDate() ? remember : '',
+                account: account,
+                key: key
             });
             setValue('');
             setDescription('');
@@ -183,22 +183,10 @@ export default function AddRevenue() {
     }
 
     function handleAnimation() {
-        Animated.sequence([
-            Animated.timing(
-                width,
-                {
-                    toValue: 150,
-                    useNativeDriver: false
-                }
-            ),
-            Animated.timing(
-                opacity,
-                {
-                    toValue: 1,
-                    useNativeDriver: false
-                }
-            )
-        ]).start();
+        setShowTooltip(true);
+        setTimeout(() => {
+            setShowTooltip(false);
+        }, 3000);
     }
 
     return (
@@ -213,15 +201,20 @@ export default function AddRevenue() {
                 </TouchableHighlight>
             </View>
 
-            <Animated.View style={{ width: width, height: 50, backgroundColor: '#fff', padding: 10, opacity: opacity, left:130, bottom: 10 }}>
-                <Text style={{ textAlign: 'center', color: '#222', fontSize: 12 }}>Separe os centavos colocando ponto</Text>
-            </Animated.View>
+            {showTooltip ? (
+                <View style={styles.containerTooltip}>
+                    <View style={styles.tooltip}>
+                        <Text style={styles.tooltipMessage}>Separe os centavos incluindo ponto</Text>
+                    </View>
+                    <View style={styles.tooltipTriangle} />
+                </View>
+            ) : null}
 
             <View style={styles.containerInputValue}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={styles.labelFormValue}>Valor da receita</Text>
-                    <TouchableHighlight style={styles.containerTooltip} onPress={handleAnimation}>
-                        <Text style={styles.tooltip}>?</Text>
+                    <TouchableHighlight style={styles.containerBtnTooltip} onPress={handleAnimation} underlayColor="#transparent">
+                        <Text style={styles.textTooltip}>?</Text>
                     </TouchableHighlight>
                 </View>
 
@@ -269,7 +262,7 @@ export default function AddRevenue() {
                         value={setPicker}
                         mode="dropdown"
                     >
-                        <Picker.Item key={0} value={'Selecione a categoria'} label={'Selecione a categoria'} />
+                        <Picker.Item key={0} value={''} label={'Selecione a categoria'} />
                         <Picker.Item key={1} value={'Salário'} label={'Salário'} />
                         <Picker.Item key={2} value={'Prêmio'} label={'Prêmio'} />
                         <Picker.Item key={3} value={'Investimento'} label={'Investimento'} />
@@ -295,7 +288,7 @@ export default function AddRevenue() {
                         value={setAccount}
                         mode="dropdown"
                     >
-                        <Picker.Item key={0} value={'Selecione sua carteira'} label={'Selecione sua carteira'} />
+                        <Picker.Item key={0} value={''} label={'Selecione sua carteira'} />
                         {getAccount}
                         {getAccount == '' &&
                             <Picker.Item key={0} value={'Adicionar conta'} label={'Adicionar conta'} />

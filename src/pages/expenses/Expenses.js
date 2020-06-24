@@ -3,7 +3,6 @@ import { View, Text, TouchableHighlight, TouchableOpacity, Image, FlatList, Stat
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 
-
 import { useNavigation, CommonActions } from '@react-navigation/native';
 import styles from './styles';
 import Arrow from '../../assets/arrows.png';
@@ -11,32 +10,39 @@ import Wallet from '../../assets/wallet.png';
 import ListExpense from '../../components/listExpenses';
 import MoreExpenses from '../../assets/more.png';
 
-export default function AddExpenses() {
+export default function Expenses() {
 
     const [totalExpense, setTotalExpense] = useState([]);
     const [activity, setActivity] = useState([]);
 
     useEffect(() => {
-        let uid = auth().currentUser.uid
-        database().ref('finance_expense')
-        .child(uid)
-        .once('value')
-        .then((snapshot) => {
-            snapshot.forEach((childItem) => {
-                activity.push({
-                    category: childItem.val().category,
-                    date: childItem.val().date,
-                    description: childItem.val().description,
-                    remember: childItem.val().remember,
-                    tag: childItem.val().tag,
-                    toggle: childItem.val().toggle,
-                    value: childItem.val().value,
-                    key: childItem.key
+        /** LOOP PARA RODAR 4 VEZES, QUE SÃO OS VALUES DE CADA CONTA ADICIONADA PELO USUÁRIO */
+        let uid = auth().currentUser.uid;
+        let n = 1;
+        for(let i = n; i <= 4; i++) {
+            let int = n++
+            database().ref('finance_wallet')
+            .child(uid)
+            .child(int.toString())
+            .child('finance_expense').once('value')
+            .then((snapshot) => {
+                snapshot.forEach((childItem) => {
+                    activity.push({
+                        category: childItem.val().category,
+                        date: childItem.val().date,
+                        description: childItem.val().description,
+                        remember: childItem.val().remember,
+                        tag: childItem.val().tag,
+                        toggle: childItem.val().toggle,
+                        value: childItem.val().value,
+                        account: childItem.val().account,
+                        key: childItem.key
+                    });
                 });
+                let total = activity.reduce((t, v) => t + (parseFloat(v.value)), 0);
+                setTotalExpense(total);
             });
-            let total = activity.reduce((t, v) => t + (parseFloat(v.value)), 0);
-            setTotalExpense(total);
-        });
+        }
     }, []);
     
     const navigation = useNavigation();

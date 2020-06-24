@@ -45,6 +45,7 @@ export default StyleSheet.create({
         borderColor: '#ccc',
         borderWidth: 1,
         padding:5,
+        borderRadius: 7
         // marginRight: 30,
     },
     labelinfoActivity: {

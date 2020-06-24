@@ -58,6 +58,9 @@ export default function AddRevenue() {
     const [isEnabled, setIsEnabled] = useState(true);
     const [description, setDescription] = useState('');
     const [picker, setPicker] = useState('');
+    const [account, setAccount] = useState('');
+
+    /**CONSTANT FOR VISIBLE ERROR MESSAGE */
     const [messageError, setMessageError] = useState('');
 
     /**CONSTANT FOR OPEN MODAL */
@@ -65,8 +68,13 @@ export default function AddRevenue() {
 
     /**CONSTANT FOR ADD NEW CATEGORY */
     const [newCategory, setNewCategory] = useState('');
-
     const [getNewCategory, setGetNewCategory] = useState([]);
+
+    /**CONSTANT TO RECEIVE VALUES ​​FROM THE BANK REGARDING THE ACCOUNTS CREATED BY THE USER  */
+    const [getAccount, setGetAccouunt] = useState([]);
+
+    /** CONSTANT FOR ANIMATION THE TOOLTIP */
+    const [showTooltip, setShowTooltip] = useState(false);
 
 
     function handlebackExpense() {
@@ -76,9 +84,9 @@ export default function AddRevenue() {
     function addNewExpense() {
         //INFORMAÇÕES DO USUÁRIO
         let uid = auth().currentUser.uid;
-        let newExpense = database().ref('finance_expense').child(uid);
+        let newExpense = database().ref('finance_wallet').child(uid).child(account).child('finance_expense');
 
-        if (value != '' && description != '' && picker != '') {
+        if (value != '' && description != '' && picker != '' && account != '') {
             // CADASTRO DA DESPESA
             let key = newExpense.push().key;
             newExpense.child(key).set({
@@ -88,7 +96,9 @@ export default function AddRevenue() {
                 category: picker,
                 tag: picker,
                 date: date,
-                remember: remember < new Date(Date.now()).getDate() ? remember : ''
+                remember: remember < new Date(Date.now()).getDate() ? remember : '',
+                account: account,
+                color: picker == 'Roupas' ? '#F00' : '#0f0'
             });
             setValue('');
             setDescription('');
@@ -105,6 +115,7 @@ export default function AddRevenue() {
         }
     }
 
+    /** RECOVERING INFORMATION IN THE BANK RELATING TO USER'S REVENUE CATEGORIES */
     useEffect(() => {
         database().ref('finance_expense_category')
             .child(uid)
@@ -120,6 +131,27 @@ export default function AddRevenue() {
                     return <Picker.Item key={k.key} value={item.category} label={item.category} />
                 });
                 setGetNewCategory(mapCategory);
+            });
+    }, []);
+
+    /** RECOVERING INFORMATION IN THE BANK RELATING TO USER ACCOUNTS */
+    useEffect(() => {
+        database().ref('finance_user')
+            .child(uid)
+            .once('value')
+            .then((snapshot) => {
+                snapshot.forEach(item => {
+                    getAccount.push({
+                        typeAccount: item.val().typeAccount,
+                        bankName: item.val().bank
+                    });
+                });
+                let mapAccount = getAccount.map((item) => {
+                    if (item.typeAccount != undefined) {
+                        return <Picker.Item key={item.typeAccount} value={item.typeAccount} label={item.bankName} />
+                    }
+                });
+                setGetAccouunt(mapAccount);
             });
     }, []);
 
@@ -151,6 +183,13 @@ export default function AddRevenue() {
         }
     }
 
+    function handleAnimation() {
+        setShowTooltip(true);
+        setTimeout(() => {
+            setShowTooltip(false);
+        }, 3000);
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -162,8 +201,22 @@ export default function AddRevenue() {
                 </TouchableHighlight>
             </View>
 
+            {showTooltip ? (
+                <View style={styles.containerTooltip}>
+                    <View style={styles.tooltip}>
+                        <Text style={styles.tooltipMessage}>Separe os centavos incluindo ponto</Text>
+                    </View>
+                    <View style={styles.tooltipTriangle} />
+                </View>
+            ) : null}
+
             <View style={styles.containerInputValue}>
-                <Text style={styles.labelFormValue}>Valor da despesa (apenas números)</Text>
+                <View style={{ flexDirection: 'row' }}>
+                    <Text style={styles.labelFormValue}>Valor da receita</Text>
+                    <TouchableHighlight style={styles.containerBtnTooltip} onPress={handleAnimation} underlayColor="#transparent">
+                        <Text style={styles.textTooltip}>?</Text>
+                    </TouchableHighlight>
+                </View>
                 <TextInput
                     style={styles.inputValue}
                     placeholder=" R$ 00,00"
@@ -208,7 +261,7 @@ export default function AddRevenue() {
                         value={setPicker}
                         mode="dropdown"
                     >
-                        <Picker.Item key={0} value={'Selecione...'} label={'Selecione...'} />
+                        <Picker.Item key={0} value={''} label={'Selecione sua categoria'} />
                         <Picker.Item key={1} value={'Alimentação'} label={'Alimentação'} />
                         <Picker.Item key={2} value={'Educação'} label={'Educação'} />
                         <Picker.Item key={3} value={'Lazer'} label={'Lazer'} />
@@ -221,6 +274,28 @@ export default function AddRevenue() {
                         {getNewCategory}
                         <Picker.Item key={1} value={'Nova categoria'} label={'Nova categoria'} />
 
+                    </Picker>
+                </View>
+
+                <View style={styles.picker}>
+                    <Text style={styles.labelInputs}>Carteira</Text>
+                    <Picker
+                        selectedValue={account}
+                        onValueChange={(itemValue) => {
+                            if (itemValue == 'Adicionar conta') {
+                                navigation.navigate('AddWallet');
+                            } else {
+                                setAccount(itemValue);
+                            }
+                        }}
+                        value={setAccount}
+                        mode="dropdown"
+                    >
+                        <Picker.Item key={0} value={''} label={'Selecione sua carteira'} />
+                        {getAccount}
+                        {getAccount == '' &&
+                            <Picker.Item key={0} value={'Adicionar conta'} label={'Adicionar conta'} />
+                        }
                     </Picker>
                 </View>
 

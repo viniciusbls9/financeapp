@@ -44,7 +44,7 @@ export default function Login() {
         <KeyboardAvoidingView
             style={styles.container}
             behavior={Platform.OS == 'ios' ? '' : 'padding'}
-            keyboardVerticalOffset={100}
+            keyboardVerticalOffset={10}
         >
             <View style={styles.header}>
                 <Image source={Logo} style={styles.logo} />

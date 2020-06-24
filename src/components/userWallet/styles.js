@@ -3,10 +3,10 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     containerActivity: {
         flex: 1,
-        // flexDirection: 'row',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         marginTop: 20,
-        marginRight: 20,
-        marginBottom: 50,
         padding: 20,
         borderRadius: 20,
         borderColor: '#ccc',
@@ -19,9 +19,6 @@ export default StyleSheet.create({
         height: 30,
         marginBottom: 8,
         marginRight: 8
-    },
-    TextsActivity: {
-        // marginRight: 15
     },
     walletName: {
         fontSize: 12

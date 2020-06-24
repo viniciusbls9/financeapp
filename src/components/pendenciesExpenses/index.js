@@ -16,8 +16,13 @@ export default function PendenceExpense(props) {
      * Fetches information on added expense to see which ones are pending
      */
     useEffect(() => {
-        database().ref('finance_expense')
+        let n = 1;
+        for(let i = n; i <= 4; i++) {
+            let int = n++;
+            database().ref('finance_wallet')
             .child(id)
+            .child(int.toString())
+            .child('finance_expense')
             .once('value')
             .then((snapshot) => {
                 snapshot.forEach((item) => {
@@ -53,6 +58,7 @@ export default function PendenceExpense(props) {
                 setPendenciesExpense(sumPendenceExpense);
 
             });
+        }
     }, []);
 
     return (

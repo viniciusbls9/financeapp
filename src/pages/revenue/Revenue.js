@@ -91,7 +91,7 @@ export default function Revenue() {
 
                 {activity == '' &&
                     <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-                        <Text>Ops! Nenhuma receita adicionada até o momento</Text>
+                        <Text>Ops! Nenhuma receita adicionada até o momento.</Text>
                     </View>
                 }
 

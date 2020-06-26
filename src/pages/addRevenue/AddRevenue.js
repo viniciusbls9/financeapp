@@ -279,7 +279,7 @@ export default function AddRevenue() {
                     <Picker
                         selectedValue={account}
                         onValueChange={(itemValue) => {
-                            if (itemValue == 'Adicionar conta') {
+                            if (itemValue == 'Adicionar carteira') {
                                 navigation.navigate('AddWallet');
                             } else {
                                 setAccount(itemValue);
@@ -290,9 +290,7 @@ export default function AddRevenue() {
                     >
                         <Picker.Item key={0} value={''} label={'Selecione sua carteira'} />
                         {getAccount}
-                        {getAccount == null &&
-                            <Picker.Item key={0} value={'Adicionar conta'} label={'Adicionar conta'} />
-                        }
+                        <Picker.Item key={0} value={'Adicionar carteira'} label={'Adicionar carteira'} />
                     </Picker>
                 </View>
 

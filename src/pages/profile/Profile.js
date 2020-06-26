@@ -9,13 +9,12 @@ import styles from './styles';
 import UserMale from '../../assets/user-male.png';
 import UserFemale from '../../assets/user-female.png';
 import Mastercard from '../../assets/mastercard.png';
-import Cards from '../../components/cards';
 
 export default function Profile() {
 
   let uid = auth().currentUser.uid;
   const [userName, setUserName] = useState('');
-  const [gender, setGenter] = useState('');
+  const [gender, setGender] = useState('');
 
   useEffect(() => {
     database().ref('finance_user')
@@ -28,12 +27,12 @@ export default function Profile() {
 
   useEffect(() => {
     database().ref('finance_user')
-        .child(uid)
-        .once('value')
-        .then((snapshot) => {
-            setGender(snapshot.val().gender);
-        });
-}, []);
+      .child(uid)
+      .once('value')
+      .then((snapshot) => {
+        setGender(snapshot.val().gender);
+      });
+  }, []);
 
   const navigation = useNavigation();
 
@@ -54,50 +53,42 @@ export default function Profile() {
   ]);
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
 
-      <View style={styles.header}>
-        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => navigation.navigate('Home')}>
-          <Text style={styles.textHeader}>Perfil</Text>
+      <View style={{ flex: 3 }}>
+        <View style={styles.header}>
+          <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => navigation.navigate('Home')}>
+            <Text style={styles.textHeader}>Perfil</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.userInfo}>
+          <Image source={gender === 'Feminino' ? UserFemale : UserMale} style={styles.userImg} />
+          <Text style={styles.userName}>{userName}</Text>
+          {/* <Text style={styles.typeUserAccount}>Conta Premium</Text> */}
+        </View>
+
+        <View style={styles.containerBtns}>
+          <TouchableHighlight style={styles.btn} underlayColor="#ccc" onPress={() => navigation.navigate('Category')}>
+            <Text style={styles.textBtn}>Minhas Categorias</Text>
+          </TouchableHighlight>
+
+          <TouchableHighlight style={styles.btn} underlayColor="#ccc" onPress={() => navigation.navigate('Wallet')}>
+            <Text style={styles.textBtn}>Minhas Carteiras</Text>
+          </TouchableHighlight>
+
+          <TouchableHighlight style={styles.btn} underlayColor="#ccc">
+            <Text style={styles.textBtn}>Meus Cartões</Text>
+          </TouchableHighlight>
+        </View>
+      </View>
+
+      <View style={styles.containerBtnLogout}>
+        <TouchableOpacity onPress={handleLogout} style={styles.btnLogout}>
+          <Text>Sair</Text>
         </TouchableOpacity>
       </View>
 
-      <View style={styles.userInfo}>
-        <Image source={gender === 'Feminino' ? UserFemale : UserMale} style={styles.userImg} />
-        <Text style={styles.userName}>{userName}</Text>
-        {/* <Text style={styles.typeUserAccount}>Conta Premium</Text> */}
-      </View>
-
-      <View style={styles.containerBtns}>
-        <TouchableHighlight style={styles.btn} underlayColor="#ccc" onPress={() => navigation.navigate('Category')}>
-          <Text style={styles.textBtn}>Minhas Categorias</Text>
-        </TouchableHighlight>
-
-        <TouchableHighlight style={styles.btn} underlayColor="#ccc" onPress={() => navigation.navigate('Wallet')}>
-          <Text style={styles.textBtn}>Minhas Carteiras</Text>
-        </TouchableHighlight>
-
-        <TouchableHighlight style={styles.btn} underlayColor="#ccc">
-          <Text style={styles.textBtn}>Meus Cartões</Text>
-        </TouchableHighlight>
-
-      </View>
-
-      {/* <PieChart
-        data={data}
-        width={Dimensions.get('window').width}
-        height={220}
-        chartConfig={chartConfig}
-        accessor="population"
-        backgroundColor="transparent"
-        // paddingLeft="15"
-        absolute
-      /> */}
-
-      <TouchableOpacity onPress={handleLogout} style={styles.btnLogout}>
-        <Text>Sair</Text>
-      </TouchableOpacity>
-
-    </ScrollView>
+    </View>
   );
 }

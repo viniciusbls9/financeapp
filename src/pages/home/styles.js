@@ -75,5 +75,21 @@ export default StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ccc',
         marginTop: 20,
+        marginBottom: 20
+    },
+    containerMsg: {
+        backgroundColor: '#fff',
+        borderRadius: 25,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        marginTop: 20,
+        marginBottom: 20,
+        alignItems: 'center',
+        padding: 20
+    },
+    imageMsg: {
+        width: 40,
+        height: 40,
+        marginBottom: 10
     },
 });

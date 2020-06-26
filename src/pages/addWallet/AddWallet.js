@@ -90,10 +90,11 @@ export default function AddWallet() {
                         selectedValue={typeAccount}
                         onValueChange={(itemValue) => setTypeAccount(itemValue)}
                     >
-                        <Picker.Item key={0} label="Conta corrente" value={'1'} />
-                        <Picker.Item key={1} label="Poupança" value={'2'} />
-                        <Picker.Item key={2} label="Investimento" value={'3'} />
-                        <Picker.Item key={3} label="Outros" value={'4'} />
+                        <Picker.Item key={0} label="Selecionar conta" value={''} />
+                        <Picker.Item key={1} label="Conta corrente" value={'1'} />
+                        <Picker.Item key={2} label="Poupança" value={'2'} />
+                        <Picker.Item key={3} label="Investimento" value={'3'} />
+                        <Picker.Item key={4} label="Outros" value={'4'} />
                     </Picker>
                 </View>
 

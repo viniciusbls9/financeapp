@@ -13,7 +13,7 @@ import Mastercard from '../../assets/mastercard.png';
 
 import PendenciesRevenue from '../../components/pendenciesRevenue';
 import PendenciesExpenses from '../../components/pendenciesExpenses';
-import Cards from '../../components/cards';
+import Presentation from '../../assets/presentation.png';
 import Chart from '../../components/chart/Chart';
 
 export default function Login(props) {
@@ -72,7 +72,7 @@ export default function Login(props) {
                     });
                     const filterTotalExpense = totalExpense.map((val) => {
                         if (val.toggle == true) {
-                            return parseFloat('-' + val.value);
+                            return parseFloat(val.value);
                         }
                     });
 
@@ -152,9 +152,17 @@ export default function Login(props) {
                     /> */}
 
                     <Text style={styles.labelinfoActivity}>Despesas por categoria</Text>
-                    <View style={styles.containerChart}>
-                        <Chart />
-                    </View>
+                    {totalExpense == '' &&
+                        <View style={styles.containerMsg}>
+                            <Image source={Presentation} style={styles.imageMsg} />
+                            <Text style={{textAlign: 'center'}}>Ops! Você ainda não tem gastos cadastrados. Adicione gastos e veja o gráfico</Text>
+                        </View>
+                    }
+                    {totalExpense != '' &&
+                        <View style={styles.containerChart}>
+                            <Chart />
+                        </View>
+                    }
                 </View>
             </View>
 

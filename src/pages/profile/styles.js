@@ -2,8 +2,8 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
     container:{
-        flex: 1,
         backgroundColor: '#f7f7f7',
+        flex:2
     },
     header: {
         padding: 20,
@@ -42,7 +42,7 @@ export default StyleSheet.create({
     btn: {
         flexDirection: 'row',
         backgroundColor: '#fff',
-        borderColor: '#ccc',
+        borderColor: '#aaa',
         borderWidth: 1,
         padding:5,
         borderRadius: 7
@@ -58,9 +58,19 @@ export default StyleSheet.create({
     userCards: {
         paddingHorizontal: 20
     },
+    // containerBtnLogout: {
+    //     width: '100%',
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    // },
     btnLogout: {
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 20
+        marginTop: 20,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        marginHorizontal: 20,
+        marginBottom: 10,
+        padding: 5
     },
 });

@@ -30,7 +30,7 @@ export default function Chart() {
                     });
                 });
                 const data = totalExpense.map((val) => {
-                    return { name: val.category, value: parseFloat(val.value), color: ColorExpense(val.category), legendFontColor: "#7F7F7F", legendFontSize: 15 }
+                    return { name: val.category, value: parseFloat(val.value), color: val.color, legendFontColor: "#7F7F7F", legendFontSize: 15 }
                 });
                 setTotalExpense(data);
             });
@@ -50,11 +50,6 @@ export default function Chart() {
 
     return (
         <View>
-            {totalExpense == '' &&
-                <View style={{ alignItems: 'center', marginTop: 50 }}>
-                    <Text>Você ainda não possui gastos cadastrados</Text>
-                </View>
-            }
             <PieChart
                 data={totalExpense}
                 width={Dimensions.get('window').width}

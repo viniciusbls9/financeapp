@@ -36,14 +36,14 @@ export default function PendencesRevenue(props) {
                 <View style={[styles.containerInitialBank, { backgroundColor: color}]}>
                     <Text style={{color: '#fff'}}>{props.initial}</Text>
                 </View>
-                <Text style={styles.walletName}>{props.nameBank}</Text>
+                {/* <Text style={styles.walletName}>{props.data.name}</Text> */}
             </View>
             <View style={styles.TextsActivity}>
-                <Text style={{ color: props.data.value >= 0 ? '#27B635' : '#ff4f5a', fontSize: 18, fontWeight: 'bold' }}>
+                <Text style={{ color: props.total >= 0 ? '#27B635' : '#ff4f5a', fontSize: 18, fontWeight: 'bold' }}>
                     {Intl.NumberFormat('pt-BR', {
                         style: 'currency',
                         currency: 'BRL'
-                    }).format(props.total)}
+                    }).format(props.data.value)}
                 </Text>
             </View>
         </View>

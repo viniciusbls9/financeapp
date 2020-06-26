@@ -7,7 +7,7 @@ const height = Dimensions.get('window').height; //full height
 export default StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#f7f7f7',
+        backgroundColor: '#fff',
     },
     header: {
         padding: 20,
@@ -33,7 +33,7 @@ export default StyleSheet.create({
     containerInfo: {
         paddingTop: 25,
         flex: 1,
-        backgroundColor: '#f7f7f7',
+        backgroundColor: '#fff',
     },
     containerTotalExpenses: {
         flexDirection: 'row',

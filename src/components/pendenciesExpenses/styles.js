@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
 
+
 export default StyleSheet.create({
     containerActivity: {
         flex: 1,
-        // flexDirection: 'row',
         marginTop: 20,
         marginRight: 20,
         marginBottom: 50,

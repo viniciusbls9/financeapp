@@ -1,79 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 
-import UserWallet from '../../components/userWallet/UserWallet';
 import styles from './styles';
+import WalletImg from '../../assets/wallet-vector.png'
 
 export default function Wallet() {
     const navigation = useNavigation();
     const uid = auth().currentUser.uid;
 
-    const [walletRevenue, setWalletRevenue] = useState([]);
-    const [total, setTotal] = useState([]);
-    const [nameBank, setNameBank] = useState([]);
-    const [initial, setInitial] = useState([]);
-    const [walletExpense, setWalletExpense] = useState([]);
-
-    useEffect(() => {
-        // let n = 1;
-        // for(let i = n; i <= 4; i++) {
-        //     let int = n++;
-            database().ref('finance_wallet')
-            .child(uid)
-            .child('2')
-            .child('finance_revenue')
-            .once('value')
-            .then((snapshot) => {
-                snapshot.forEach(item => {
-                    walletRevenue.push({
-                        bank: item.val().account,
-                        value: item.val().value,
-                        key: item.key,
-                    });
-                });
-                /** MAPEAR SOMENTE OS VALORES DE CADA CARTEIRA */
-                let fill = walletRevenue.map((val) => {
-                    return parseFloat(val.value);
-                });
-                /** SOMAR TODOS OS VALORES INCLUIDOS NA CARTEIRA */
-                let red = fill.reduce((v1, v2) => v1 + v2);
-                setTotal(red);
-            });
-            // database().ref('finance_wallet')
-            // .child(uid)
-            // .child(int.toString())
-            // .child('finance_expense')
-            // .once('value')
-            // .then((snapshot) => {
-            //     snapshot.forEach(item => {
-            //         walletExpense.push({
-            //             accountName: item.val().account,
-            //             value: item.val().value
-            //         });
-            //     });
-            //     console.log(walletExpense);
-            // });
-        // }
-    }, []);
-
-    useEffect(() => {
-        // let n = 1;
-        // for(let i = n; i <= 4; i++) {
-        //     let int = n++;
-            database().ref('finance_wallet')
-            .child(uid)
-            .child('2')
-            .once('value')
-            .then((snapshot) => {
-                setNameBank(snapshot.val().bank);
-                setInitial(snapshot.val().initial);
-            });
-        // }
-        }, []);
-    
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -84,13 +20,16 @@ export default function Wallet() {
                     <Text style={styles.textHeader}>Nova Carteira</Text>
                 </TouchableOpacity>
             </View>
-            <View style={styles.userWallet}>
-                <FlatList
-                    showsHorizontalScrollIndicator={false}
-                    renderItem={({ item }) => <UserWallet data={item} total={total} nameBank={nameBank} initial={initial} />}
-                    data={walletRevenue}
-                />
+
+            <View style={{ alignItems: 'center', }}>
+                <Image source={WalletImg} />
+                <Text style={styles.info}>Em breve você poderá ver informações de suas carteiras!</Text>
             </View>
+
+            {/* <Poupanca />
+            <ContaCorrente />
+            <Investimento />
+            <Outros /> */}
         </View>
     );
 }

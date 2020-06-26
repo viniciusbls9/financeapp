@@ -27,7 +27,7 @@ export default function Login() {
                 await Sistema.registerConfirme(email, password);
                 await database().ref('finance_user').child(auth().currentUser.uid).set({
                     userName: name,
-                    gender: gender
+                    gender: gender,
                 });
                 navigation.navigate('Home');
             } else {
@@ -94,8 +94,9 @@ export default function Login() {
                     value={setGender}
                     mode="dropdown"
                 >
-                    <Picker.Item key={0} value={'Feminino'} label={'Feminino'} />
-                    <Picker.Item key={1} value={'Masculino'} label={'Masculino'} />
+                    <Picker.Item key={0} value={''} label={'Selecione'} />
+                    <Picker.Item key={1} value={'Feminino'} label={'Feminino'} />
+                    <Picker.Item key={2} value={'Masculino'} label={'Masculino'} />
                 </Picker>
 
                 {errorMessage != '' &&

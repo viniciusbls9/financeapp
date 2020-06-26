@@ -89,7 +89,7 @@ export default function Expenses() {
                 </View>
 
                 {activity == '' &&
-                    <View  style={{justifyContent: 'center', alignItems: 'center'}}>
+                    <View  style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
                         <Text>Ops! Nenhuma receita adicionada até o momento</Text>
                     </View>
                 }

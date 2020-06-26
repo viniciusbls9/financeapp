@@ -3,6 +3,8 @@ import { View, Text, Image, TextInput, TouchableOpacity, StatusBar, KeyboardAvoi
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Sistema from '../../Sistema';
+import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
 
 import styles from './styles';
 import Logo from '../../assets/logo.png';
@@ -12,7 +14,6 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    
 
     async function handleSubmit()  {
         try {
@@ -44,7 +45,6 @@ export default function Login() {
         <KeyboardAvoidingView
             style={styles.container}
             behavior={Platform.OS == 'ios' ? '' : 'padding'}
-            keyboardVerticalOffset={10}
         >
             <View style={styles.header}>
                 <Image source={Logo} style={styles.logo} />

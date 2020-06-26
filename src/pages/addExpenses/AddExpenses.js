@@ -9,6 +9,7 @@ import { useNavigation, CommonActions } from '@react-navigation/native';
 import styles from './styles';
 import Arrow from '../../assets/arrows.png';
 import Calendar from '../../assets/calendar.png';
+import ColorExpense from '../../components/colorsExpense/ColorExpense';
 
 export default function AddRevenue() {
     let uid = auth().currentUser.uid;
@@ -90,7 +91,7 @@ export default function AddRevenue() {
             // CADASTRO DA DESPESA
             let key = newExpense.push().key;
             newExpense.child(key).set({
-                value: value,
+                value: '-'+value,
                 toggle: isEnabled,
                 description: description,
                 category: picker,
@@ -98,7 +99,7 @@ export default function AddRevenue() {
                 date: date,
                 remember: remember < new Date(Date.now()).getDate() ? remember : '',
                 account: account,
-                color: picker == 'Roupas' ? '#F00' : '#0f0'
+                color: ColorExpense(picker)
             });
             setValue('');
             setDescription('');

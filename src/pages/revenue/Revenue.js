@@ -9,7 +9,7 @@ import Arrow from '../../assets/arrows.png';
 import Wallet from '../../assets/wallet.png';
 import ListRevenue from '../../components/listRevenue';
 import MoreExpenses from '../../assets/more.png';
-
+import ImageRevenue from '../../assets/revenue.jpg';
 export default function Revenue() {
 
     const [activity, setActivity] = useState([]);
@@ -49,13 +49,14 @@ export default function Revenue() {
     const navigation = useNavigation();
 
     function handleBack() {
-        navigation.dispatch(
-            CommonActions.reset({
-                index: 0,
-                routes: [
-                    { name: 'Home' },
-                ]
-            }));
+        // navigation.dispatch(
+        //     CommonActions.reset({
+        //         index: 0,
+        //         routes: [
+        //             { name: 'Home' },
+        //         ]
+        //     }));
+        navigation.navigate('Home');
     }
 
     function handleAddRevenue() {
@@ -79,8 +80,8 @@ export default function Revenue() {
                 <View style={styles.containerTotalExpenses}>
                     <Image source={Wallet} style={styles.walletImage} />
                     <View style={{ marginLeft: 10 }}>
-                        <Text style={styles.expensesTotalText}>Total Recebido</Text>
-                        <Text style={styles.expensesTotalValue}>
+                        <Text style={styles.revenueTotalText}>Total Recebido</Text>
+                        <Text style={styles.revenueTotalValue}>
                             {Intl.NumberFormat('pt-BR', {
                                 style: 'currency',
                                 currency: 'BRL'
@@ -90,7 +91,8 @@ export default function Revenue() {
                 </View>
 
                 {activity == '' &&
-                    <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', flex: 3 }}>
+                        <Image source={ImageRevenue} style={styles.img} />
                         <Text>Ops! Nenhuma receita adicionada até o momento.</Text>
                     </View>
                 }

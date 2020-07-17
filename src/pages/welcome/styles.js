@@ -1,12 +1,15 @@
 import { StyleSheet } from 'react-native';
 
+
+
 export default StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
+        padding: 10,
+    },
+    containerContents: {
         alignItems: 'center',
-        // justifyContent: 'center',
-        padding: 10
     },
     containerText: {
         marginBottom: 30,
@@ -15,7 +18,7 @@ export default StyleSheet.create({
     titleRegister: {
         marginTop: 20,
         textAlign: 'center',
-        fontSize: 25,
+        fontSize: 22,
         fontWeight: 'bold',
         marginHorizontal: 20
     },
@@ -32,10 +35,11 @@ export default StyleSheet.create({
     },
     containerButtons: {
         marginTop: 25,
+        marginBottom: 20,
         alignItems: 'center',
     },
     buttonSignUp: {
-        backgroundColor: '#ff4f5a',
+        backgroundColor: '#27B635',
         paddingHorizontal: 70,
         padding: 10,
         justifyContent: 'center',

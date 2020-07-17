@@ -40,7 +40,7 @@ export default StyleSheet.create({
         color: '#ff4f5a',
     },
     submitBtn: {
-        backgroundColor: '#ff4f5a',
+        backgroundColor: '#27B635',
         padding: 15,
         justifyContent: 'center',
         alignItems: 'center',
@@ -57,7 +57,7 @@ export default StyleSheet.create({
         marginTop: 20,
     },
     textBtnRegister: {
-        color: '#ff4f5a',
+        color: '#27B635',
         fontWeight: 'bold',
     }
 });

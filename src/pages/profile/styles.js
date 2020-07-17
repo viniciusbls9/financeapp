@@ -3,10 +3,10 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container:{
         backgroundColor: '#f7f7f7',
-        flex:2
+        flex:2,
+        padding: 20
     },
     header: {
-        padding: 20,
         height: 100,
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -33,36 +33,27 @@ export default StyleSheet.create({
         color: '#1c2e35',
         fontSize: 12
     },
-    containerBtns: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingHorizontal: 20,
-        paddingTop: 35
-    },
-    btn: {
-        flexDirection: 'row',
+    containerWallet: {
         backgroundColor: '#fff',
-        borderColor: '#aaa',
-        borderWidth: 1,
-        padding:5,
-        borderRadius: 7
-        // marginRight: 30,
+        padding: 20,
+        marginTop: 20,
+        elevation: 2,
+        borderRadius: 25
     },
-    labelinfoActivity: {
-        fontWeight: 'bold'
+    WalletLabel: {
+        marginBottom: 10
     },
-    userWallet: {
-        paddingHorizontal: 20,
-        marginTop: 50,
+    btnLabel: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+        padding: 6
     },
-    userCards: {
-        paddingHorizontal: 20
+    walletImage: {
+        width: 25,
+        height: 25,
+        marginRight: 10
     },
-    // containerBtnLogout: {
-    //     width: '100%',
-    //     justifyContent: 'center',
-    //     alignItems: 'center',
-    // },
     btnLogout: {
         justifyContent: 'center',
         alignItems: 'center',

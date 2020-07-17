@@ -53,7 +53,7 @@ export default function PendencesRevenue(props) {
                 if(filterPendenceRevenue.length == 0) {
                     setPendenciesRevenue('0');
                 }
-                let sumPendenceRevenue = filterPendenceRevenue.reduce((t, v) => t + v);
+                let sumPendenceRevenue = filterPendenceRevenue.reduce((t, v) => t + v, 0);
                 setPendenciesRevenue(sumPendenceRevenue);
             });
         }

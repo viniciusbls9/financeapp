@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, StatusBar, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, Image, TextInput, TouchableOpacity, StatusBar, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Sistema from '../../Sistema';
@@ -14,9 +14,11 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [load, setLoad] = useState(false);
 
     async function handleSubmit()  {
         try {
+            setLoad(true);
             if(email != '' && password != '') {
                 await Sistema.login(email, password);
                 await AsyncStorage.setItem('@email', email);
@@ -44,7 +46,8 @@ export default function Login() {
     return (
         <KeyboardAvoidingView
             style={styles.container}
-            behavior={Platform.OS == 'ios' ? '' : 'padding'}
+            behavior="padding"
+            enabled={Platform.OS == 'ios'}
         >
             <View style={styles.header}>
                 <Image source={Logo} style={styles.logo} />
@@ -75,9 +78,13 @@ export default function Login() {
                     <Text style={styles.errorMessage}>{errorMessage}</Text>
                 }
 
+                {load &&
+                    <ActivityIndicator size="large" color="#5c8efe" style={{ marginBottom: 20 }} />
+                }
                 <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit}>
                     <Text style={styles.textBtnSubmit}>Entrar</Text>
                 </TouchableOpacity>
+
 
                 <TouchableOpacity style={styles.registerBtn} onPress={handleRegister}>
                     <Text>Novo por aqui?

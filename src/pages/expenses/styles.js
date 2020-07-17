@@ -40,6 +40,10 @@ export default StyleSheet.create({
         paddingBottom: 15,
         // marginBottom: 25
     },
+    img: {
+        width: 290,
+        height: 290,
+    },
     walletImage: {
         width: 28,
         height: 28

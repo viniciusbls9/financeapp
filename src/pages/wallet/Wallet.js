@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 
 import styles from './styles';
-import WalletImg from '../../assets/wallet-vector.png'
 
-export default function Wallet() {
+import ContaCorrente from '../../components/wallets/ContaCorrente';
+import Investimento from '../../components/wallets/Investimento';
+import Poupanca from '../../components/wallets/Poupança';
+import Outros from '../../components/wallets/Outros';
+
+export default function Wallet(props) {
     const navigation = useNavigation();
     const uid = auth().currentUser.uid;
 
@@ -21,15 +25,10 @@ export default function Wallet() {
                 </TouchableOpacity>
             </View>
 
-            <View style={{ alignItems: 'center', }}>
-                <Image source={WalletImg} />
-                <Text style={styles.info}>Em breve você poderá ver informações de suas carteiras!</Text>
-            </View>
-
-            {/* <Poupanca />
+            <Poupanca />
             <ContaCorrente />
             <Investimento />
-            <Outros /> */}
+            <Outros />
         </View>
     );
 }

@@ -120,8 +120,7 @@ export default function AddRevenue() {
     useEffect(() => {
         database().ref('finance_expense_category')
             .child(uid)
-            .once('value')
-            .then((snapshot) => {
+            .on('value', snapshot => {
                 snapshot.forEach((item) => {
                     getNewCategory.push({
                         category: item.val().category,

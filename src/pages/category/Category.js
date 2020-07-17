@@ -19,15 +19,13 @@ export default function Category() {
     let uid = auth().currentUser.uid
     database().ref('finance_revenue_category')
     .child(uid)
-    .once('value')
-    .then((snapshot) => {
+    .on('value', snapshot => {
       snapshot.forEach((childItem) => {
         categoryRevenue.push({
           category: childItem.val().category,
           key: childItem.key
         });
       });
-      console.log(categoryRevenue);
     });
   }, []);
 
@@ -35,8 +33,7 @@ export default function Category() {
     let uid = auth().currentUser.uid
     database().ref('finance_expense_category')
     .child(uid)
-    .once('value')
-    .then((snapshot) => {
+    .on('value', snapshot => {
       snapshot.forEach((childItem) => {
         categoryExpense.push({
           category: childItem.val().category,

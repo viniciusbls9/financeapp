@@ -7,9 +7,10 @@ import auth from '@react-native-firebase/auth';
 import UserWallet from '../../components/userWallet/UserWallet';
 import styles from './styles';
 
-export default function Wallet() {
+export default function Wallet(props) {
     const navigation = useNavigation();
     const uid = auth().currentUser.uid;
+    const test = props.teste;
 
     /** ARRAY QUE CONTEM INFORMAÇÕES DE RECEITA DAS CARTEIRAS */
     const [walletRevenue, setWalletRevenue] = useState([]);
@@ -25,29 +26,28 @@ export default function Wallet() {
     /** ARRAY QUE ARMAZENA OS VALORES DE GASTOS E RECEITAS */
     const [sumTotal, setSumTotal] = useState([]);
 
-    
     let bg = initial;
     let color = '';
 
     switch (bg) {
         case 'N':
             color = '#8A17BE';
-        break;
+            break;
         case 'I':
             color = '#EC7001';
-        break;
+            break;
         case 'B':
             color = '#FD352A';
-        break;
+            break;
         case 'S':
             color = '#CC2900';
-        break;
+            break;
         case 'BB':
             color = '#F8D117';
-        break;
+            break;
         case 'C':
             color = '#185E9C';
-        break;
+            break;
     }
 
     useEffect(() => {
@@ -129,30 +129,35 @@ export default function Wallet() {
         .once('value')
         .then((snapshot) => {
             setInitial(snapshot.val().initial);
+            setNameBank(snapshot.val().bank);
         });
     }, []);
 
     return (
-        <View style={styles.container}>
-            {sumTotal.map(item => (
-                <View style={styles.containerActivity}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={[styles.containerInitialBank, { backgroundColor: color }]}>
-                            <Text style={{ color: '#fff' }}>{initial}</Text>
+        <View style={styles.container} testes={test}>
+            {nameBank != '' &&
+                <FlatList
+                    data={sumTotal}
+                    renderItem={({ item }) => (
+                        <View style={styles.containerActivity}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View style={[styles.containerInitialBank, { backgroundColor: color }]}>
+                                    <Text style={{ color: '#fff' }}>{initial}</Text>
+                                </View>
+                                {/* <Text style={styles.walletName}>{props.data.name}</Text> */}
+                            </View>
+                            <View style={styles.TextsActivity}>
+                                <Text style={{ color: item.value >= 0 ? '#27B635' : '#ff4f5a', fontSize: 18, fontWeight: 'bold' }}>
+                                    {Intl.NumberFormat('pt-BR', {
+                                        style: 'currency',
+                                        currency: 'BRL'
+                                    }).format(item.value)}
+                                </Text>
+                            </View>
                         </View>
-                        {/* <Text style={styles.walletName}>{props.data.name}</Text> */}
-                    </View>
-                    <View style={styles.TextsActivity}>
-                        <Text style={{ color: item.value >= 0 ? '#27B635' : '#ff4f5a', fontSize: 18, fontWeight: 'bold' }}>
-                            {Intl.NumberFormat('pt-BR', {
-                                style: 'currency',
-                                currency: 'BRL'
-                            }).format(item.value)}
-                        </Text>
-                    </View>
-                </View>
-            ))}
-
+                    )}
+                />
+            }
         </View>
     );
 }

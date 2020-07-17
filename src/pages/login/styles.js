@@ -5,7 +5,7 @@ export default StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#fff',
-        paddingTop: StatusBar.currentHeight + 20
+        paddingTop: StatusBar.currentHeight
     },
     header: {
         paddingHorizontal: 24,
@@ -24,14 +24,16 @@ export default StyleSheet.create({
         borderWidth: 1,
         padding: 13,
         marginBottom: 20,
-        borderRadius: 10
+        borderRadius: 10,
+        height: 50
     },
     submitBtn: {
-        backgroundColor: '#ff4f5a',
+        backgroundColor: '#27B635',
         padding: 15,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 10
+        borderRadius: 10,
+        height: 50
     },
     textBtnSubmit: {
         color: '#fff',
@@ -44,7 +46,7 @@ export default StyleSheet.create({
         marginTop: 20
     },
     textBtnRegister: {
-        color: '#ff4f5a',
+        color: '#27B635',
         fontWeight: 'bold'
     },
     containerLoginImage: {

@@ -35,7 +35,7 @@ export default function Welcome() {
     // }
 
     AsyncStorage.getItem('@password').then(password => {
-        if (password) {
+        if (password && supported == true) {
             const configs = {
                 title: 'Autenticação Touch ID',
                 color: '#ff0000',
@@ -43,12 +43,16 @@ export default function Welcome() {
             };
             TouchID.authenticate('Login Financeapp', configs)
             .then(success => {
-                navigation.navigate('Home');
+                if(success) {
+                    navigation.navigate('Home');
+                }
             })
             .catch(error => {
-                console.log(error);
+                navigation.navigate('Welcome');
             });
             // navigation.navigate('Home');
+        } else if(password && supported == null) {
+            navigation.navigate('Home');
         } else {
             navigation.navigate('Welcome');
         }
@@ -56,7 +60,7 @@ export default function Welcome() {
 
     return (
         <View style={styles.container}>
-            <ActivityIndicator size="large" color="#ff4f5a" style={{ marginBottom: 20 }} style={styles.load} />
+            <ActivityIndicator size="large" color="#27B635" style={{ marginBottom: 20 }} style={styles.load} />
             <Text>Carregando dados...</Text>
         </View>
     );

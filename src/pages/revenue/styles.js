@@ -33,7 +33,7 @@ export default StyleSheet.create({
     containerInfo: {
         paddingTop: 25,
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#f7f7f7',
     },
     containerTotalExpenses: {
         flexDirection: 'row',
@@ -48,15 +48,19 @@ export default StyleSheet.create({
         width: 28,
         height: 28
     },
-    expensesTotalText: {
+    revenueTotalText: {
         fontSize: 13,
         fontWeight: '700',
         color: '#1c2e35'
     },
-    expensesTotalValue: {
+    revenueTotalValue: {
         fontSize: 16,
         color: '#27B635',
         fontWeight: 'bold',
+    },
+    img: {
+        width: 290,
+        height: 290,
     },
     modalBox: {
         width: width,

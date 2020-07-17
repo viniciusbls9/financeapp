@@ -1,5 +1,4 @@
-import { StyleSheet } from 'react-native';
-import { StatusBar, Dimensions } from 'react-native';
+import { StyleSheet, StatusBar, Dimensions } from 'react-native';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 

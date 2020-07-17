@@ -4,12 +4,9 @@ import { PieChart } from "react-native-chart-kit";
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 
-import ColorExpense from '../colorsExpense/ColorExpense';
-
 export default function Chart() {
     const id = auth().currentUser.uid;
     const [totalExpense, setTotalExpense] = useState([]);
-    const [expense, setExpense] = useState([]);
 
     useEffect(() => {
         let n = 1;
@@ -58,7 +55,6 @@ export default function Chart() {
                 accessor='value'
                 backgroundColor="transparent"
                 paddingLeft="-30"
-                // absolute
             />
         </View>
     );

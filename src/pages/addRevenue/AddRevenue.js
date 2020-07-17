@@ -104,7 +104,6 @@ export default function AddRevenue() {
                 CommonActions.reset({
                     index: 0,
                     routes: [
-                        { name: 'Home' },
                         { name: 'Revenue' },
                     ]
                 }));
@@ -118,8 +117,7 @@ export default function AddRevenue() {
     useEffect(() => {
         database().ref('finance_revenue_category')
             .child(uid)
-            .once('value')
-            .then((snapshot) => {
+            .on('value', snapshot => {
                 snapshot.forEach((item) => {
                     getNewCategory.push({
                         category: item.val().category,
@@ -160,7 +158,6 @@ export default function AddRevenue() {
 
     function addNewCategory() {
         let cat = database().ref('finance_revenue_category').child(uid);
-
         if (newCategory != '') {
             // CADASTRO DA RECEITA
             let key = cat.push().key;
@@ -170,13 +167,14 @@ export default function AddRevenue() {
             });
             setNewCategory('');
             setModalVisible(false);
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [
-                        { name: 'AddRevenue' },
-                    ]
-                }));
+            // navigation.dispatch(
+            //     CommonActions.reset({
+            //         index: 0,
+            //         routes: [
+            //             { name: 'AddRevenue' },
+            //         ]
+            //     }));
+            navigation.navigate('AddRevenue');
         } else {
             setMessageError('Preencha todos os campos');
         }
@@ -188,6 +186,21 @@ export default function AddRevenue() {
             setShowTooltip(false);
         }, 3000);
     }
+
+    function formatarMoeda() {
+        let element = value.valueOf();
+
+        element = element + '';
+        element = parseInt(element.replace(/[\D]+/g,''));
+        element = element + '';
+        element = element.replace(/([0-9]{2})$/g, ",$1");
+        
+        if (element.length > 6) {
+            element = element.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
+        }
+        element.valueOf = element;
+        console.log(element);
+      }
 
     return (
         <View style={styles.container}>

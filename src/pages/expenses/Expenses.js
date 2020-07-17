@@ -9,6 +9,7 @@ import Arrow from '../../assets/arrows.png';
 import Wallet from '../../assets/wallet.png';
 import ListExpense from '../../components/listExpenses';
 import MoreExpenses from '../../assets/more.png';
+import ImageExpense from '../../assets/expense.jpg';
 
 export default function Expenses() {
 
@@ -43,18 +44,19 @@ export default function Expenses() {
                 setTotalExpense(total);
             });
         }
-    }, []);
-    
+    }, [activity]);
+
     const navigation = useNavigation();
 
     function handleBack() {
-        navigation.dispatch(
-            CommonActions.reset({
-                index: 0,
-                routes: [
-                    { name: 'Home'},
-                ]
-            }));
+        // navigation.dispatch(
+        //     CommonActions.reset({
+        //         index: 0,
+        //         routes: [
+        //             { name: 'Home'},
+        //         ]
+        //     }));
+        navigation.navigate('Home');
     }
 
     function handleAddRevenue() {
@@ -89,8 +91,9 @@ export default function Expenses() {
                 </View>
 
                 {activity == '' &&
-                    <View  style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-                        <Text>Ops! Nenhuma receita adicionada até o momento</Text>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', flex: 3 }}>
+                        <Image source={ImageExpense} style={styles.img} />
+                        <Text>Ops! Nenhuma despesa adicionada até o momento.</Text>
                     </View>
                 }
 

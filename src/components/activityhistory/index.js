@@ -29,7 +29,7 @@ export default function ActivityHistory(props) {
                     });
                 });
             });
-    }, []);
+    }, [activityHistoryExpense]);
 
     return (
         <View style={styles.containerActivity}>

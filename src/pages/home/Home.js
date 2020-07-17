@@ -34,7 +34,7 @@ export default function Login(props) {
             .then((snapshot) => {
                 setGender(snapshot.val().gender);
             });
-    }, []);
+    }, [gender]);
 
     useEffect(() => {
         let n = 1;

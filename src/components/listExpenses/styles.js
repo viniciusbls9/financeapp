@@ -29,15 +29,17 @@ export default StyleSheet.create({
         // marginTop:5
     },
     descRevenue: {
-        fontWeight: '700'
+        fontWeight: '700',
+        width: 150,
     },
     catRevenue: {
-        fontSize: 12,
-        color: '#848181'
+        fontSize: 11,
+        color: '#848181',
     },
     dateRevenue: {
-        fontSize: 12,
-        color: '#848181'
+        // width: 70,
+        fontSize: 11,
+        color: '#848181',
     },
     dateRemember: {
         color: '#ff4f5a',

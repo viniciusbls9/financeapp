@@ -36,6 +36,13 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 20,
+        padding: 10,
+        
+    },
+    selectedBank: {
+        backgroundColor: '#dbd9d9',
+        borderColor: '#4f4f4f',
+        borderWidth: 1
     },
     containerInitialBank: {
         width: 40,

@@ -24,6 +24,7 @@ export default function AddWallet() {
     const [initial, setInitial] = useState('');
     const [typeAccount, setTypeAccount] = useState('Selecione...');
     const [accountName, setAccountName] = useState('');
+    const [selectedBank, setSelectedBank] = useState([]);
 
     function addWallet() {
         let wallet = database().ref('finance_wallet').child(uid).child(typeAccount);

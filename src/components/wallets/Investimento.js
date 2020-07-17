@@ -18,15 +18,14 @@ export default function Wallet() {
     const [walletExpense, setWalletExpense] = useState([]);
 
     /** ARRAY QUE CONTEM NOME DOS BANKS */
-    const [nameBank, setNameBank] = useState('');
+    const [nameBank, setNameBank] = useState(null);
     /** ARRAY QUE CONTEM AS INICIAIS DE CADA BANCO */
-    const [initial, setInitial] = useState('');
+    const [initial, setInitial] = useState(null);
 
     /** ARRAY QUE ARMAZENA OS VALORES DE GASTOS E RECEITAS */
     const [sumTotal, setSumTotal] = useState([]);
 
     const [teste, setTeste] = useState([]);
-
     
     let bg = initial;
     let color = '';
@@ -131,28 +130,36 @@ export default function Wallet() {
         .then((snapshot) => {
             setNameBank(snapshot.val().bank);
             setInitial(snapshot.val().initial);
+        }).catch((error) => {
+            console.log(error);
         });
     }, []);
 
     return (
         <View style={styles.container}>
-            {sumTotal.map(item => (
-                <View style={styles.containerActivity}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={[styles.containerInitialBank, { backgroundColor: color }]}>
-                            <Text style={{ color: '#FFF' }}>{initial}</Text>
+            {nameBank != '' &&
+                <FlatList
+                    data={sumTotal}
+                    renderItem={({ item }) => (
+                        <View style={styles.containerActivity}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View style={[styles.containerInitialBank, { backgroundColor: color }]}>
+                                    <Text style={{ color: '#fff' }}>{initial}</Text>
+                                </View>
+                                {/* <Text style={styles.walletName}>{props.data.name}</Text> */}
+                            </View>
+                            <View style={styles.TextsActivity}>
+                                <Text style={{ color: item.value >= 0 ? '#27B635' : '#ff4f5a', fontSize: 18, fontWeight: 'bold' }}>
+                                    {Intl.NumberFormat('pt-BR', {
+                                        style: 'currency',
+                                        currency: 'BRL'
+                                    }).format(item.value)}
+                                </Text>
+                            </View>
                         </View>
-                    </View>
-                    <View style={styles.TextsActivity}>
-                        <Text style={{ color: item.value >= 0 ? '#27B635' : '#ff4f5a', fontSize: 18, fontWeight: 'bold' }}>
-                            {Intl.NumberFormat('pt-BR', {
-                                style: 'currency',
-                                currency: 'BRL'
-                            }).format(item.value)}
-                        </Text>
-                    </View>
-                </View>
-            ))}
+                    )}
+                />
+            }
         </View>
     );
 }

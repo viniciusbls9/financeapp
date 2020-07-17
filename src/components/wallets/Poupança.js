@@ -136,23 +136,29 @@ export default function Wallet() {
 
     return (
         <View style={styles.container}>
-            {sumTotal.map(item => (
-                <View style={styles.containerActivity}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={[styles.containerInitialBank, { backgroundColor: color }]}>
-                            <Text style={{ color: '#FFF' }}>{initial}</Text>
+            {nameBank != '' &&
+                <FlatList
+                    data={sumTotal}
+                    renderItem={({ item }) => (
+                        <View style={styles.containerActivity}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View style={[styles.containerInitialBank, { backgroundColor: color }]}>
+                                    <Text style={{ color: '#fff' }}>{initial}</Text>
+                                </View>
+                                {/* <Text style={styles.walletName}>{props.data.name}</Text> */}
+                            </View>
+                            <View style={styles.TextsActivity}>
+                                <Text style={{ color: item.value >= 0 ? '#27B635' : '#ff4f5a', fontSize: 18, fontWeight: 'bold' }}>
+                                    {Intl.NumberFormat('pt-BR', {
+                                        style: 'currency',
+                                        currency: 'BRL'
+                                    }).format(item.value)}
+                                </Text>
+                            </View>
                         </View>
-                    </View>
-                    <View style={styles.TextsActivity}>
-                        <Text style={{ color: item.value >= 0 ? '#27B635' : '#ff4f5a', fontSize: 18, fontWeight: 'bold' }}>
-                            {Intl.NumberFormat('pt-BR', {
-                                style: 'currency',
-                                currency: 'BRL'
-                            }).format(item.value)}
-                        </Text>
-                    </View>
-                </View>
-            ))}
+                    )}
+                />
+            }
         </View>
     );
 }

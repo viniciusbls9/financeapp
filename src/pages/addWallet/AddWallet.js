@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableHighlight, FlatList, TextInput, KeyboardAvoidingView } from 'react-native';
+import { View, Text, Image, TouchableHighlight, FlatList, TextInput, KeyboardAvoidingView, Alert } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import { useNavigation, CommonActions } from '@react-navigation/native';
 import database from '@react-native-firebase/database';
@@ -12,6 +12,16 @@ export default function AddWallet() {
     const navigation = useNavigation();
     let uid = auth().currentUser.uid;
 
+    const [bankName, setBankName] = useState('');
+    const [initial, setInitial] = useState('');
+    const [typeAccount, setTypeAccount] = useState('0');
+    const [accountName, setAccountName] = useState('');
+    const [selectedBank, setSelectedBank] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const [existBank, setExistBank] = useState([]);
+    const [existTypeAccount, setExistTypeAccount] = useState([]);
+
     const [bank, setBank] = useState([
         { key: '1', name: 'Nubank', initial: 'N', bgColor: '#8A17BE', active: false },
         { key: '2', name: 'Itaú', initial: 'I', bgColor: '#EC7001', active: false  },
@@ -20,13 +30,18 @@ export default function AddWallet() {
         { key: '5', name: 'Banco do Brasil', initial: 'BB', bgColor: '#F8D117', active: false },
         { key: '6', name: 'Caixa Econômica', initial: 'C', bgColor: '#185E9C', active: false },
     ]);
-    const [bankName, setBankName] = useState('');
-    const [initial, setInitial] = useState('');
-    const [typeAccount, setTypeAccount] = useState('Selecione...');
-    const [accountName, setAccountName] = useState('');
-    const [selectedBank, setSelectedBank] = useState([]);
+
+    // useState(() => {
+    //     database().ref('finance_user').child(uid)
+    //     .child(typeAccount)
+    //     .once('value')
+    //     .then((snapshot) => {
+    //         setExistBank(snapshot.val().bank)
+    //     });
+    // }, []);
 
     function addWallet() {
+
         let wallet = database().ref('finance_wallet').child(uid).child(typeAccount);
         if (bankName != '' && typeAccount != '' && accountName != '') {
             wallet.set({
@@ -50,10 +65,11 @@ export default function AddWallet() {
         }
     }
 
-    function toggleWallet(index) {
+    function toggleWallet(key, index) {
         let newBank = [...bank];
         setBankName(newBank[index].name);
         setInitial(newBank[index].initial);
+        setSelectedBank([key]);
     }
 
     return (
@@ -73,7 +89,10 @@ export default function AddWallet() {
                     horizontal={true}
                     data={bank}
                     renderItem={({ item, index }) =>
-                        <TouchableHighlight style={styles.typeBank} onPress={() => toggleWallet(index)} underlayColor="transparent">
+                        <TouchableHighlight 
+                            style={selectedBank.includes(item.key) ? styles.selectedBank : styles.typeBank} 
+                            onPress={() => toggleWallet(item.key, index)} 
+                            underlayColor="transparent">
                             <>
                                 <View style={[styles.containerInitialBank, { backgroundColor: item.bgColor }]}>
                                     <Text style={styles.textInitialBank}>{item.name.substr(0,1)}</Text>
@@ -108,10 +127,14 @@ export default function AddWallet() {
                 />
 
                 <View style={styles.containerbtnSave}>
-                    <TouchableHighlight onPress={addWallet} style={styles.btnSave} underlayColor="#transparent">
+                    <TouchableHighlight
+                        onPress={addWallet}
+                        style={styles.btnSave}
+                        underlayColor='#ff3b47'
+                        disabled={bank != '' && typeAccount != '' && bankName  != '' ? false : true}>
                         <Text style={styles.textBtnSave}>Salvar</Text>
                     </TouchableHighlight>
-                    {/* <Text style={styles.textMessageError}>{messageError}</Text> */}
+                    <Text style={styles.textMessageError}>{errorMessage}</Text>
                 </View>
 
             </View>

@@ -65,6 +65,9 @@ export default function EditExpense() {
     const [editRemember, setEditRemember] = useState(route.params.remember);
     const [editDate, setEditDate] = useState(route.params.date);
     const [account, setAccount] = useState(route.params.account);
+    // const [sumPaid, setSumPaid] = useState([]);
+    // const [sumUnpaid, setSumUnpaid] = useState([]);
+    // const [count, setCount] = useState(1);
 
     /**CONSTANT TO RECEIVE VALUES ​​FROM THE BANK REGARDING THE ACCOUNTS CREATED BY THE USER  */
     const [getAccount, setGetAccouunt] = useState([]);
@@ -76,6 +79,8 @@ export default function EditExpense() {
     const uid = auth().currentUser.uid;
 
     function deleteExpense() {
+        let sumExpensePaid = database().ref('finance_wallet').child(uid).child('finance_sum_expense_paid');
+        let sumExpenseUnpaid = database().ref('finance_wallet').child(uid).child('finance_sum_expense_unpaid');
         Alert.alert(
             'Atenção',
             'Deseja realmente excluir?',
@@ -84,6 +89,7 @@ export default function EditExpense() {
                     text: 'Sim',
                     onPress: () => {
                         database().ref('finance_wallet').child(uid).child(account).child('finance_expense').child(key).remove();
+                        // sumExpensePaid.set(sumPaid != null ? parseInt(editValue) - parseInt(sumPaid) : null);
                         navigation.dispatch(
                             CommonActions.reset({
                                 index: 0,
@@ -108,9 +114,27 @@ export default function EditExpense() {
         navigation.navigate('Expenses');
     }
 
+    // useEffect(() => {
+    //     database().ref('finance_wallet').child(uid).child('finance_sum_expense_paid')
+    //     .once("value")
+    //     .then((snapshot) => {
+    //         setSumPaid(snapshot.val());
+    //     });
+    // }, []);
+
+    // useEffect(() => {
+    //     database().ref('finance_wallet').child(uid).child('finance_sum_expense_unpaid')
+    //     .once("value")
+    //     .then((snapshot) => {
+    //         setSumUnpaid(snapshot.val());
+    //     });
+    // }, []);
+
     function editExpense() {
         //INFORMAÇÕES DO USUÁRIO
-        let newEditExpense = database().ref('finance_wallet').child(uid).child(account).child('finance_expense').child(key);
+        // let newEditExpense = database().ref('finance_wallet').child(uid).child(account).child('finance_expense').child(key);
+        // let sumExpensePaid = database().ref('finance_wallet').child(uid).child('finance_sum_expense_paid');
+        // let sumExpenseUnpaid = database().ref('finance_wallet').child(uid).child('finance_sum_expense_unpaid');
 
         if (editValue != '' && editDescription != '' && editCategory != '') {
             // CADASTRO DA RECEITA
@@ -124,6 +148,22 @@ export default function EditExpense() {
                 remember: remember < new Date(Date.now()).getDate() ? remember : '',
                 account: account
             });
+
+            // if(editValue != '' && editDescription != '' && editCategory != '' && editToggle === true) {
+            //     sumExpensePaid.set(sumPaid != null ? parseInt(editValue) + parseInt(sumPaid) : editValue);
+            //     if(parseInt(editValue) - parseInt(sumUnpaid) === 0) {
+            //         sumExpenseUnpaid.remove();
+            //     } else {
+            //         sumExpenseUnpaid.set(sumUnpaid != null ? Math.abs(parseInt(editValue)) + (parseInt(sumUnpaid)) : editValue);
+            //     }
+            // } else if(editValue != '' && editDescription != '' && editCategory != '' && editToggle === false) {
+            //     sumExpenseUnpaid.set(sumUnpaid != null ? parseInt(editValue) + parseInt(sumUnpaid) : editValue);
+            //     if(parseInt(editValue) - parseInt(sumPaid) === 0) {
+            //         sumExpensePaid.remove();
+            //     } else {
+            //         sumExpensePaid.set(sumPaid != null ? Math.abs(parseInt(editValue)) + (parseInt(sumPaid)) : editValue);
+            //     }
+            // }
 
             navigation.dispatch(
                 CommonActions.reset({

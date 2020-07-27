@@ -68,6 +68,10 @@ export default function EditRevenue() {
     const [editRemember, setEditRemember] = useState(route.params.remember);
     const [editDate, setEditDate] = useState(route.params.date);
     const [account, setAccount] = useState(route.params.account);
+    const [messageError, setMessageError] = useState('');
+
+
+    console.log(route.params.category);
 
     const key = route.params.key;
     const uid = auth().currentUser.uid;
@@ -108,7 +112,7 @@ export default function EditRevenue() {
         //INFORMAÇÕES DO USUÁRIO
         let EditRevenue = database().ref('finance_wallet').child(uid).child(account).child('finance_revenue').child(key);
 
-        if (editValue != '' && editDescription != '' && editCategory != '') {
+        if (editValue != '' && editDescription != '' && editCategory != 'Selecione...') {
             // CADASTRO DA RECEITA
             EditRevenue.set({
                 value: editValue,

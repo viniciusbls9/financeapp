@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableHighlight, TouchableOpacity, Image, StatusBar, TextInput, Switch, Modal, ScrollView, Animated } from 'react-native';
+import { View, Text, TouchableHighlight, TouchableOpacity, Image, StatusBar, TextInput, Switch, Modal, ScrollView } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import database from '@react-native-firebase/database';
@@ -12,7 +12,6 @@ import Calendar from '../../assets/calendar.png';
 
 export default function AddRevenue() {
     let uid = auth().currentUser.uid;
-
     /**CONSTANT FOR NAVIGATION */
     const navigation = useNavigation();
 
@@ -60,6 +59,8 @@ export default function AddRevenue() {
     const [description, setDescription] = useState('');
     const [picker, setPicker] = useState('');
     const [account, setAccount] = useState('');
+    // const [sumPaid, setSumPaid] = useState([]);
+    // const [sumUnpaid, setSumUnpaid] = useState([]);
 
     /**CONSTANT FOR VISIBLE ERROR MESSAGE */
     const [messageError, setMessageError] = useState('');
@@ -74,16 +75,32 @@ export default function AddRevenue() {
     /**CONSTANT TO RECEIVE VALUES ​​FROM THE BANK REGARDING THE ACCOUNTS CREATED BY THE USER  */
     const [getAccount, setGetAccouunt] = useState([]);
 
-    /** CONSTANT FOR ANIMATION THE TOOLTIP */
-    const [showTooltip, setShowTooltip] = useState(false);
-
-
     function handlebackRevenue() {
         navigation.navigate('Revenue');
     }
 
+    // useEffect(() => {
+    //     database().ref('finance_wallet').child(uid).child('finance_sum_revenue_paid')
+    //     .once("value")
+    //     .then((snapshot) => {
+    //         setSumPaid(snapshot.val());
+    //     });
+    // }, []);
+
+    // useEffect(() => {
+    //     database().ref('finance_wallet').child(uid).child('finance_sum_revenue_unpaid')
+    //     .once("value")
+    //     .then((snapshot) => {
+    //         setSumUnpaid(snapshot.val());
+    //     });
+    // }, []);
+
     function addNewRevenue() {
         let newRevenue = database().ref('finance_wallet').child(uid).child(account).child('finance_revenue');
+
+        // let sumRevenuePaid = database().ref('finance_wallet').child(uid).child('finance_sum_revenue_paid');
+        // let sumRevenueUnpaid = database().ref('finance_wallet').child(uid).child('finance_sum_revenue_unpaid');
+
         if (value != '' && description != '' && picker != '' && account != '') {
             // CADASTRO DA RECEITA
             let key = newRevenue.push().key;
@@ -98,6 +115,13 @@ export default function AddRevenue() {
                 account: account,
                 key: key
             });
+
+            // if(value != '' && description != '' && picker != '' && account != '' && isEnabled === true) {
+            //     sumRevenuePaid.set(sumPaid != null ? parseInt(value) + parseInt(sumPaid) : value);
+            // } else if(value != '' && description != '' && picker != '' && account != '' && isEnabled === false) {
+            //     sumRevenueUnpaid.set(sumUnpaid != null ? parseInt(value) + parseInt(sumUnpaid) : value)
+            // }
+
             setValue('');
             setDescription('');
             navigation.dispatch(
@@ -180,31 +204,31 @@ export default function AddRevenue() {
         }
     }
 
-    function handleAnimation() {
-        setShowTooltip(true);
-        setTimeout(() => {
-            setShowTooltip(false);
-        }, 3000);
-    }
-
     function formatarMoeda() {
-        let element = value.valueOf();
+        var elemento = value;
+        var valor = elemento.valueOf();
 
-        element = element + '';
-        element = parseInt(element.replace(/[\D]+/g,''));
-        element = element + '';
-        element = element.replace(/([0-9]{2})$/g, ",$1");
+        valor = valor + '';
+        valor = parseInt(valor.replace(/[\D]+/g,''));
+        valor = valor + '';
+        valor = valor.replace(/([0-9]{2})$/g, ",$1");
+        // console.log(valor);
         
-        if (element.length > 6) {
-            element = element.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
+        if (valor.length > 6) {
+            valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
         }
-        element.valueOf = element;
-        console.log(element);
+        
+        if(valor == 'NaN') {
+            return false;
+        } else {
+            return valor;
+        }
       }
 
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor="#27B635" barStyle="light-content" />
+            
             <View style={styles.header}>
                 <TouchableHighlight underlayColor="transparent" onPress={handlebackRevenue} style={styles.backRevenue}>
                     <>
@@ -214,21 +238,9 @@ export default function AddRevenue() {
                 </TouchableHighlight>
             </View>
 
-            {showTooltip ? (
-                <View style={styles.containerTooltip}>
-                    <View style={styles.tooltip}>
-                        <Text style={styles.tooltipMessage}>Separe os centavos incluindo ponto</Text>
-                    </View>
-                    <View style={styles.tooltipTriangle} />
-                </View>
-            ) : null}
-
             <View style={styles.containerInputValue}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={styles.labelFormValue}>Valor da receita</Text>
-                    <TouchableHighlight style={styles.containerBtnTooltip} onPress={handleAnimation} underlayColor="#transparent">
-                        <Text style={styles.textTooltip}>?</Text>
-                    </TouchableHighlight>
                 </View>
 
                 <TextInput
@@ -237,7 +249,7 @@ export default function AddRevenue() {
                     placeholderTextColor="#fff"
                     keyboardType="numeric"
                     autoFocus={true}
-                    value={value}
+                    value={formatarMoeda(value)}
                     onChangeText={setValue}
                 />
             </View>

@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, FlatList } from 'react-native';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
-
-import UserWallet from '../../components/userWallet/UserWallet';
 import styles from './styles';
 
 export default function Wallet(props) {
-    const navigation = useNavigation();
     const uid = auth().currentUser.uid;
     const test = props.teste;
 
@@ -128,8 +124,8 @@ export default function Wallet(props) {
         .child('1')
         .once('value')
         .then((snapshot) => {
-            setInitial(snapshot.val().initial);
-            setNameBank(snapshot.val().bank);
+            setInitial(snapshot.val() === null ? '' : snapshot.val().initial);
+            setNameBank(snapshot.val() === null ? '' : snapshot.val().bank);
         });
     }, []);
 

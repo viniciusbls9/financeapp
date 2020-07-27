@@ -9,7 +9,7 @@ import Arrow from '../../assets/arrows.png';
 import Wallet from '../../assets/wallet.png';
 import ListRevenue from '../../components/listRevenue';
 import MoreExpenses from '../../assets/more.png';
-import ImageRevenue from '../../assets/revenue.jpg';
+import ImageRevenue from '../../assets/image-revenue.jpg';
 export default function Revenue() {
 
     const [activity, setActivity] = useState([]);

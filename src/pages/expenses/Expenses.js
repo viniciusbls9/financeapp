@@ -9,7 +9,7 @@ import Arrow from '../../assets/arrows.png';
 import Wallet from '../../assets/wallet.png';
 import ListExpense from '../../components/listExpenses';
 import MoreExpenses from '../../assets/more.png';
-import ImageExpense from '../../assets/expense.jpg';
+import ImageExpense from '../../assets/image-expense.jpg';
 
 export default function Expenses() {
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableHighlight, TouchableOpacity, Image, TextInput, Switch, Modal, ScrollView } from 'react-native';
+import { View, Text, TouchableHighlight, Image, TextInput, Switch, Modal, ScrollView } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
@@ -60,6 +60,9 @@ export default function AddRevenue() {
     const [description, setDescription] = useState('');
     const [picker, setPicker] = useState('');
     const [account, setAccount] = useState('');
+    // const [sumPaid, setSumPaid] = useState([]);
+    // const [sumUnpaid, setSumUnpaid] = useState([]);
+    // const [count, setCount] = useState(1);
 
     /**CONSTANT FOR VISIBLE ERROR MESSAGE */
     const [messageError, setMessageError] = useState('');
@@ -74,21 +77,39 @@ export default function AddRevenue() {
     /**CONSTANT TO RECEIVE VALUES ​​FROM THE BANK REGARDING THE ACCOUNTS CREATED BY THE USER  */
     const [getAccount, setGetAccouunt] = useState([]);
 
-    /** CONSTANT FOR ANIMATION THE TOOLTIP */
-    const [showTooltip, setShowTooltip] = useState(false);
-
-
     function handlebackExpense() {
         navigation.navigate('Expenses');
     }
+
+    // useEffect(() => {
+    //     database().ref('finance_wallet').child(uid).child('finance_sum_expense_paid')
+    //     .once("value")
+    //     .then((snapshot) => {
+    //         setSumPaid(snapshot.val());
+    //     });
+    // }, []);
+
+    // useEffect(() => {
+    //     database().ref('finance_wallet').child(uid).child('finance_sum_expense_unpaid')
+    //     .once("value")
+    //     .then((snapshot) => {
+    //         setSumUnpaid(snapshot.val());
+    //     });
+    // }, []);
 
     function addNewExpense() {
         //INFORMAÇÕES DO USUÁRIO
         let uid = auth().currentUser.uid;
         let newExpense = database().ref('finance_wallet').child(uid).child(account).child('finance_expense');
 
+        // let sumExpensePaid = database().ref('finance_wallet').child(uid).child('finance_sum_expense_paid');
+        // let sumExpenseUnpaid = database().ref('finance_wallet').child(uid).child('finance_sum_expense_unpaid');
+        // let counted = database().ref('finance_wallet').child(uid).child('counted_expense');
+
+
         if (value != '' && description != '' && picker != '' && account != '') {
             // CADASTRO DA DESPESA
+            // setCount(count + 1);
             let key = newExpense.push().key;
             newExpense.child(key).set({
                 value: '-'+value,
@@ -101,6 +122,13 @@ export default function AddRevenue() {
                 account: account,
                 color: ColorExpense(picker)
             });
+
+            // if(value != '' && description != '' && picker != '' && account != '' && isEnabled === true) {
+            //     sumExpensePaid.set(sumPaid != null ? parseInt('-'+value) + parseInt(sumPaid) : '-'+value);
+            // } else if(value != '' && description != '' && picker != '' && account != '' && isEnabled === false) {
+            //     sumExpenseUnpaid.set(sumUnpaid != null ? parseInt('-'+value) + parseInt(sumUnpaid) : '-'+value)
+            // }
+
             setValue('');
             setDescription('');
             navigation.dispatch(
@@ -183,12 +211,26 @@ export default function AddRevenue() {
         }
     }
 
-    function handleAnimation() {
-        setShowTooltip(true);
-        setTimeout(() => {
-            setShowTooltip(false);
-        }, 3000);
-    }
+    function formatarMoeda() {
+        var elemento = value;
+        var valor = elemento.valueOf();
+
+        valor = valor + '';
+        valor = parseInt(valor.replace(/[\D]+/g,''));
+        valor = valor + '';
+        valor = valor.replace(/([0-9]{2})$/g, ",$1");
+        // console.log(valor);
+        
+        if (valor.length > 6) {
+            valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
+        }
+        
+        if(valor == 'NaN') {
+            return false;
+        } else {
+            return valor;
+        }
+      }
 
     return (
         <View style={styles.container}>
@@ -201,21 +243,9 @@ export default function AddRevenue() {
                 </TouchableHighlight>
             </View>
 
-            {showTooltip ? (
-                <View style={styles.containerTooltip}>
-                    <View style={styles.tooltip}>
-                        <Text style={styles.tooltipMessage}>Separe os centavos incluindo ponto</Text>
-                    </View>
-                    <View style={styles.tooltipTriangle} />
-                </View>
-            ) : null}
-
             <View style={styles.containerInputValue}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={styles.labelFormValue}>Valor da receita</Text>
-                    <TouchableHighlight style={styles.containerBtnTooltip} onPress={handleAnimation} underlayColor="#transparent">
-                        <Text style={styles.textTooltip}>?</Text>
-                    </TouchableHighlight>
                 </View>
                 <TextInput
                     style={styles.inputValue}
@@ -223,7 +253,7 @@ export default function AddRevenue() {
                     placeholderTextColor="#fff"
                     keyboardType="numeric"
                     autoFocus={true}
-                    value={value}
+                    value={formatarMoeda(value)}
                     onChangeText={setValue}
                 />
             </View>
@@ -301,12 +331,12 @@ export default function AddRevenue() {
 
                 <View style={styles.containerCalendar}>
                     <Text style={styles.labelInputs}>Data de pagamento</Text>
-                    <TouchableOpacity onPress={showDatepickerDate} style={styles.btnCalendar}>
+                    <TouchableHighlight onPress={showDatepickerDate} style={styles.btnCalendar} underlayColor="#ff3b47">
                         <>
                             <Image source={Calendar} style={styles.calendarImage} />
                             <Text style={styles.btnTextCalendar}>Selecionar data</Text>
                         </>
-                    </TouchableOpacity>
+                    </TouchableHighlight>
                 </View>
                 {show && (
                     <DateTimePicker
@@ -321,12 +351,12 @@ export default function AddRevenue() {
 
                 <View style={styles.containerRemember}>
                     <Text style={styles.labelInputs}>Lembrar-me</Text>
-                    <TouchableOpacity onPress={showDatepickerRemember} style={styles.btnCalendar}>
+                    <TouchableHighlight onPress={showDatepickerRemember} style={styles.btnCalendar} underlayColor="#ff3b47">
                         <>
                             <Image source={Calendar} style={styles.calendarImage} />
                             <Text style={styles.btnTextCalendar}>Selecionar data</Text>
                         </>
-                    </TouchableOpacity>
+                    </TouchableHighlight>
                 </View>
                 {showRemember && (
                     <DateTimePicker
@@ -341,9 +371,9 @@ export default function AddRevenue() {
                 )}
 
                 <View style={styles.containerbtnSave}>
-                    <TouchableOpacity onPress={addNewExpense} style={styles.btnSave}>
+                    <TouchableHighlight onPress={addNewExpense} style={styles.btnSave} underlayColor="#ff3b47">
                         <Text style={styles.textBtnSave}>Salvar</Text>
-                    </TouchableOpacity>
+                    </TouchableHighlight>
                     <Text style={styles.textMessageError}>{messageError}</Text>
                 </View>
 
@@ -362,9 +392,9 @@ export default function AddRevenue() {
                                 onChangeText={setNewCategory}
                             />
 
-                            <TouchableOpacity onPress={addNewCategory} style={styles.btnNewCategory} activeOpacity={0.8}>
+                            <TouchableHighlight onPress={addNewCategory} style={styles.btnNewCategory} underlayColor="#ff3b47">
                                 <Text style={styles.textBtnSave}>Salvar</Text>
-                            </TouchableOpacity>
+                            </TouchableHighlight>
 
                             <TouchableHighlight style={styles.btnCancel} onPress={() => setModalVisible(false)} underlayColor="transparent">
                                 <Text style={styles.textBtnCancel}>Cancelar</Text>

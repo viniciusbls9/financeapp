@@ -128,10 +128,8 @@ export default function Wallet() {
         .child('3')
         .once('value')
         .then((snapshot) => {
-            setNameBank(snapshot.val().bank);
-            setInitial(snapshot.val().initial);
-        }).catch((error) => {
-            console.log(error);
+            setInitial(snapshot.val() === null ? '' : snapshot.val().initial);
+            setNameBank(snapshot.val() === null ? '' : snapshot.val().bank);
         });
     }, []);
 

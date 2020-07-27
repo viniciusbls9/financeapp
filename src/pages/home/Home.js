@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableHighlight, Image, TouchableOpacity, FlatList, StatusBar, ScrollView } from 'react-native';
+import { View, Text, TouchableHighlight, Image, TouchableOpacity, StatusBar, ScrollView, Dimensions } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 
 import Bars from '../../assets/bars.png';
+import Eye from '../../assets/eye.png';
+import Sight from '../../assets/sight.png';
 import UserMale from '../../assets/user-male.png';
 import UserFemale from '../../assets/user-female.png';
 import Button from '../../assets/button.png';
-import Mastercard from '../../assets/mastercard.png';
 
 import PendenciesRevenue from '../../components/pendenciesRevenue';
 import PendenciesExpenses from '../../components/pendenciesExpenses';
@@ -22,8 +23,9 @@ export default function Login(props) {
 
     const [totalRevenue, setTotalRevenue] = useState([]);
     const [totalExpense, setTotalExpense] = useState([]);
-    const [sumTotal, setSumTotal] = useState([]);
+    const [sumTotal, setSumTotal] = useState('');
     const [gender, setGender] = useState('');
+    const [hidden, setHidden] = useState(false);
 
     const id = auth().currentUser.uid;
 
@@ -88,7 +90,7 @@ export default function Login(props) {
                     setSumTotal(sumValue);
                 });
         }
-    }, [totalRevenue]);
+    }, [totalRevenue, totalExpense]);
 
     function handleDrawer() {
         props.navigation.openDrawer();
@@ -102,9 +104,13 @@ export default function Login(props) {
     //     { key: '1', flag: Mastercard, nameCard: 'Nubank', closeDate: '12/jun', value: 250, valueTotal: 250 },
     // ]);
 
+    function hiddenValue() {
+        setHidden(!hidden);
+    }
+
     return (
         <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-            <View>
+            <View style={{ height: Dimensions.get('screen').height - 60 }}>
                 <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                 <View style={styles.header}>
                     <View style={styles.headerButtons}>
@@ -115,14 +121,29 @@ export default function Login(props) {
                             <Image source={gender === 'Feminino' ? UserFemale : UserMale} style={styles.users} />
                         </TouchableHighlight>
                     </View>
-                    <Text style={styles.labelInfoMoney}>Valor em contas:</Text>
+                    <Text style={styles.labelInfoMoney}>
+                        Valor em contas:
+                    </Text>
                     <View style={styles.infoMoney}>
-                        <Text style={styles.totalMoney}>
-                            {Intl.NumberFormat('pt-BR', {
-                                style: 'currency',
-                                currency: 'BRL'
-                            }).format(sumTotal)}
-                        </Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            {hidden === false &&
+                                <Text style={styles.totalMoney}>
+                                    {Intl.NumberFormat('pt-BR', {
+                                        style: 'currency',
+                                        currency: 'BRL'
+                                    }).format(sumTotal)}
+                                </Text>
+                            }
+
+                            {hidden &&
+                                <View style={styles.containerHidden}></View>
+                            }
+
+                            <TouchableHighlight onPress={hiddenValue} underlayColor="#transparent">
+                                <Image source={hidden === true ? Sight : Eye} style={styles.hiddenMoney} />
+                            </TouchableHighlight>
+                        </View>
+
                         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={handleAddRevenue}>
                             <Image source={Button} style={styles.addMoneyIcon} />
                             <Text style={styles.addMoneyText}>Dinheiro</Text>
@@ -142,7 +163,6 @@ export default function Login(props) {
                         <PendenciesExpenses />
                     </ScrollView>
 
-
                     {/* <Text style={styles.labelinfoActivity}>Cartões</Text>
                     <FlatList
                         horizontal={true}
@@ -155,7 +175,7 @@ export default function Login(props) {
                     {totalExpense == '' &&
                         <View style={styles.containerMsg}>
                             <Image source={Presentation} style={styles.imageMsg} />
-                            <Text style={{textAlign: 'center'}}>Ops! Você ainda não tem gastos cadastrados. Adicione gastos e veja o gráfico</Text>
+                            <Text style={{ textAlign: 'center' }}>Ops! Você ainda não tem gastos cadastrados. Adicione gastos e veja o gráfico</Text>
                         </View>
                     }
                     {totalExpense != '' &&
@@ -165,7 +185,6 @@ export default function Login(props) {
                     }
                 </View>
             </View>
-
         </ScrollView>
     );
 }

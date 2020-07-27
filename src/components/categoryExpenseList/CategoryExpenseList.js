@@ -31,13 +31,6 @@ export default function CategoryExpenseList(props) {
             });
             setNewCategory('');
             setModalVisible(false);
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [
-                        { name: 'Category' },
-                    ]
-                }));
         } else {
             // setMessageError('Preencha todos os campos');
         }

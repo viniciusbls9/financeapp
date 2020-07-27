@@ -6,6 +6,7 @@ export default StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#f7f7f7',
+        height: 80
     },
     header: {
         paddingTop: StatusBar.currentHeight + 10,
@@ -53,6 +54,16 @@ export default StyleSheet.create({
         color: '#1c2e35',
         marginLeft: 10,
     },
+    hiddenMoney: {
+        width: 20,
+        height: 20,
+        marginLeft: 5
+    },
+    containerHidden: {
+        height: 10,
+        width: 120,
+        backgroundColor: '#ebebeb'
+    },
     totalMoney: {
         color: '#1c2e35',
         fontSize: 30
@@ -74,7 +85,7 @@ export default StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ccc',
         marginTop: 20,
-        marginBottom: 20
+        marginBottom: 20,
     },
     containerMsg: {
         backgroundColor: '#fff',

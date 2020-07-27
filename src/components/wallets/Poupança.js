@@ -129,8 +129,8 @@ export default function Wallet() {
         .child('2')
         .once('value')
         .then((snapshot) => {
-            setNameBank(snapshot.val().bank);
-            setInitial(snapshot.val().initial);
+            setInitial(snapshot.val() === null ? '' : snapshot.val().initial);
+            setNameBank(snapshot.val() === null ? '' : snapshot.val().bank);
         });
     }, []);
 

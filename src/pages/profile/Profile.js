@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableHighlight, TouchableOpacity, Image, ScrollView, Linking, Share } from 'react-native';
+import { View, Text, TouchableHighlight, TouchableOpacity, Image, ScrollView, Linking, Share, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import database from '@react-native-firebase/database';
@@ -44,9 +44,23 @@ export default function Profile() {
   const navigation = useNavigation();
 
   async function handleLogout() {
-    await AsyncStorage.clear();
-
-    navigation.navigate('Welcome');
+    Alert.alert(
+      'Atenção',
+      'Deseja realmente sair?',
+      [
+          {
+              text: 'Sim',
+              onPress: async () => { await AsyncStorage.clear(); navigation.navigate('Welcome'); },
+              style: 'cancel',
+          },
+          {
+            text: 'Não',
+            onPress: () => {  },
+            style: 'cancel',
+          }
+      ],
+      { cancelable: false },
+  );
   }
 
   const onShare = async () => {
@@ -64,6 +78,21 @@ export default function Profile() {
     } catch (error) {
       alert('Não foi possível compartilhar ): Tente novamente mais tarde.');
     }
+  }
+
+  function message() {
+    Alert.alert(
+      'Atenção',
+      'Em breve essa funcionalidade estará ativa ;)',
+      [
+          {
+              text: 'Ok',
+              onPress: () => { },
+              style: 'cancel',
+          },
+      ],
+      { cancelable: false },
+  );
   }
 
   return (
@@ -91,7 +120,7 @@ export default function Profile() {
               </>
             </TouchableHighlight>
 
-            <TouchableHighlight style={styles.btnLabel} onPress={() => navigation.navigate('CreditCard')} underlayColor="#f7f7f7">
+            <TouchableHighlight style={styles.btnLabel} onPress={message} underlayColor="#f7f7f7">
               <>
                 <Image source={CreditCard} style={styles.walletImage} />
                 <Text>Cartões de Crédito</Text>
@@ -111,7 +140,7 @@ export default function Profile() {
 
           <View style={styles.containerWallet}>
             <Text style={styles.WalletLabel}>Configurações</Text>
-            <TouchableHighlight style={styles.btnLabel} onPress={() => navigation.navigate('Configurations')} underlayColor="#f7f7f7">
+            <TouchableHighlight style={styles.btnLabel} onPress={message} underlayColor="#f7f7f7">
               <>
                 <Image source={Settings} style={styles.walletImage} />
                 <Text>Geral</Text>
@@ -121,7 +150,7 @@ export default function Profile() {
 
           <View style={styles.containerWallet}>
             <Text style={styles.WalletLabel}>Outros</Text>
-            <TouchableHighlight style={styles.btnLabel} onPress={() => navigation.navigate('Education')} underlayColor="#f7f7f7">
+            <TouchableHighlight style={styles.btnLabel} onPress={message} underlayColor="#f7f7f7">
               <>
                 <Image source={Education} style={styles.walletImage} />
                 <Text>Educação</Text>

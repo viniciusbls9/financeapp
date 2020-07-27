@@ -41,7 +41,7 @@ export default function Expenses(props) {
             key: props.data.key
         });
     }
-    let rememberExpense = props.data.remember
+    let rememberExpense = props.data.remember;
     let dateRemember = new Date(rememberExpense).getDate();
 
     let revenueRegister = props.data.date;

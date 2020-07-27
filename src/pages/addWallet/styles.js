@@ -35,14 +35,17 @@ export default StyleSheet.create({
     typeBank: {
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 20,
-        padding: 10,
-        
+        marginRight: 10,
+        padding: 15,
     },
     selectedBank: {
-        backgroundColor: '#dbd9d9',
-        borderColor: '#4f4f4f',
-        borderWidth: 1
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10,
+        padding: 15,
+        backgroundColor: '#ebebeb',
+        borderWidth: 1,
+        borderColor: '#e0e0e0'
     },
     containerInitialBank: {
         width: 40,

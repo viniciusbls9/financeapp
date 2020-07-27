@@ -17,7 +17,7 @@ export default function Wallet(props) {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => navigation.navigate('Home')}>
+                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => navigation.navigate('Profile')}>
                     <Text style={styles.textHeader}>Carteiras</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => navigation.navigate('AddWallet')}>

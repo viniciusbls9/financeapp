@@ -112,7 +112,7 @@ export default function AddRevenue() {
             // setCount(count + 1);
             let key = newExpense.push().key;
             newExpense.child(key).set({
-                value: '-'+value,
+                value: formatarMoeda('-'+value),
                 toggle: isEnabled,
                 description: description,
                 category: picker,
@@ -230,7 +230,11 @@ export default function AddRevenue() {
         } else {
             return valor;
         }
-      }
+    }
+
+    function moeda() {
+        return value;
+    }
 
     return (
         <View style={styles.container}>

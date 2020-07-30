@@ -82,10 +82,7 @@ export default function Expenses() {
                     <View style={{ marginLeft: 10 }}>
                         <Text style={styles.expensesTotalText}>Total Pago</Text>
                         <Text style={styles.expensesTotalValue}>
-                            {Intl.NumberFormat('pt-BR', {
-                                style: 'currency',
-                                currency: 'BRL'
-                            }).format(totalExpense)}
+                            {totalExpense}
                         </Text>
                     </View>
                 </View>

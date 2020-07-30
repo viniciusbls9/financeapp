@@ -79,11 +79,7 @@ export default function Expenses(props) {
 
                 <View style={styles.infoValueRevenue}>
                     <Text style={styles.valueRevenue}>
-                        {Intl.NumberFormat('pt-BR', {
-                            style: 'currency',
-                            currency: 'BRL',
-                            maximumFractionDigits: 4
-                        }).format(props.data.value)}
+                        {props.data.value}
                     </Text>
                     {dateRemember == new Date(Date.now()).getDate() &&
                         <Text style={styles.dateRemember}>Dia de pagar</Text>

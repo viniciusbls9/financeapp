@@ -1,17 +1,30 @@
+<h1 align="center">
+  <img src="https://github.com/viniciusbls9/financeapp/blob/master/.github/logo3x.png" />
+</h1>
+
 <p align="center">
-  <img src="https://github.com/viniciusbls9/financeapp/blob/master/src/assets/logo%403x.png" />
+<a href="https://github.com/viniciusbls9/financeapp#layout">Layout</a> | <a align="center" href="https://github.com/viniciusbls9/financeapp#projeto">Projeto</a> | <a align="center" href="https://github.com/viniciusbls9/financeapp#tecnologias">Tecnologias</a>
 </p>
 
----
-<p align="center">
-<a href="https://github.com/viniciusbls9/financeapp#projeto">Projeto</a> | <a align="center" href="https://github.com/viniciusbls9/financeapp#tecnologias">Tecnologias</a>
-</p>
-
+<h2 id="layout">:art: Layout</h2>
 <p>
-  <img src="https://github.com/viniciusbls9/financeapp/blob/master/.github/welcome.png" height="400" />
-  <img src="https://github.com/viniciusbls9/financeapp/blob/master/.github/home.png" height="400" />
-  <img src="https://github.com/viniciusbls9/financeapp/blob/master/.github/profile.png" height="400" />
-  <img src="https://github.com/viniciusbls9/financeapp/blob/master/.github/expense.png" height="400" />
-  <img src="https://github.com/viniciusbls9/financeapp/blob/master/.github/revenue.png" height="400" />
-  <img src="https://github.com/viniciusbls9/financeapp/blob/master/.github/addRevenue.png" height="400" />
+  <img src="https://github.com/viniciusbls9/financeapp/blob/master/.github/mockups.jpg" height="450" />
+  <img src="https://github.com/viniciusbls9/financeapp/blob/master/.github/mockups-financeapp.jpg" height="450" />
 </p>
+
+<h2 id="layout">:rocket: Sobre o Projeto</h2>
+<p>:moneybag: O financeApp é um aplicativo para gestão de finanças pessoais que consiste em ajudar no controle de receitas e despesas do dia a dia.</p>
+<h4>Funcionalidades</h4>
+
+  - Acesso com login e senha
+  - Visualização de receitas ou despesas pendentes (a pagar)
+  - Gráfico com últimos gastos
+  - Adição de receitas
+  - Adição de despesas
+  - Separação do aplicativo por carteiras
+
+<h2>:hammer_and_wrench: Tecnologias</h2>
+<p>Foram usadas as seguintes tecnologias para a construção do projeto:</p>
+
+ - [React Native](https://reactnative.dev/)
+ - [Typescript](https://www.typescriptlang.org/)

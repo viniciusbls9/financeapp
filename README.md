@@ -2,9 +2,7 @@
   <img src="https://github.com/viniciusbls9/financeapp/blob/master/.github/logo3x.png" />
 </h1>
 
-
-
-<h2 id="layout">:art: Layout</h2>
+<h2>:art: Layout</h2>
 <p>
   <img src="https://github.com/viniciusbls9/financeapp/blob/master/.github/mockups.jpg" height="450" />
   <img src="https://github.com/viniciusbls9/financeapp/blob/master/.github/mockups-financeapp.jpg" height="450" />

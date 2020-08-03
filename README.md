@@ -2,9 +2,7 @@
   <img src="https://github.com/viniciusbls9/financeapp/blob/master/.github/logo3x.png" />
 </h1>
 
-<p align="center">
-<a href="https://github.com/viniciusbls9/financeapp#layout">Layout</a> | <a align="center" href="https://github.com/viniciusbls9/financeapp#projeto">Projeto</a> | <a align="center" href="https://github.com/viniciusbls9/financeapp#tecnologias">Tecnologias</a>
-</p>
+
 
 <h2 id="layout">:art: Layout</h2>
 <p>
@@ -14,6 +12,7 @@
 
 <h2 id="layout">:rocket: Sobre o Projeto</h2>
 <p>:moneybag: O financeApp é um aplicativo para gestão de finanças pessoais que consiste em ajudar no controle de receitas e despesas do dia a dia.</p>
+
 <h4>Funcionalidades</h4>
 
   - Acesso com login e senha
@@ -28,3 +27,6 @@
 
  - [React Native](https://reactnative.dev/)
  - [Typescript](https://www.typescriptlang.org/)
+
+<h2>:fire: Instalação</h2>
+<p>Link da Google Play Store para instalação do aplicativo: https://play.google.com/store/apps/details?id=com.myfinanceapp</p>

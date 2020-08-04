@@ -4,8 +4,8 @@
 
 ## :art: Layout
 <p>
-  <img src="https://github.com/viniciusbls9/financeapp/blob/master/.github/mockups.jpg" height="450" />
-  <img src="https://github.com/viniciusbls9/financeapp/blob/master/.github/mockups-financeapp.jpg" height="450" />
+  <img src="https://github.com/viniciusbls9/financeapp/blob/master/.github/mockups.jpg" width="100%" />
+  <img src="https://github.com/viniciusbls9/financeapp/blob/master/.github/mockups-financeapp.jpg" width="100%" />
 </p>
 
 <h2 id="layout">:rocket: Sobre o Projeto</h2>

@@ -70,11 +70,29 @@ export default function EditRevenue() {
     const [account, setAccount] = useState(route.params.account);
     const [messageError, setMessageError] = useState('');
 
-
-    console.log(route.params.category);
-
     const key = route.params.key;
     const uid = auth().currentUser.uid;
+    
+    function formatarMoeda() {
+        var elemento = editValue;
+        var valor = elemento.valueOf();
+
+        valor = valor + '';
+        valor = parseInt(valor.replace(/[\D]+/g,''));
+        valor = valor + '';
+        valor = valor.replace(/([0-9]{2})$/g, ",$1");
+        // console.log(valor);
+        
+        if (valor.length > 6) {
+            valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
+        }
+        
+        if(valor == 'NaN') {
+            return false;
+        } else {
+            return valor;
+        }
+      }
 
     function deleteRevenue() {
         Alert.alert(
@@ -115,7 +133,7 @@ export default function EditRevenue() {
         if (editValue != '' && editDescription != '' && editCategory != 'Selecione...') {
             // CADASTRO DA RECEITA
             EditRevenue.set({
-                value: editValue,
+                value: editValue.replace(',', ''),
                 toggle: editToggle,
                 description: editDescription,
                 category: editCategory,
@@ -141,8 +159,7 @@ export default function EditRevenue() {
     useEffect(() => {
         database().ref('finance_revenue_category')
             .child(uid)
-            .once('value')
-            .then((snapshot) => {
+            .on('value', snapshot => {
                 snapshot.forEach((item) => {
                     getNewCategory.push({
                         category: item.val().category,
@@ -177,9 +194,6 @@ export default function EditRevenue() {
             });
     }, []);
 
-    /** CONSTANT FOR ANIMATION THE TOOLTIP */
-    const [showTooltip, setShowTooltip] = useState(false);
-
     function openModal() {
         setModalVisible(true);
     }
@@ -196,23 +210,9 @@ export default function EditRevenue() {
             });
             setNewCategory('');
             setModalVisible(false);
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [
-                        { name: 'AddRevenue' },
-                    ]
-                }));
         } else {
             setMessageError('Preencha todos os campos');
         }
-    }
-
-    function handleAnimation() {
-        setShowTooltip(!showTooltip);
-        setTimeout(() => {
-            setShowTooltip(false);
-        }, 3000);
     }
 
     return (
@@ -231,21 +231,9 @@ export default function EditRevenue() {
                 </TouchableHighlight>
             </View>
 
-            {showTooltip ? (
-                <View style={styles.containerTooltip}>
-                    <View style={styles.tooltip}>
-                        <Text style={styles.tooltipMessage}>Separe os centavos incluindo ponto</Text>
-                    </View>
-                    <View style={styles.tooltipTriangle} />
-                </View>
-            ) : null}
-
             <View style={styles.containerInputValue}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={styles.labelFormValue}>Valor da receita</Text>
-                    <TouchableHighlight style={styles.containerBtnTooltip} onPress={handleAnimation} underlayColor="#transparent">
-                        <Text style={styles.textTooltip}>?</Text>
-                    </TouchableHighlight>
                 </View>
                 <TextInput
                     style={styles.inputValue}
@@ -253,7 +241,7 @@ export default function EditRevenue() {
                     placeholderTextColor="#fff"
                     keyboardType="numeric"
                     autoFocus={true}
-                    value={editValue}
+                    value={formatarMoeda(editValue)}
                     onChangeText={setEditValue}
                 />
             </View>
@@ -298,7 +286,7 @@ export default function EditRevenue() {
                         <Picker.Item key={4} value={'Presente'} label={'Presente'} />
                         <Picker.Item key={5} value={'Outros'} label={'Outros'} />
                         {getNewCategory}
-                        <Picker.Item key={1} value={'Nova categoria'} label={'Nova categoria'} />
+                        <Picker.Item key={6} value={'Nova categoria'} label={'Nova categoria'} />
 
                     </Picker>
                 </View>
@@ -319,9 +307,7 @@ export default function EditRevenue() {
                     >
                         <Picker.Item key={0} value={'Selecione sua carteira'} label={'Selecione sua carteira'} />
                         {getAccount}
-                        {getAccount == '' &&
-                            <Picker.Item key={0} value={'Adicionar conta'} label={'Adicionar conta'} />
-                        }
+                        <Picker.Item key={0} value={'Adicionar conta'} label={'Adicionar conta'} />
                     </Picker>
                 </View>
 
@@ -370,6 +356,7 @@ export default function EditRevenue() {
                     <TouchableOpacity onPress={editRevenue} style={styles.btnSave}>
                         <Text style={styles.textBtnSave}>Salvar</Text>
                     </TouchableOpacity>
+                    <Text style={styles.textMessageError}>{messageError}</Text>
                 </View>
 
                 <Modal

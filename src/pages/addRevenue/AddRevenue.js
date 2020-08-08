@@ -105,7 +105,7 @@ export default function AddRevenue() {
             // CADASTRO DA RECEITA
             let key = newRevenue.push().key;
             newRevenue.child(key).set({
-                value: value,
+                value: value.replace(',', ''),
                 toggle: isEnabled,
                 description: description,
                 category: picker,
@@ -191,14 +191,6 @@ export default function AddRevenue() {
             });
             setNewCategory('');
             setModalVisible(false);
-            // navigation.dispatch(
-            //     CommonActions.reset({
-            //         index: 0,
-            //         routes: [
-            //             { name: 'AddRevenue' },
-            //         ]
-            //     }));
-            navigation.navigate('AddRevenue');
         } else {
             setMessageError('Preencha todos os campos');
         }

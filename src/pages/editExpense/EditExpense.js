@@ -10,6 +10,7 @@ import styles from './styles';
 import Arrow from '../../assets/arrows.png';
 import Trash from '../../assets/trash.png';
 import Calendar from '../../assets/calendar.png';
+import ColorExpense from '../../components/colorsExpense/ColorExpense';
 
 export default function EditExpense() {
     const navigation = useNavigation();
@@ -28,6 +29,8 @@ export default function EditExpense() {
     /**CONSTANT FOR ADD NEW CATEGORY */
     const [newCategory, setNewCategory] = useState('');
     const [getNewCategory, setGetNewCategory] = useState([]);
+    const [messageError, setMessageError] = useState('');
+
 
     /** DATETIMEPICKER FOR RECEIPT DATE */
     const onChangeDate = (event, selectedDate) => {
@@ -114,6 +117,27 @@ export default function EditExpense() {
         navigation.navigate('Expenses');
     }
 
+    function formatarMoeda() {
+        var elemento = editValue;
+        var valor = elemento.valueOf();
+
+        valor = valor + '';
+        valor = parseInt(valor.replace(/[\D]+/g,''));
+        valor = valor + '';
+        valor = valor.replace(/([0-9]{2})$/g, ",$1");
+        // console.log(valor);
+        
+        if (valor.length > 6) {
+            valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
+        }
+        
+        if(valor == 'NaN') {
+            return false;
+        } else {
+            return '-'+valor;
+        }
+    }
+
     // useEffect(() => {
     //     database().ref('finance_wallet').child(uid).child('finance_sum_expense_paid')
     //     .once("value")
@@ -132,21 +156,23 @@ export default function EditExpense() {
 
     function editExpense() {
         //INFORMAÇÕES DO USUÁRIO
-        // let newEditExpense = database().ref('finance_wallet').child(uid).child(account).child('finance_expense').child(key);
+        let newEditExpense = database().ref('finance_wallet').child(uid).child(account).child('finance_expense').child(key);
+        
         // let sumExpensePaid = database().ref('finance_wallet').child(uid).child('finance_sum_expense_paid');
         // let sumExpenseUnpaid = database().ref('finance_wallet').child(uid).child('finance_sum_expense_unpaid');
 
-        if (editValue != '' && editDescription != '' && editCategory != '') {
+        if (editValue != '' && editDescription != '' && editCategory != 'Selecione...') {
             // CADASTRO DA RECEITA
             newEditExpense.set({
-                value: editValue,
+                value: editValue.replace(',', ''),
                 toggle: editToggle,
                 description: editDescription,
                 category: editCategory,
                 tag: editCategory,
                 date: date,
                 remember: remember < new Date(Date.now()).getDate() ? remember : '',
-                account: account
+                account: account,
+                color: ColorExpense(editCategory),
             });
 
             // if(editValue != '' && editDescription != '' && editCategory != '' && editToggle === true) {
@@ -181,8 +207,7 @@ export default function EditExpense() {
     useEffect(() => {
         database().ref('finance_expense_category')
             .child(uid)
-            .once('value')
-            .then((snapshot) => {
+            .on('value', snapshot => {
                 snapshot.forEach((item) => {
                     getNewCategory.push({
                         category: item.val().category,
@@ -233,13 +258,6 @@ export default function EditExpense() {
             });
             setNewCategory('');
             setModalVisible(false);
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [
-                        { name: 'AddExpenses' },
-                    ]
-                }));
         } else {
             setMessageError('Preencha todos os campos');
         }
@@ -290,7 +308,7 @@ export default function EditExpense() {
                     placeholderTextColor="#fff"
                     keyboardType="numeric"
                     autoFocus={true}
-                    value={editValue}
+                    value={formatarMoeda(editValue)}
                     onChangeText={setEditValue}
                 />
             </View>
@@ -411,6 +429,7 @@ export default function EditExpense() {
                     <TouchableOpacity onPress={editExpense} style={styles.btnSave}>
                         <Text style={styles.textBtnSave}>Salvar</Text>
                     </TouchableOpacity>
+                    <Text style={styles.textMessageError}>{messageError}</Text>
                 </View>
 
                 <Modal

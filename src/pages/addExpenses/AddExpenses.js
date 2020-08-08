@@ -60,8 +60,8 @@ export default function AddRevenue() {
     const [description, setDescription] = useState('');
     const [picker, setPicker] = useState('');
     const [account, setAccount] = useState('');
-    // const [sumPaid, setSumPaid] = useState([]);
-    // const [sumUnpaid, setSumUnpaid] = useState([]);
+    const [sumPaid, setSumPaid] = useState([]);
+    const [sumUnpaid, setSumUnpaid] = useState([]);
     // const [count, setCount] = useState(1);
 
     /**CONSTANT FOR VISIBLE ERROR MESSAGE */
@@ -106,13 +106,18 @@ export default function AddRevenue() {
         // let sumExpenseUnpaid = database().ref('finance_wallet').child(uid).child('finance_sum_expense_unpaid');
         // let counted = database().ref('finance_wallet').child(uid).child('counted_expense');
 
+        // var dollars = value / 100;
+
+        // dollars = dollars.toLocaleString("en-US", {style:"currency", currency:"USD"}).replace(',', '.');
+        // console.log(dollars)
+
 
         if (value != '' && description != '' && picker != '' && account != '') {
             // CADASTRO DA DESPESA
             // setCount(count + 1);
             let key = newExpense.push().key;
             newExpense.child(key).set({
-                value: formatarMoeda('-'+value),
+                value: '-'+value.replace(',', ''),
                 toggle: isEnabled,
                 description: description,
                 category: picker,
@@ -124,9 +129,9 @@ export default function AddRevenue() {
             });
 
             // if(value != '' && description != '' && picker != '' && account != '' && isEnabled === true) {
-            //     sumExpensePaid.set(sumPaid != null ? parseInt('-'+value) + parseInt(sumPaid) : '-'+value);
+            //     sumExpensePaid.set(sumPaid != null ? parseInt(formatarMoeda('-'+value)) + parseInt(sumPaid) : formatarMoeda('-'+value));
             // } else if(value != '' && description != '' && picker != '' && account != '' && isEnabled === false) {
-            //     sumExpenseUnpaid.set(sumUnpaid != null ? parseInt('-'+value) + parseInt(sumUnpaid) : '-'+value)
+            //     sumExpenseUnpaid.set(sumUnpaid != null ? parseInt(formatarMoeda('-'+value)) + parseInt(sumUnpaid) : formatarMoeda('-'+value))
             // }
 
             setValue('');
@@ -199,13 +204,6 @@ export default function AddRevenue() {
             });
             setNewCategory('');
             setModalVisible(false);
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [
-                        { name: 'AddExpenses' },
-                    ]
-                }));
         } else {
             setMessageError('Preencha todos os campos');
         }
@@ -230,10 +228,6 @@ export default function AddRevenue() {
         } else {
             return valor;
         }
-    }
-
-    function moeda() {
-        return value;
     }
 
     return (
@@ -327,9 +321,7 @@ export default function AddRevenue() {
                     >
                         <Picker.Item key={0} value={''} label={'Selecione sua carteira'} />
                         {getAccount}
-                        {getAccount == '' &&
-                            <Picker.Item key={0} value={'Adicionar conta'} label={'Adicionar conta'} />
-                        }
+                        <Picker.Item key={0} value={'Adicionar conta'} label={'Adicionar conta'} />
                     </Picker>
                 </View>
 

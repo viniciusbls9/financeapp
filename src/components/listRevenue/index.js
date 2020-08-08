@@ -26,6 +26,28 @@ export default function Expenses(props) {
         break;
     }
 
+    function formatarMoeda() {
+        var elemento = props.data.value;
+        var valor = elemento.valueOf();
+        
+        valor = valor + '';
+        valor = valor > 0 ? parseInt(valor.replace(/[\D]+/g,'')) : parseInt('-'+valor.replace(/[\D]+/g,''));
+        valor = valor + '';
+        valor = valor.replace(/([0-9]{2})$/g, ",$1");
+        
+        if (valor.length > 7) {
+            valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
+        }
+        
+        if(valor == 'NaN') {
+            return '0,00';
+        } else if(valor == 0) {
+            return '0,00'
+        } else {
+            return valor;
+        }
+    }
+
     const navigation = useNavigation();
 
     function handleEdit() {
@@ -77,7 +99,7 @@ export default function Expenses(props) {
 
                 <View style={styles.infoValueRevenue}>
                     <Text style={styles.valueRevenue}>
-                        {props.data.value}
+                        {formatarMoeda(props.data.value)}
                     </Text>
                     {dateRemember == new Date(Date.now()).getDate() &&
                         <Text style={styles.dateRemember}>Dia de receber</Text>

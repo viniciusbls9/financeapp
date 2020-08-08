@@ -90,7 +90,7 @@ export default function Login(props) {
                     setSumTotal(sumValue);
                 });
         }
-    }, [totalRevenue, totalExpense]);
+    }, []);
 
     function handleDrawer() {
         props.navigation.openDrawer();
@@ -108,9 +108,31 @@ export default function Login(props) {
         setHidden(!hidden);
     }
 
+    function formatarMoeda() {
+        var elemento = sumTotal;
+        var valor = elemento.valueOf();
+        
+        valor = valor + '';
+        valor = valor > 0 ? parseInt(valor.replace(/[\D]+/g,'')) : parseInt('-'+valor.replace(/[\D]+/g,''));
+        valor = valor + '';
+        valor = valor.replace(/([0-9]{2})$/g, ",$1");
+        
+        if (valor.length > 7) {
+            valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
+        }
+        
+        if(valor == 'NaN') {
+            return '0,00';
+        } else if(valor == 0) {
+            return '0,00'
+        } else {
+            return valor;
+        }
+    }
+
     return (
         <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-            <View style={{ height: Dimensions.get('screen').height - 60 }}>
+            <View style={{ height: Dimensions.get('screen').height }}>
                 <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                 <View style={styles.header}>
                     <View style={styles.headerButtons}>
@@ -128,10 +150,11 @@ export default function Login(props) {
                         <View style={{ flexDirection: 'row' }}>
                             {hidden === false &&
                                 <Text style={styles.totalMoney}>
-                                    {Intl.NumberFormat('pt-BR', {
+                                    {/* {Intl.NumberFormat('pt-BR', {
                                         style: 'currency',
                                         currency: 'BRL'
-                                    }).format(sumTotal)}
+                                    }).format(sumTotal)} */}
+                                    R$ {formatarMoeda(sumTotal)}
                                 </Text>
                             }
 
@@ -161,6 +184,7 @@ export default function Login(props) {
                     >
                         <PendenciesRevenue />
                         <PendenciesExpenses />
+                        
                     </ScrollView>
 
                     {/* <Text style={styles.labelinfoActivity}>Cartões</Text>
@@ -182,6 +206,7 @@ export default function Login(props) {
                         <View style={styles.containerChart}>
                             <Chart />
                         </View>
+                        
                     }
                 </View>
             </View>

@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { ThemeProvider } from 'styled-components';
 
+import { Provider } from 'react-redux';
+import Store from './src/Store';
+
 import dark from './src/themes/dark';
 import light from './src/themes/light';
 
@@ -12,18 +15,22 @@ import MainStack from './src/navigators/MainStack';
 
 export default function App() {
 
-  const [theme, setTheme] = useState(light);
+  const [theme, setTheme] = useState(Store.getState().userReducer.theme);
 
-  function toggleTheme () {
-    setTheme(theme.title === 'light' ? dark : light);
-  };
+  // let state = Store.getState().userReducer.theme;
+
+  Store.subscribe(() => {
+    setTheme(Store.getState().userReducer.theme);
+  });
+
 
   return (
-    <ThemeProvider theme={theme}>
+    <Provider store={Store}>
       <NavigationContainer>
-        {/* <Config toggleTheme={toggleTheme} /> */}
+        <ThemeProvider theme={theme}>
           <MainStack />
+        </ThemeProvider>
       </NavigationContainer>
-    </ThemeProvider>
+    </Provider>
   );
 }

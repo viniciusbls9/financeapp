@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigation, } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { Wrapper, Title, Image } from './styles';
 
 import CreditCard from '../../assets/credit-card-image.jpg';

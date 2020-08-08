@@ -63,6 +63,28 @@ export default function Revenue() {
         navigation.navigate('AddRevenue');
     }
 
+    function formatarMoeda() {
+        var elemento = totalRevenue;
+        var valor = elemento.valueOf();
+        
+        valor = valor + '';
+        valor = valor > 0 ? parseInt(valor.replace(/[\D]+/g,'')) : parseInt('-'+valor.replace(/[\D]+/g,''));
+        valor = valor + '';
+        valor = valor.replace(/([0-9]{2})$/g, ",$1");
+        
+        if (valor.length > 6) {
+            valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
+        }
+        
+        if(valor == 'NaN') {
+            return '0,00';
+        } else if(valor == 0) {
+            return '0,00'
+        } else {
+            return valor;
+        }
+    }
+
     return (
         <View style={styles.container}>
             <StatusBar barStyle="dark-content" />
@@ -82,10 +104,7 @@ export default function Revenue() {
                     <View style={{ marginLeft: 10 }}>
                         <Text style={styles.revenueTotalText}>Total Recebido</Text>
                         <Text style={styles.revenueTotalValue}>
-                            {Intl.NumberFormat('pt-BR', {
-                                style: 'currency',
-                                currency: 'BRL'
-                            }).format(totalRevenue)}
+                            R$ {formatarMoeda(totalRevenue)}
                         </Text>
                     </View>
                 </View>

@@ -86,6 +86,7 @@ export default StyleSheet.create({
         borderColor: '#ccc',
         marginTop: 20,
         marginBottom: 20,
+        paddingLeft: 12,
     },
     containerMsg: {
         backgroundColor: '#fff',

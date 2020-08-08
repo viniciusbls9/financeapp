@@ -63,6 +63,28 @@ export default function Expenses() {
         navigation.navigate('AddExpenses');
     }
 
+    function formatarMoeda() {
+        var elemento = totalExpense;
+        var valor = elemento.valueOf();
+        
+        valor = valor + '';
+        valor = valor > 0 ? parseInt(valor.replace(/[\D]+/g,'')) : parseInt('-'+valor.replace(/[\D]+/g,''));
+        valor = valor + '';
+        valor = valor.replace(/([0-9]{2})$/g, ",$1");
+        
+        if (valor.length > 7) {
+            valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
+        }
+        
+        if(valor == 'NaN') {
+            return '0,00';
+        } else if(valor == 0) {
+            return '0,00'
+        } else {
+            return valor;
+        }
+    }
+
     return (
         <View style={styles.container}>
             <StatusBar barStyle="dark-content" />
@@ -82,7 +104,7 @@ export default function Expenses() {
                     <View style={{ marginLeft: 10 }}>
                         <Text style={styles.expensesTotalText}>Total Pago</Text>
                         <Text style={styles.expensesTotalValue}>
-                            {totalExpense}
+                            R$ {formatarMoeda(totalExpense)}
                         </Text>
                     </View>
                 </View>

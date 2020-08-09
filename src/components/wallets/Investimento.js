@@ -133,6 +133,28 @@ export default function Wallet() {
         });
     }, []);
 
+    function formatarMoeda() {
+        var elemento = sumTotal;
+        var valor = elemento.valueOf();
+        
+        valor = valor + '';
+        valor = valor > 0 ? parseInt(valor.replace(/[\D]+/g,'')) : parseInt('-'+valor.replace(/[\D]+/g,''));
+        valor = valor + '';
+        valor = valor.replace(/([0-9]{2})$/g, ",$1");
+        
+        if (valor.length > 6) {
+            valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
+        }
+        
+        if(valor == 'NaN') {
+            return '0,00';
+        } else if(valor == 0) {
+            return '0,00'
+        } else {
+            return valor;
+        }
+    }
+
     return (
         <View style={styles.container}>
             {nameBank != '' &&
@@ -148,10 +170,7 @@ export default function Wallet() {
                             </View>
                             <View style={styles.TextsActivity}>
                                 <Text style={{ color: item.value >= 0 ? '#27B635' : '#ff4f5a', fontSize: 18, fontWeight: 'bold' }}>
-                                    {Intl.NumberFormat('pt-BR', {
-                                        style: 'currency',
-                                        currency: 'BRL'
-                                    }).format(item.value)}
+                                    {formatarMoeda(item.value)}
                                 </Text>
                             </View>
                         </View>

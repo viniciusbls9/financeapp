@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 export const Wrapper = styled.View `
-    background: ${props => props.theme.background};
+    background: ${props => props.theme.container};
     flex: 1;
     align-items: center;
     justify-content: center;

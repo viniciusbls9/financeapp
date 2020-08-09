@@ -6,9 +6,6 @@ import { ThemeProvider } from 'styled-components';
 import { Provider } from 'react-redux';
 import Store from './src/Store';
 
-import dark from './src/themes/dark';
-import light from './src/themes/light';
-
 import MainStack from './src/navigators/MainStack';
 
 // import Config from './src/pages/configurations/Configurations';
@@ -16,8 +13,6 @@ import MainStack from './src/navigators/MainStack';
 export default function App() {
 
   const [theme, setTheme] = useState(Store.getState().userReducer.theme);
-
-  // let state = Store.getState().userReducer.theme;
 
   Store.subscribe(() => {
     setTheme(Store.getState().userReducer.theme);

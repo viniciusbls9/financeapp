@@ -120,7 +120,7 @@ export default function Profile() {
               </>
             </TouchableHighlight>
 
-            <TouchableHighlight style={styles.btnLabel} onPress={() => navigation.navigate('CreditCard')} underlayColor="#f7f7f7">
+            <TouchableHighlight style={styles.btnLabel} onPress={message} underlayColor="#f7f7f7">
               <>
                 <Image source={CreditCard} style={styles.walletImage} />
                 <Text>Cartões de Crédito</Text>
@@ -140,7 +140,7 @@ export default function Profile() {
 
           <View style={styles.containerWallet}>
             <Text style={styles.WalletLabel}>Configurações</Text>
-            <TouchableHighlight style={styles.btnLabel} onPress={() => navigation.navigate('Configurations')} underlayColor="#f7f7f7">
+            <TouchableHighlight style={styles.btnLabel} onPress={message} underlayColor="#f7f7f7">
               <>
                 <Image source={Settings} style={styles.walletImage} />
                 <Text>Geral</Text>

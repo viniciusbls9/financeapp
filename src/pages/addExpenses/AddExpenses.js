@@ -117,7 +117,7 @@ export default function AddRevenue() {
             // setCount(count + 1);
             let key = newExpense.push().key;
             newExpense.child(key).set({
-                value: '-'+value.replace(',', ''),
+                value: '-'+value.replace(',', '').replace('.', ''),
                 toggle: isEnabled,
                 description: description,
                 category: picker,

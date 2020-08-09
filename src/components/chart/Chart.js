@@ -49,8 +49,8 @@ export default function Chart() {
         <View>
             <PieChart
                 data={totalExpense}
-                width={Dimensions.get('window').width}
-                height={150}
+                width={320}
+                height={120}
                 chartConfig={chartConfig}
                 accessor='value'
                 backgroundColor="transparent"

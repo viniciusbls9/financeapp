@@ -105,7 +105,7 @@ export default function AddRevenue() {
             // CADASTRO DA RECEITA
             let key = newRevenue.push().key;
             newRevenue.child(key).set({
-                value: value.replace(',', ''),
+                value: value.replace(',', '').replace('.', ''),
                 toggle: isEnabled,
                 description: description,
                 category: picker,

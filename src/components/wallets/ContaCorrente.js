@@ -6,7 +6,6 @@ import styles from './styles';
 
 export default function Wallet(props) {
     const uid = auth().currentUser.uid;
-    const test = props.teste;
 
     /** ARRAY QUE CONTEM INFORMAÇÕES DE RECEITA DAS CARTEIRAS */
     const [walletRevenue, setWalletRevenue] = useState([]);
@@ -21,6 +20,7 @@ export default function Wallet(props) {
 
     /** ARRAY QUE ARMAZENA OS VALORES DE GASTOS E RECEITAS */
     const [sumTotal, setSumTotal] = useState([]);
+    const [value, setValue] = useState([]);
 
     let bg = initial;
     let color = '';
@@ -113,8 +113,8 @@ export default function Wallet(props) {
             });
             let concKey = keyRevenue.concat(keyExpense);
             let obj = [{ value: sum, name: reduced, key: concKey }];
-            // console.log(obj);
             setSumTotal(obj);
+            setValue(sum);
         });
     }, []);
 
@@ -130,7 +130,7 @@ export default function Wallet(props) {
     }, []);
 
     function formatarMoeda() {
-        var elemento = sumTotal;
+        var elemento = value;
         var valor = elemento.valueOf();
         
         valor = valor + '';
@@ -166,7 +166,7 @@ export default function Wallet(props) {
                             </View>
                             <View style={styles.TextsActivity}>
                                 <Text style={{ color: item.value >= 0 ? '#27B635' : '#ff4f5a', fontSize: 18, fontWeight: 'bold' }}>
-                                    {formatarMoeda(item.value)}
+                                    R$ {formatarMoeda(item.value)}
                                 </Text>
                             </View>
                         </View>

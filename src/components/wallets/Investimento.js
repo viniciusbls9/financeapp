@@ -24,8 +24,7 @@ export default function Wallet() {
 
     /** ARRAY QUE ARMAZENA OS VALORES DE GASTOS E RECEITAS */
     const [sumTotal, setSumTotal] = useState([]);
-
-    const [teste, setTeste] = useState([]);
+    const [value, setValue] = useState([]);
     
     let bg = initial;
     let color = '';
@@ -119,6 +118,7 @@ export default function Wallet() {
             let concKey = keyRevenue.concat(keyExpense);
             let obj = [{ value: sum, name: reduced, key: concKey }];
             setSumTotal(obj);
+            setValue(sum);
         });
     }, []);
 
@@ -134,7 +134,7 @@ export default function Wallet() {
     }, []);
 
     function formatarMoeda() {
-        var elemento = sumTotal;
+        var elemento = value;
         var valor = elemento.valueOf();
         
         valor = valor + '';

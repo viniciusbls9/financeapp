@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image } from 'react-native';
-import styles from './styles';
+import { ContainerPendencies, ContainerInfos, IconActivity, CountPendenciesRevenue, ValueActivity, TextsActivity, TitleActivity, DescActivity } from './styles';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 
@@ -84,20 +83,24 @@ export default function PendenceExpense(props) {
     }
 
     return (
-        <View style={styles.containerActivity}>
-            <View style={{ flexDirection: 'row' }}>
-                <Image source={Expense} style={styles.iconActivity} />
-                <View style={styles.countPendenciesRevenue}>
-                    <Text style={styles.valueActivity}>{count}</Text>
-                </View>
-            </View>
+        <ContainerPendencies>
 
-            <View style={styles.TextsActivity}>
-                <Text style={styles.titleActivity}>Receitas pendentes</Text>
-                <Text style={styles.descActivity}>
+            <ContainerInfos>
+                <IconActivity source={Expense} />
+                <CountPendenciesRevenue>
+                    <ValueActivity>
+                        {count}
+                    </ValueActivity>
+                </CountPendenciesRevenue>
+            </ContainerInfos>
+
+            <TextsActivity>
+                <TitleActivity>Despesas Pendentes</TitleActivity>
+                <DescActivity>
                     R$ {formatarMoeda(pendenciesExpense)}
-                </Text>
-            </View>
-        </View>
+                </DescActivity>
+            </TextsActivity>
+
+        </ContainerPendencies>
     );
 }

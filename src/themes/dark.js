@@ -5,5 +5,6 @@ export default {
     shadowCard: '#161714',
     descCard: '#fff',
     subDescCard: '#ccc',
+    titlePendencies: '#ccc',
     color: '#A1CDF1',
 }

@@ -117,7 +117,9 @@ export default function Login(props) {
         valor = valor + '';
         valor = valor.replace(/([0-9]{2})$/g, ",$1");
         
-        if (valor.length > 7) {
+        if (parseInt(valor) < 0 && valor.length > 7) {
+            valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
+        } else if(parseInt(valor) > 0 && valor.length > 6) {
             valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
         }
         
@@ -150,10 +152,6 @@ export default function Login(props) {
                         <View style={{ flexDirection: 'row' }}>
                             {hidden === false &&
                                 <Text style={styles.totalMoney}>
-                                    {/* {Intl.NumberFormat('pt-BR', {
-                                        style: 'currency',
-                                        currency: 'BRL'
-                                    }).format(sumTotal)} */}
                                     R$ {formatarMoeda(sumTotal)}
                                 </Text>
                             }

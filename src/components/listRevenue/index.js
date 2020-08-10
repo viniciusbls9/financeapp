@@ -78,7 +78,7 @@ export default function Revenue(props) {
     let dateRevenueRegisterFormated = dayDateRevenue + '/' + monthDateRevenue + '/' + yearDateRevenue;
 
     return (
-        <Container onPress={handleEdit}>
+        <Container onPress={handleEdit} underlayColor="#transparent">
             <>
                 {/* <InfoRevenue> */}
                     <ContainerData>

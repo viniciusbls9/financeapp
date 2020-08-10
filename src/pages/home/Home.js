@@ -117,7 +117,7 @@ export default function Login(props) {
         valor = valor + '';
         valor = valor.replace(/([0-9]{2})$/g, ",$1");
         
-        if (valor.length > 6) {
+        if (valor.length > 7) {
             valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
         }
         

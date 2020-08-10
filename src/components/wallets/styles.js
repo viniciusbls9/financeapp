@@ -1,32 +1,49 @@
-import { StyleSheet } from 'react-native';
+import styled from 'styled-components/native';
 
-export default StyleSheet.create({
-    container: {
-        paddingHorizontal: 20
-    },
-    containerActivity: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginTop: 20,
-        padding: 20,
-        borderRadius: 20,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        backgroundColor: '#fff',
-        elevation: 4,
-    },
-    containerInitialBank: {
-        width: 30,
-        height: 30,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 10
-    },
-    iconActivity: {
-        width: 30,
-        height: 30,
-        marginBottom: 8,
-        marginRight: 8
-    },
-});
+export const Container = styled.View `
+    padding: 0px 20px 0 20px;
+`;
+
+export const ContainerActivity = styled.View `
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 20px;
+    border-color: #ccc;
+    border-width: 1px;
+    background-color: #fff;
+    elevation: 4;
+    background-color: ${props => props.theme.container};
+`;
+
+export const ContainerBank = styled.View `
+    flex-direction: row;
+    align-items: center;
+`;
+
+export const ContainerInitialBank = styled.View `
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    background-color: ${props => props.bgInitial}
+
+`;
+
+export const TextInitialBank = styled.Text `
+    color: #fff;
+`;
+
+export const TextsActivity = styled.View `
+    width: 290px;
+    height: 290px;
+`;
+
+export const TextValue = styled.Text `
+    color: ${props => props.color};
+    font-size: 18px;
+    font-weight: bold;
+`;

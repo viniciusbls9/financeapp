@@ -1,5 +1,9 @@
 export default {
     title: 'dark',
-    container: '#141414', 
-    color: '#DCE1DE',
+    container: '#272727',
+    card: '#2e2e2e',
+    shadowCard: '#161714',
+    descCard: '#fff',
+    subDescCard: '#ccc',
+    color: '#A1CDF1',
 }

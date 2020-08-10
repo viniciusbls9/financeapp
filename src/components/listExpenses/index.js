@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, TouchableHighlight } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import styles from './styles';
+import { Container, InfoRevenue, ContainerData, ContainerIcon, IconRevenue, ContainerInfo, DescRevenue, ContainerTexts, CatRevenue, DateRevenue, InfoValueRevenue, ValueRevenue, DateRemember, IconPay } from './styles';
 import RevenueIcon from '../iconRevenue';
 import Alert from '../../assets/alert.png';
 
@@ -14,34 +14,34 @@ export default function Expenses(props) {
     switch (account) {
         case '1':
             translate = 'Conta Corrente';
-        break;
+            break;
         case '2':
             translate = 'Poupança';
-        break;
+            break;
         case '3':
             translate = 'Investimento';
-        break;
+            break;
         case '4':
             translate = 'Outros';
-        break;
+            break;
     }
 
     function formatarMoeda() {
         var elemento = props.data.value;
         var valor = elemento.valueOf();
-        
+
         valor = valor + '';
-        valor = valor > 0 ? parseInt(valor.replace(/[\D]+/g,'')) : parseInt('-'+valor.replace(/[\D]+/g,''));
+        valor = valor > 0 ? parseInt(valor.replace(/[\D]+/g, '')) : parseInt('-' + valor.replace(/[\D]+/g, ''));
         valor = valor + '';
         valor = valor.replace(/([0-9]{2})$/g, ",$1");
-        
+
         if (valor.length > 7) {
             valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
         }
-        
-        if(valor == 'NaN') {
+
+        if (valor == 'NaN') {
             return '0,00';
-        } else if(valor == 0) {
+        } else if (valor == 0) {
             return '0,00'
         } else {
             return valor;
@@ -70,7 +70,7 @@ export default function Expenses(props) {
     let dateRevenue = new Date(revenueRegister);
     let dayDateRevenue = dateRevenue.getDate();
     let monthDateRevenue = dateRevenue.getMonth();
-    let yearDateRevenue = dateRevenue.getFullYear().toString().substr(2,2);
+    let yearDateRevenue = dateRevenue.getFullYear().toString().substr(2, 2);
 
 
     dayDateRevenue = dayDateRevenue < 10 ? '0' + dayDateRevenue : dayDateRevenue;
@@ -79,38 +79,41 @@ export default function Expenses(props) {
     let dateRevenueRegisterFormated = dayDateRevenue + '/' + monthDateRevenue + '/' + yearDateRevenue;
 
     return (
-        <TouchableHighlight style={styles.container} underlayColor="#transparent" onPress={handleEdit}>
+        <Container onPress={handleEdit}>
             <>
-                <View style={styles.infoRevenue}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={styles.containerIcon}>
-                            <Image source={RevenueIcon(props.data.tag)} style={styles.iconRevenue} />
-                        </View>
-                        <View style={{ flexDirection: 'column' }}>
-                            <Text style={styles.descRevenue} numberOfLines={1} ellipsizeMode="tail">
-                                {props.data.description}
-                            </Text>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Text style={styles.catRevenue}>{props.data.category} | </Text>
-                                <Text style={styles.dateRevenue}>{dateRevenueRegisterFormated} | </Text>
-                                <Text style={styles.dateRevenue}>{translate}</Text>
-                            </View>
-                        </View>
-                    </View>
-                </View>
+                {/* <InfoRevenue> */}
+                    <ContainerData>
 
-                <View style={styles.infoValueRevenue}>
-                    <Text style={styles.valueRevenue}>
+                        <ContainerIcon>
+                            <IconRevenue source={RevenueIcon(props.data.tag)} />
+                        </ContainerIcon>
+
+                        <ContainerInfo>
+                            <DescRevenue numberOfLines={1} ellipsizeMode="tail">
+                                {props.data.description}
+                            </DescRevenue>
+                            <ContainerTexts>
+                                <CatRevenue>{props.data.category} | </CatRevenue>
+                                <DateRevenue>{dateRevenueRegisterFormated} | </DateRevenue>
+                                <DateRevenue>{translate}</DateRevenue>
+                            </ContainerTexts>
+                        </ContainerInfo>
+
+                    </ContainerData>
+                {/* </InfoRevenue> */}
+
+                <InfoValueRevenue>
+                    <ValueRevenue>
                         {formatarMoeda(props.data.value)}
-                    </Text>
+                    </ValueRevenue>
                     {dateRemember == new Date(Date.now()).getDate() &&
-                        <Text style={styles.dateRemember}>Dia de pagar</Text>
+                        <DateRemember>Dia de pagar</DateRemember>
                     }
                     {props.data.toggle === false &&
-                        <Image source={Alert} style={styles.iconPay} />
+                        <IconPay source={Alert} />
                     }
-                </View>
+                </InfoValueRevenue>
             </>
-        </TouchableHighlight>
+        </Container>
     );
 }

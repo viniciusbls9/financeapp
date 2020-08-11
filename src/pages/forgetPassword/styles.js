@@ -5,27 +5,12 @@ export default StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#fff',
-        paddingTop: StatusBar.currentHeight
-    },
-    header: {
-        paddingHorizontal: 24,
-        alignItems: 'center',
-    },
-    logo: {
-        width: 70,
-        height: 70,
-    },
-    containerLoginImage: {
-        // justifyContent: 'flex-end',
-        alignItems: 'center',
-    },
-    loginImage: {
-        width: 350,
-        height: 466
+        paddingTop: StatusBar.currentHeight,
+        justifyContent: 'center',
     },
     containerInput: {
         marginTop: 50,
-        marginHorizontal: 20
+        marginHorizontal: 20,
     },
     input: {
         borderColor: '#E1E1E1',
@@ -48,18 +33,8 @@ export default StyleSheet.create({
         textTransform: 'uppercase',
         fontWeight: 'bold'
     },
-    registerBtn: {
+    message: {
         alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 20,
         marginBottom: 10,
-    },
-    textBtnRegister: {
-        color: '#27B635',
-        fontWeight: 'bold'
-    },
-    textForget: {
-        fontSize: 12,
-        textAlign: 'center'
-    },
+    }
 });

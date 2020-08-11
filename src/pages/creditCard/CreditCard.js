@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Wrapper, Title, Image } from './styles';
+import firebase from '@react-native-firebase/app';
 
 import CreditCard from '../../assets/credit-card-image.jpg';
 

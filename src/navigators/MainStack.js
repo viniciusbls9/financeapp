@@ -19,6 +19,7 @@ import AddWallet from '../pages/addWallet/AddWallet';
 import CreditCard from '../pages/creditCard/CreditCard';
 import Configurations from '../pages/configurations/Configurations';
 import Education from '../pages/education/Education';
+import ForgetPassword from '../pages/forgetPassword/ForgetPassword';
 
 import DrawerNavigation from './DrawerNavigation';
 
@@ -44,5 +45,6 @@ export default () => (
         <MainStack.Screen name="CreditCard" component={CreditCard} options={{ headerShown: false }} />
         <MainStack.Screen name="Configurations" component={Configurations} options={{ headerShown: false }} />
         <MainStack.Screen name="Education" component={Education} options={{ headerShown: false }} />
+        <MainStack.Screen name="ForgetPassword" component={ForgetPassword} options={{ headerShown: false }} />
     </MainStack.Navigator>
 );

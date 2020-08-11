@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, StatusBar, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
+import { View, Text, Image, TextInput, TouchableOpacity, StatusBar, KeyboardAvoidingView, Platform, ActivityIndicator, TouchableHighlight } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Sistema from '../../Sistema';
-import database from '@react-native-firebase/database';
-import auth from '@react-native-firebase/auth';
 
 import styles from './styles';
 import Logo from '../../assets/logo.png';
@@ -16,10 +14,10 @@ export default function Login() {
     const [errorMessage, setErrorMessage] = useState('');
     const [load, setLoad] = useState(false);
 
-    async function handleSubmit()  {
+    async function handleSubmit() {
         try {
             setLoad(true);
-            if(email != '' && password != '') {
+            if (email != '' && password != '') {
                 await Sistema.login(email, password);
                 await AsyncStorage.setItem('@email', email);
                 await AsyncStorage.setItem('@password', password);
@@ -27,20 +25,16 @@ export default function Login() {
             } else {
                 setErrorMessage('Preencha todos os campos para efetivar o login');
             }
-        } catch(error) {
-            switch(error.code) {
+        } catch (error) {
+            switch (error.code) {
                 case 'auth/wrong-password':
                     setErrorMessage('Ops, senha inválida!');
-                break;
+                    break;
                 case 'auth/user-not-found':
-                   setErrorMessage('Ops, usuário inválido!');
-                break;
+                    setErrorMessage('Ops, usuário inválido!');
+                    break;
             }
         }
-    }
-
-    const handleRegister = () => {
-        navigation.navigate('Register');
     }
 
     return (
@@ -86,11 +80,17 @@ export default function Login() {
                 </TouchableOpacity>
 
 
-                <TouchableOpacity style={styles.registerBtn} onPress={handleRegister}>
+
+                <TouchableOpacity style={styles.registerBtn} onPress={() => navigation.navigate('Register')}>
                     <Text>Novo por aqui?
                         <Text style={styles.textBtnRegister}> Cadastrar</Text>
                     </Text>
                 </TouchableOpacity>
+
+                <TouchableHighlight onPress={() => navigation.navigate('ForgetPassword')} underlayColor="#transparent">
+                    <Text style={styles.textForget}>Esqueceu a senha?</Text>
+                </TouchableHighlight>
+
             </View>
         </KeyboardAvoidingView>
     );

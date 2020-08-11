@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableHighlight, Alert, Modal, TextInput, TouchableOpacity } from 'react-native';
+import { Alert } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
-import { useNavigation, CommonActions } from '@react-navigation/native';
 
-import styles from './styles';
+import { Container, Btns, Touchable, IconBtns, CategoryName, Modal, ModalBox, ModalBody, InputNewCategory, BtnNewCategory, TextBtnSave, BtnCancel, TextBtnCancel } from './styles';
 import TrashBlack from '../../assets/trash-black.png';
 import Edit from '../../assets/edit.png';
 
 export default function CategoryExpenseList(props) {
-    const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
     const [newCategory, setNewCategory] = useState(props.data.category);
 
@@ -31,8 +29,6 @@ export default function CategoryExpenseList(props) {
             });
             setNewCategory('');
             setModalVisible(false);
-        } else {
-            // setMessageError('Preencha todos os campos');
         }
     }
 
@@ -65,44 +61,45 @@ export default function CategoryExpenseList(props) {
     }
 
     return (
-        <View style={styles.container} underlayColor="#transparent">
-            <TouchableHighlight style={styles.btns}>
-                <>
-                    <TouchableHighlight onPress={handleEdit} underlayColor="transparent">
-                        <Image source={Edit} style={styles.iconBtns} />
-                    </TouchableHighlight>
+        <Container>
+            <Btns>
+                <Touchable onPress={handleEdit} underlayColor="#transparent">
+                    <IconBtns source={Edit} />
+                </Touchable>
 
-                    <TouchableHighlight onPress={handleDelete} underlayColor="transparent">
-                        <Image source={TrashBlack} style={styles.iconBtns} />
-                    </TouchableHighlight>
-                </>
-            </TouchableHighlight>
-            <Text style={styles.categoryName}>{props.data.category}</Text>
+                <Touchable onPress={handleDelete} underlayColor="#transparent">
+                    <IconBtns source={TrashBlack} />
+                </Touchable>
+            </Btns>
+
+            <CategoryName>{props.data.category}</CategoryName>
             <Modal
                 visible={modalVisible}
                 animationType="fade"
                 transparent={true}
             >
-                <View style={styles.modalBox}>
-                    <View style={styles.modalBody}>
-                        <TextInput
-                            style={styles.inputNewCategory}
+
+                <ModalBox>
+                    <ModalBody>
+                        <InputNewCategory
                             placeholder=" Nova Categoria"
                             autoFocus={true}
                             value={newCategory}
                             onChangeText={setNewCategory}
                         />
 
-                        <TouchableOpacity onPress={editCategory} style={styles.btnNewCategory}>
-                            <Text style={styles.textBtnSave}>Salvar</Text>
-                        </TouchableOpacity>
+                        <BtnNewCategory onPress={editCategory}>
+                            <TextBtnSave>Salvar</TextBtnSave>
+                        </BtnNewCategory>
 
-                        <TouchableHighlight style={styles.btnCancel} onPress={() => setModalVisible(false)} underlayColor="transparent">
-                            <Text style={styles.textBtnCancel}>Cancelar</Text>
-                        </TouchableHighlight>
-                    </View>
-                </View>
+                        <BtnCancel onPress={() => setModalVisible(false)} underlayColor="transparent">
+                            <TextBtnCancel>Cancelar</TextBtnCancel>
+                        </BtnCancel>
+
+                    </ModalBody>
+                </ModalBox>
+
             </Modal>
-        </View>
+        </Container>
     );
 }

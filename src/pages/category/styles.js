@@ -11,12 +11,12 @@ export default StyleSheet.create({
         backgroundColor: '#5c8efe',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     backImage: {
         width: 25,
         height: 25,
-        marginRight: 20
+        marginRight: 20,
     },
     textHeader: {
         fontSize: 16,
@@ -40,12 +40,12 @@ export default StyleSheet.create({
     },
     containerRevenue: {
         marginBottom: 15,
-        paddingBottom: 10
+        paddingBottom: 10,
     },
     containerExpense: {
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
         paddingBottom: 15,
-        marginTop: 25
+        marginTop: 25,
     },
 });

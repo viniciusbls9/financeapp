@@ -11,43 +11,44 @@ import Arrow from '../../assets/arrows.png';
 
 export default function Category() {
   const navigation = useNavigation();
+  let uid = auth().currentUser.uid
 
   const [categoryRevenue, setCategoryRevenue] = useState([]);
   const [categoryExpense, setCategoryExpense] = useState([]);
 
   useEffect(() => {
-    let uid = auth().currentUser.uid
     database().ref('finance_revenue_category')
-    .child(uid)
-    .on('value', snapshot => {
-      snapshot.forEach((childItem) => {
-        categoryRevenue.push({
-          category: childItem.val().category,
-          key: childItem.key
+      .child(uid)
+      .once('value')
+      .then((snapshot) => {
+        snapshot.forEach((revenue) => {
+          categoryRevenue.push({
+            category: revenue.val().category,
+            key: revenue.key
+          });
         });
       });
-    });
-  }, []);
+  }, [categoryRevenue]);
 
   useEffect(() => {
-    let uid = auth().currentUser.uid
     database().ref('finance_expense_category')
-    .child(uid)
-    .on('value', snapshot => {
-      snapshot.forEach((childItem) => {
-        categoryExpense.push({
-          category: childItem.val().category,
-          key: childItem.key
+      .child(uid)
+      .once('value')
+      .then((snapshot) => {
+        snapshot.forEach((expense) => {
+          categoryExpense.push({
+            category: expense.val().category,
+            key: expense.key
+          });
         });
       });
-    });
-  }, []);
+  }, [categoryExpense]);
 
   return (
     <View style={styles.container}>
 
       <View style={styles.header}>
-        <TouchableHighlight underlayColor="transparent" style={{flexDirection: 'row'}} onPress={() => navigation.navigate('Profile')}>
+        <TouchableHighlight underlayColor="transparent" style={{ flexDirection: 'row' }} onPress={() => navigation.navigate('Profile')}>
           <>
             <Image source={Arrow} style={styles.backImage} />
             <Text style={styles.textHeader}>Categorias</Text>

@@ -8,7 +8,7 @@ import { useNavigation, CommonActions } from '@react-navigation/native';
 import dark from '../../themes/dark';
 import light from '../../themes/light';
 
-import { View, Text, Switch } from 'react-native';
+import { View, Text, Switch, ScrollView } from 'react-native';
 import { ThemeContext } from 'styled-components'
 
 function Cards(props) {
@@ -26,7 +26,7 @@ function Cards(props) {
     const { title } = useContext(ThemeContext);
 
     return (
-        <View>
+        <ScrollView>
             {/* <Switch
                 trackColor={{ false: "#767577", true: "#81b0ff" }}
                 thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
@@ -50,7 +50,7 @@ function Cards(props) {
 
             <Text>{JSON.stringify(props.theme)}</Text>
 
-        </View>
+        </ScrollView>
     );
 }
 

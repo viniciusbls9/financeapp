@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableHighlight, Image, TouchableOpacity, StatusBar, ScrollView, Dimensions } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, TouchableHighlight, Image, TouchableOpacity, StatusBar, ScrollView, Dimensions, RefreshControl } from 'react-native';
 import styles from './styles';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, CommonActions } from '@react-navigation/native';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 
@@ -92,13 +92,6 @@ export default function Login(props) {
         }
     }, []);
 
-    function handleDrawer() {
-        props.navigation.openDrawer();
-    }
-
-    function handleAddRevenue() {
-        navigation.navigate('AddRevenue');
-    }
 
     // const [cards, setCards] = useState([
     //     { key: '1', flag: Mastercard, nameCard: 'Nubank', closeDate: '12/jun', value: 250, valueTotal: 250 },
@@ -132,13 +125,39 @@ export default function Login(props) {
         }
     }
 
+    const wait = (timeout) => {
+        return new Promise(resolve => {
+            setTimeout(resolve, timeout);
+        });
+    }
+
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        navigation.dispatch(
+            CommonActions.reset({
+                routes: [
+                    { name: 'Home' },
+                ]
+            }));
+        
+        wait(2000).then(() => setRefreshing(false));
+    }, []);
+
     return (
-        <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+        <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.container}
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+            >
             <View style={{ height: Dimensions.get('screen').height }}>
                 <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                 <View style={styles.header}>
                     <View style={styles.headerButtons}>
-                        <TouchableHighlight underlayColor="transparent" onPress={handleDrawer}>
+                        <TouchableHighlight underlayColor="transparent" onPress={() => props.navigation.openDrawer()}>
                             <Image source={Bars} style={styles.bars} />
                         </TouchableHighlight>
                         <TouchableHighlight onPress={() => navigation.navigate('Profile')} underlayColor="transparent">
@@ -165,7 +184,7 @@ export default function Login(props) {
                             </TouchableHighlight>
                         </View>
 
-                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={handleAddRevenue}>
+                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => navigation.navigate('AddRevenue')}>
                             <Image source={Button} style={styles.addMoneyIcon} />
                             <Text style={styles.addMoneyText}>Dinheiro</Text>
                         </TouchableOpacity>

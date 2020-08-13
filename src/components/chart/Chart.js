@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Dimensions } from 'react-native';
+import { View } from 'react-native';
 import { PieChart } from "react-native-chart-kit";
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 
-export default function Chart() {
+import { connect } from 'react-redux';
+
+
+function Chart(props) {
     const id = auth().currentUser.uid;
     const [totalExpense, setTotalExpense] = useState([]);
 
@@ -27,7 +30,7 @@ export default function Chart() {
                     });
                 });
                 const data = totalExpense.map((val) => {
-                    return { name: val.category, value: parseFloat(val.value), color: val.color, legendFontColor: "#7F7F7F", legendFontSize: 15 }
+                    return { name: val.category, value: parseFloat(val.value), color: val.color, legendFontColor: props.theme.titlePendencies, legendFontSize: 13 }
                 });
                 setTotalExpense(data);
             });
@@ -59,3 +62,11 @@ export default function Chart() {
         </View>
     );
 }
+
+const mapStateToProps = (state) => {
+    return {
+        theme: state.userReducer.theme
+    };
+}
+
+export default connect(mapStateToProps)(Chart);

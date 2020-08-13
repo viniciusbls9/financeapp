@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableHighlight, Image, TextInput, Switch, Modal, ScrollView } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { useNavigation, CommonActions } from '@react-navigation/native';
-import styles from './styles';
+
+import { Container, Header, BackExpense, BackImage, TextHeader, ContainerInputValue, TextFormValue, LabelFormValue, InputValue, ContainerInputs, ContainerSwitch, Switch, LabelSwitch, LabelInputs, InputDesc, ContainerPicker, ContainerCalendar, BtnCalendar, CalendarImage, BtnTextCalendar, ContainerBtnSave, BtnSave, TextBtnSave, TextMessageError, Modal, ModalBox, ModalBody, InputNewCategory, BtnNewCategory, BtnCancel, TextBtnCancel } from './styles';
+
+
 import Arrow from '../../assets/arrows.png';
 import Calendar from '../../assets/calendar.png';
 import ColorExpense from '../../components/colorsExpense/ColorExpense';
@@ -117,7 +119,7 @@ export default function AddRevenue() {
             // setCount(count + 1);
             let key = newExpense.push().key;
             newExpense.child(key).set({
-                value: '-'+value.replace(',', '').replace('.', ''),
+                value: '-' + value.replace(',', '').replace('.', ''),
                 toggle: isEnabled,
                 description: description,
                 category: picker,
@@ -214,16 +216,16 @@ export default function AddRevenue() {
         var valor = elemento.valueOf();
 
         valor = valor + '';
-        valor = parseInt(valor.replace(/[\D]+/g,''));
+        valor = parseInt(valor.replace(/[\D]+/g, ''));
         valor = valor + '';
         valor = valor.replace(/([0-9]{2})$/g, ",$1");
         // console.log(valor);
-        
+
         if (valor.length > 6) {
             valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
         }
-        
-        if(valor == 'NaN') {
+
+        if (valor == 'NaN') {
             return false;
         } else {
             return valor;
@@ -231,22 +233,21 @@ export default function AddRevenue() {
     }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableHighlight underlayColor="transparent" onPress={handlebackExpense} style={styles.backExpense}>
+        <Container>
+            <Header>
+                <BackExpense onPress={handlebackExpense} underlayColor="transparent">
                     <>
-                        <Image source={Arrow} style={styles.backImage} />
-                        <Text style={styles.textHeader}>Despesas</Text>
+                        <BackImage source={Arrow} />
+                        <TextHeader>Despesas</TextHeader>
                     </>
-                </TouchableHighlight>
-            </View>
+                </BackExpense>
+            </Header>
 
-            <View style={styles.containerInputValue}>
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={styles.labelFormValue}>Valor da receita</Text>
-                </View>
-                <TextInput
-                    style={styles.inputValue}
+            <ContainerInputValue>
+                <TextFormValue>
+                    <LabelFormValue>Valor da despesa</LabelFormValue>
+                </TextFormValue>
+                <InputValue
                     placeholder=" R$ 00,00"
                     placeholderTextColor="#fff"
                     keyboardType="numeric"
@@ -254,11 +255,11 @@ export default function AddRevenue() {
                     value={formatarMoeda(value)}
                     onChangeText={setValue}
                 />
-            </View>
+            </ContainerInputValue>
 
-            <ScrollView style={styles.containerInputs}>
-                <View style={styles.containerSwitch}>
-                    <Text style={styles.labelSwitch}>Pago</Text>
+            <ContainerInputs>
+                <ContainerSwitch>
+                    <LabelSwitch>Pago</LabelSwitch>
                     <Switch
                         trackColor={{ false: "#767577", true: "#ff4f5a" }}
                         thumbColor={isEnabled ? "#ff4f5a" : "#ff4f5a"}
@@ -266,17 +267,16 @@ export default function AddRevenue() {
                         onValueChange={toggleSwitch}
                         value={isEnabled}
                     />
-                </View>
+                </ContainerSwitch>
 
-                <Text style={styles.labelInputs}>Descrição</Text>
-                <TextInput
-                    style={styles.input}
+                <LabelInputs>Descrição</LabelInputs>
+                <InputDesc
                     value={description}
                     onChangeText={setDescription}
                 />
 
-                <View style={styles.picker}>
-                    <Text style={styles.labelInputs}>Categoria</Text>
+                <ContainerPicker>
+                    <LabelInputs>Categoria</LabelInputs>
                     <Picker
                         selectedValue={picker}
                         onValueChange={(itemValue, itemIndex) => {
@@ -303,10 +303,9 @@ export default function AddRevenue() {
                         <Picker.Item key={10} value={'Nova categoria'} label={'Nova categoria'} />
 
                     </Picker>
-                </View>
-
-                <View style={styles.picker}>
-                    <Text style={styles.labelInputs}>Carteira</Text>
+                </ContainerPicker>
+                <ContainerPicker>
+                    <LabelInputs>Carteira</LabelInputs>
                     <Picker
                         selectedValue={account}
                         onValueChange={(itemValue) => {
@@ -323,17 +322,17 @@ export default function AddRevenue() {
                         {getAccount}
                         <Picker.Item key={0} value={'Adicionar conta'} label={'Adicionar conta'} />
                     </Picker>
-                </View>
+                </ContainerPicker>
 
-                <View style={styles.containerCalendar}>
-                    <Text style={styles.labelInputs}>Data de pagamento</Text>
-                    <TouchableHighlight onPress={showDatepickerDate} style={styles.btnCalendar} underlayColor="#ff3b47">
+                <ContainerCalendar>
+                    <LabelInputs>data de pagamento</LabelInputs>
+                    <BtnCalendar onPress={showDatepickerDate} underlayColor="#ff3b47">
                         <>
-                            <Image source={Calendar} style={styles.calendarImage} />
-                            <Text style={styles.btnTextCalendar}>Selecionar data</Text>
+                            <CalendarImage source={Calendar} />
+                            <BtnTextCalendar>Selecionar data</BtnTextCalendar>
                         </>
-                    </TouchableHighlight>
-                </View>
+                    </BtnCalendar>
+                </ContainerCalendar>
                 {show && (
                     <DateTimePicker
                         testID="dateTimePicker"
@@ -345,15 +344,15 @@ export default function AddRevenue() {
                     />
                 )}
 
-                <View style={styles.containerRemember}>
-                    <Text style={styles.labelInputs}>Lembrar-me</Text>
-                    <TouchableHighlight onPress={showDatepickerRemember} style={styles.btnCalendar} underlayColor="#ff3b47">
+                <ContainerCalendar>
+                    <LabelInputs>Lembrar-me</LabelInputs>
+                    <BtnCalendar onPress={showDatepickerRemember} underlayColor="#ff3b47">
                         <>
-                            <Image source={Calendar} style={styles.calendarImage} />
-                            <Text style={styles.btnTextCalendar}>Selecionar data</Text>
+                            <CalendarImage source={Calendar} />
+                            <BtnTextCalendar>Selecionar data</BtnTextCalendar>
                         </>
-                    </TouchableHighlight>
-                </View>
+                    </BtnCalendar>
+                </ContainerCalendar>
                 {showRemember && (
                     <DateTimePicker
                         testID="dateTimePicker"
@@ -366,40 +365,40 @@ export default function AddRevenue() {
                     />
                 )}
 
-                <View style={styles.containerbtnSave}>
-                    <TouchableHighlight onPress={addNewExpense} style={styles.btnSave} underlayColor="#ff3b47">
-                        <Text style={styles.textBtnSave}>Salvar</Text>
-                    </TouchableHighlight>
-                    <Text style={styles.textMessageError}>{messageError}</Text>
-                </View>
+                <ContainerBtnSave>
+                    <BtnSave onPress={addNewExpense} underlayColor="#ff3b47">
+                        <TextBtnSave>Salvar</TextBtnSave>
+                    </BtnSave>
+                    <TextMessageError>{messageError}</TextMessageError>
+                </ContainerBtnSave>
 
                 <Modal
                     visible={modalVisible}
                     animationType="fade"
                     transparent={true}
                 >
-                    <View style={styles.modalBox}>
-                        <View style={styles.modalBody}>
-                            <TextInput
-                                style={styles.inputNewCategory}
+                    <ModalBox>
+                        <ModalBody>
+                            <InputNewCategory
                                 placeholder=" Nova Categoria"
                                 autoFocus={true}
                                 value={newCategory}
                                 onChangeText={setNewCategory}
                             />
 
-                            <TouchableHighlight onPress={addNewCategory} style={styles.btnNewCategory} underlayColor="#ff3b47">
-                                <Text style={styles.textBtnSave}>Salvar</Text>
-                            </TouchableHighlight>
+                            <BtnNewCategory onPress={addNewCategory} underlayColor="#ff3b47">
+                                <TextBtnSave>Salvar</TextBtnSave>
+                            </BtnNewCategory>
 
-                            <TouchableHighlight style={styles.btnCancel} onPress={() => setModalVisible(false)} underlayColor="transparent">
-                                <Text style={styles.textBtnCancel}>Cancelar</Text>
-                            </TouchableHighlight>
-                        </View>
-                    </View>
+                            <BtnCancel onPress={() => setModalVisible(false)} underlayColor="transparent">
+                                <TextBtnCancel>Cancelar</TextBtnCancel>
+                            </BtnCancel>
+
+                        </ModalBody>
+                    </ModalBox>
                 </Modal>
+            </ContainerInputs>
 
-            </ScrollView>
-        </View>
+        </Container>
     );
 }

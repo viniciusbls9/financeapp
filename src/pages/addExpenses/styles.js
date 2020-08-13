@@ -54,7 +54,7 @@ export const InputValue = styled.TextInput `
 export const ContainerInputs = styled.ScrollView `
     flex: 1;
     padding: 30px 20px 0 20px;
-    background-color: #fff;
+    background-color: ${props => props.theme.card};
     border-top-left-radius: 25px;
     border-top-right-radius: 25px;
 `;
@@ -70,16 +70,22 @@ export const ContainerSwitch = styled.View `
 
 export const LabelSwitch = styled.Text `
     font-size: 20px;
-    color: #1c2e35;
+    color: ${props => props.theme.descCard};
 `;
 
-export const Switch = styled.Switch `
-
-`;
+export const Switch = styled.Switch ``;
 
 export const LabelInputs = styled.Text `
-    color: #1c2e35;
+    color: ${props => props.theme.descCard};
 `;
+
+// export const Picker = styled.Picker `
+    
+// `;
+
+// export const PickerItem = styled.PickerItem `
+
+// `;
 
 export const InputDesc = styled.TextInput `
     border-bottom-width: 1px;

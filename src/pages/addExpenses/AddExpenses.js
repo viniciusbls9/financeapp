@@ -9,13 +9,11 @@ import { connect } from 'react-redux';
 import { useNavigation, CommonActions } from '@react-navigation/native';
 
 import { Container, Header, BackExpense, BackImage, TextHeader, ContainerInputValue, TextFormValue, LabelFormValue, InputValue, ContainerInputs, ContainerSwitch, Switch, LabelSwitch, LabelInputs, InputDesc, ContainerPicker, ContainerCalendar, BtnCalendar, CalendarImage, BtnTextCalendar, ContainerBtnSave, BtnSave, TextBtnSave, TextMessageError, Modal, ModalBox, ModalBody, InputNewCategory, BtnNewCategory, BtnCancel, TextBtnCancel } from './styles';
-
-
 import Arrow from '../../assets/arrows.png';
 import Calendar from '../../assets/calendar.png';
 import ColorExpense from '../../components/colorsExpense/ColorExpense';
 
-function AddRevenue(props) {
+function AddExpense(props) {
     let uid = auth().currentUser.uid;
 
     /**CONSTANT FOR NAVIGATION */
@@ -413,4 +411,4 @@ const mapStateToProps = (state) => {
     };
 }
 
-export default connect(mapStateToProps)(AddRevenue);
+export default connect(mapStateToProps)(AddExpense);

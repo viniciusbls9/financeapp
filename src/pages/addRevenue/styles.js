@@ -1,213 +1,194 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { Dimensions } from 'react-native';
+import styled from 'styled-components/native';
 
 const width = Dimensions.get('window').width; //full width
 const height = Dimensions.get('window').height; //full height
 
-// const percent = '90%'
+export const Container = styled.View `
+    flex: 1;
+    background-color: #27B635;
+`;
 
-export default StyleSheet.create({
-    container:{
-        flex: 1,
-        backgroundColor: '#27B635',
-    },
-    header: {
-        padding: 20,
-        height: 100,
-        backgroundColor: '#27B635',
-        flexDirection: 'row',
-    },
-    backRevenue: {
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    backImage: {
-        width: 25,
-        height: 25,
-        marginRight: 20
-    },
-    textHeader: {
-        fontSize: 16,
-        color: '#fff',
-    },
-    containerInputValue: {
-        paddingHorizontal: 20
-    },
-    labelFormValue: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 13
-    },
-    containerBtnTooltip: {
-        width: 20,
-        marginLeft: 10,
-        borderColor: '#fff',
-        borderWidth: 1,
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    textTooltip: {
-        color: '#fff',
-    },
-    containerTooltip: {
-        backgroundColor: 'transparent',
-        position: 'absolute',
-        zIndex: 2, // <- zIndex here
-        // flex: 1,
-        left: 58,
-        top: 30
-    },
-    tooltip: {
-        width: 150,
-        height: 50,
-        backgroundColor: '#fff',
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    tooltipTriangle: {
-        position: 'absolute',
-        bottom: -20,
-        left: 55,
-        width: 0,
-        height: 0,
-        borderLeftWidth: 20,
-        borderRightWidth: 20,
-        borderTopWidth: 20,
-        borderLeftColor: 'transparent',
-        borderRightColor: 'transparent',
-        borderTopColor: '#fff',
-    },
-    tooltipMessage: {
-        marginHorizontal: 20,
-        textAlign: 'center',
-        fontSize: 12
-    },
-    inputValue: {
-        color: '#fff',
-        fontSize: 30,
-    },
-    containerInputs: {
-        paddingTop: 30,
-        flex: 1,
-        paddingHorizontal: 20,
-        backgroundColor: '#fff',
-        borderTopLeftRadius: 25,
-        borderTopRightRadius: 25,
-    },
-    containerSwitch: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderBottomColor: '#ccc',
-        borderBottomWidth: 1,
-        paddingBottom: 20,
-        marginBottom: 20
-    },
-    labelSwitch: {
-        fontSize: 20,
-        color: '#1c2e35'
-    },
-    labelInputs: {
-        color: '#1c2e35'
-    },
-    input: {
-        borderBottomWidth: 1,
-        borderColor: '#ccc',
-        marginBottom: 20
-    },
-    picker: {
-        borderBottomColor: '#ccc',
-        borderBottomWidth: 1,
-        paddingBottom: 20,
-        marginBottom: 20
-    },
-    containerCalendar: {
-        borderBottomColor: '#ccc',
-        borderBottomWidth: 1,
-        paddingBottom: 20,
-        marginBottom: 20
-    },
-    btnCalendar: {
-        flexDirection:'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#24822e',
-        padding: 10,
-        marginTop: 10, 
-        width: '50%',
-        borderRadius: 10
-    },
-    calendarImage: {
-        width: 25,
-        height: 25,
-        marginRight: 10
-    },
-    btnTextCalendar: {
-        color: '#fff',
-        justifyContent: 'center'
-    },
-    containerRemember: {
-        borderBottomColor: '#ccc',
-        borderBottomWidth: 1,
-        paddingBottom: 20,
-        marginBottom: 20
-    },
-    containerbtnSave: {
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        marginTop: 20,
-        marginBottom: 120
-    },
-    btnSave: {
-        backgroundColor: '#27B635',
-        width: '90%',
-        height: 45,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10,
-    },
-    textBtnSave: {
-        color: '#fff'
-    },
-    textMessageError: {
-        color: '#ff4f5a',
-        marginTop: 5
-    },
-    modalBox: {
-        width: width,
-        height: height,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        // opacity: 0.5,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    modalBody: {
-        width: '90%',
-        height: 200,
-        borderRadius: 10,
-        backgroundColor: '#fff',
-        padding:10
-    },
-    inputNewCategory: {
-        fontSize: 21,
-        borderBottomWidth: 1,
-        borderBottomColor: "#ccc",
-        padding: 10,
-    },
-    btnNewCategory: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 10,
-        marginTop: 20,
-        backgroundColor: '#27B635',
-        borderRadius: 5,
-    },
-    btnCancel: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20,
-    },
-    textBtnCancel: {
-        fontSize: 12,
-    },
-});
+export const Header = styled.View `
+    padding: 20px;
+    height: 100px;
+    background-color: #27B635;
+    flex-direction: row;
+`;
+
+export const BackExpense = styled.TouchableHighlight `
+    flex-direction: row;
+    align-items: center;
+`;
+
+export const BackImage = styled.Image `
+    width: 25px;
+    height: 25px;
+    margin-right: 20px;
+`;
+
+export const TextHeader = styled.Text `
+    font-size: 16px;
+    color: #fff;
+`;
+
+export const ContainerInputValue = styled.View `
+    padding: 0 20px 0 20px
+`;
+
+export const TextFormValue = styled.View `
+    flex-direction: row;
+`;
+
+export const LabelFormValue = styled.Text `
+    color: #fff;
+    font-weight: bold;
+    font-size: 13px;
+`;
+
+export const InputValue = styled.TextInput `
+    color: #fff;
+    font-size: 30px;
+`;
+
+export const ContainerInputs = styled.ScrollView `
+    flex: 1;
+    padding: 30px 20px 0 20px;
+    background-color: ${props => props.theme.card};
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+`;
+
+export const ContainerSwitch = styled.View `
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom-color: #ccc;
+    border-bottom-width: 1px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+`;
+
+export const LabelSwitch = styled.Text `
+    font-size: 20px;
+    color: ${props => props.theme.descCard};
+`;
+
+export const Switch = styled.Switch ``;
+
+export const LabelInputs = styled.Text `
+    color: ${props => props.theme.descCard};
+`;
+
+export const InputDesc = styled.TextInput `
+    border-bottom-width: 1px;
+    border-color: #ccc;
+    margin-bottom: 20px;
+    color: ${props => props.theme.descCard}
+`;
+
+export const ContainerPicker = styled.View `
+    border-bottom-color: #ccc;
+    border-bottom-width: 1px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+`;
+
+export const ContainerCalendar = styled.View `
+    border-bottom-color: #ccc;
+    border-bottom-width: 1px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+`;
+
+export const BtnCalendar = styled.TouchableHighlight `
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #27B635;
+    padding: 10px;
+    margin-top: 10px;
+    width: 50%;
+    border-radius: 10px;
+`;
+
+export const CalendarImage = styled.Image `
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+`;
+
+export const BtnTextCalendar = styled.Text `
+    color: #fff;
+    justify-content: center;
+`;
+
+export const ContainerBtnSave = styled.View `
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 20px;
+    margin-bottom: 120px;
+`;
+
+export const BtnSave = styled.TouchableHighlight `
+    background-color: #27B635;
+    width: 90%;
+    height: 45px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+`;
+
+export const TextBtnSave = styled.Text `
+    color: #fff;
+`;
+
+export const TextMessageError = styled.Text `
+    color: #27B635;
+    margin-top: 5px;
+`;
+
+export const Modal = styled.Modal ``;
+
+export const ModalBox = styled.View `
+    width: ${width}px;
+    height: ${height}px;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+`;
+
+export const ModalBody = styled.View `
+    width: 90%;
+    height: 200px;
+    border-radius: 10px;
+    background-color: ${props => props.theme.card};
+    padding:10px;
+`;
+
+export const InputNewCategory = styled.TextInput `
+    font-size: 21px;
+    border-bottom-width: 1px;
+    border-bottom-color: #ccc;
+    padding: 10px;
+    color: ${props => props.theme.descCard};
+`;
+
+export const BtnNewCategory = styled.TouchableOpacity `
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #27B635;
+    border-radius: 5px;
+`;
+
+export const BtnCancel = styled.TouchableHighlight `
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+`;
+
+    export const TextBtnCancel = styled.Text `
+    font-size: 12px;
+    color: ${props => props.theme.descCard};
+`;

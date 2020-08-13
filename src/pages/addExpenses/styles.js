@@ -79,18 +79,11 @@ export const LabelInputs = styled.Text `
     color: ${props => props.theme.descCard};
 `;
 
-// export const Picker = styled.Picker `
-    
-// `;
-
-// export const PickerItem = styled.PickerItem `
-
-// `;
-
 export const InputDesc = styled.TextInput `
     border-bottom-width: 1px;
     border-color: #ccc;
     margin-bottom: 20px;
+    color: ${props => props.theme.descCard};
 `;
 
 export const ContainerPicker = styled.View `

@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableHighlight, TouchableOpacity, Image, StatusBar, TextInput, Switch, Modal, ScrollView } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 
+import { connect } from 'react-redux';
+
 import { useNavigation, CommonActions } from '@react-navigation/native';
-import styles from './styles';
+
+import { Container, Header, BackExpense, BackImage, TextHeader, ContainerInputValue, TextFormValue, LabelFormValue, InputValue, ContainerInputs, ContainerSwitch, Switch, LabelSwitch, LabelInputs, InputDesc, ContainerPicker, ContainerCalendar, BtnCalendar, CalendarImage, BtnTextCalendar, ContainerBtnSave, BtnSave, TextBtnSave, TextMessageError, Modal, ModalBox, ModalBody, InputNewCategory, BtnNewCategory, BtnCancel, TextBtnCancel } from './styles';
 import Arrow from '../../assets/arrows.png';
 import Calendar from '../../assets/calendar.png';
 
-export default function AddRevenue() {
+function AddRevenue(props) {
     let uid = auth().currentUser.uid;
     /**CONSTANT FOR NAVIGATION */
     const navigation = useNavigation();
@@ -74,10 +76,6 @@ export default function AddRevenue() {
 
     /**CONSTANT TO RECEIVE VALUES ​​FROM THE BANK REGARDING THE ACCOUNTS CREATED BY THE USER  */
     const [getAccount, setGetAccouunt] = useState([]);
-
-    function handlebackRevenue() {
-        navigation.navigate('Revenue');
-    }
 
     // useEffect(() => {
     //     database().ref('finance_wallet').child(uid).child('finance_sum_revenue_paid')
@@ -218,174 +216,178 @@ export default function AddRevenue() {
       }
 
     return (
-        <View style={styles.container}>
-            <StatusBar backgroundColor="#27B635" barStyle="light-content" />
-            
-            <View style={styles.header}>
-                <TouchableHighlight underlayColor="transparent" onPress={handlebackRevenue} style={styles.backRevenue}>
-                    <>
-                        <Image source={Arrow} style={styles.backImage} />
-                        <Text style={styles.textHeader}>Receitas</Text>
-                    </>
-                </TouchableHighlight>
-            </View>
+        <Container>
+        <Header>
+            <BackExpense onPress={() => navigation.navigate('Revenue')} underlayColor="transparent">
+                <>
+                    <BackImage source={Arrow} />
+                    <TextHeader>Receitas</TextHeader>
+                </>
+            </BackExpense>
+        </Header>
 
-            <View style={styles.containerInputValue}>
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={styles.labelFormValue}>Valor da receita</Text>
-                </View>
+        <ContainerInputValue>
+            <TextFormValue>
+                <LabelFormValue>Valor da receita</LabelFormValue>
+            </TextFormValue>
+            <InputValue
+                placeholder=" R$ 00,00"
+                placeholderTextColor="#fff"
+                keyboardType="numeric"
+                autoFocus={true}
+                value={formatarMoeda(value)}
+                onChangeText={setValue}
+            />
+        </ContainerInputValue>
 
-                <TextInput
-                    style={styles.inputValue}
-                    placeholder=" R$ 00,00"
-                    placeholderTextColor="#fff"
-                    keyboardType="numeric"
-                    autoFocus={true}
-                    value={formatarMoeda(value)}
-                    onChangeText={setValue}
+        <ContainerInputs>
+            <ContainerSwitch>
+                <LabelSwitch>Pago</LabelSwitch>
+                <Switch
+                    trackColor={{ false: "#767577", true: "#27B635" }}
+                    thumbColor={isEnabled ? "#27B635" : "#27B635"}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={toggleSwitch}
+                    value={isEnabled}
                 />
-            </View>
+            </ContainerSwitch>
 
-            <ScrollView style={styles.containerInputs}>
-                <View style={styles.containerSwitch}>
-                    <Text style={styles.labelSwitch}>Recebido</Text>
-                    <Switch
-                        trackColor={{ false: "#767577", true: "#27B635" }}
-                        thumbColor={isEnabled ? "#27B635" : "#27B635"}
-                        ios_backgroundColor="#3e3e3e"
-                        onValueChange={toggleSwitch}
-                        value={isEnabled}
-                    />
-                </View>
+            <LabelInputs>Descrição</LabelInputs>
+            <InputDesc
+                value={description}
+                onChangeText={setDescription}
+            />
 
-                <Text style={styles.labelInputs}>Descrição</Text>
-                <TextInput
-                    style={styles.input}
-                    value={description}
-                    onChangeText={setDescription}
-                />
-
-                <View style={styles.picker}>
-                    <Text style={styles.labelInputs}>Categoria</Text>
-                    <Picker
-                        selectedValue={picker}
-                        onValueChange={(itemValue, itemIndex) => {
-                            if (itemValue == 'Nova categoria') {
-                                openModal(itemValue);
-                            } else {
-                                setPicker(itemValue);
-                            }
-                        }}
-                        value={setPicker}
-                        mode="dropdown"
-                    >
-                        <Picker.Item key={0} value={''} label={'Selecione a categoria'} />
-                        <Picker.Item key={1} value={'Salário'} label={'Salário'} />
-                        <Picker.Item key={2} value={'Prêmio'} label={'Prêmio'} />
-                        <Picker.Item key={3} value={'Investimento'} label={'Investimento'} />
-                        <Picker.Item key={4} value={'Presente'} label={'Presente'} />
-                        <Picker.Item key={5} value={'Outros'} label={'Outros'} />
-                        {getNewCategory}
-                        <Picker.Item key={6} value={'Nova categoria'} label={'Nova categoria'} />
-
-                    </Picker>
-                </View>
-
-                <View style={styles.picker}>
-                    <Text style={styles.labelInputs}>Carteira</Text>
-                    <Picker
-                        selectedValue={account}
-                        onValueChange={(itemValue) => {
-                            if (itemValue == 'Adicionar carteira') {
-                                navigation.navigate('AddWallet');
-                            } else {
-                                setAccount(itemValue);
-                            }
-                        }}
-                        value={setAccount}
-                        mode="dropdown"
-                    >
-                        <Picker.Item key={0} value={''} label={'Selecione sua carteira'} />
-                        {getAccount}
-                        <Picker.Item key={0} value={'Adicionar carteira'} label={'Adicionar carteira'} />
-                    </Picker>
-                </View>
-
-                <View style={styles.containerCalendar}>
-                    <Text style={styles.labelInputs}>Data de recebimento</Text>
-                    <TouchableOpacity onPress={showDatepickerDate} style={styles.btnCalendar}>
-                        <>
-                            <Image source={Calendar} style={styles.calendarImage} />
-                            <Text style={styles.btnTextCalendar}>Selecionar data</Text>
-                        </>
-                    </TouchableOpacity>
-                </View>
-                {show && (
-                    <DateTimePicker
-                        testID="dateTimePicker"
-                        value={date}
-                        mode={mode}
-                        is24Hour={true}
-                        display="default"
-                        onChange={onChangeDate}
-                    />
-                )}
-
-                <View style={styles.containerRemember}>
-                    <Text style={styles.labelInputs}>Lembrar-me</Text>
-                    <TouchableOpacity onPress={showDatepickerRemember} style={styles.btnCalendar}>
-                        <>
-                            <Image source={Calendar} style={styles.calendarImage} />
-                            <Text style={styles.btnTextCalendar}>Selecionar data</Text>
-                        </>
-                    </TouchableOpacity>
-                </View>
-                {showRemember && (
-                    <DateTimePicker
-                        testID="dateTimePicker"
-                        value={remember}
-                        mode={'datetime'}
-                        is24Hour={true}
-                        display="default"
-                        minimumDate={new Date(Date.now()).getTime()}
-                        onChange={onChangeRemember}
-                    />
-                )}
-
-                <View style={styles.containerbtnSave}>
-                    <TouchableOpacity onPress={addNewRevenue} style={styles.btnSave}>
-                        <Text style={styles.textBtnSave}>Salvar</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.textMessageError}>{messageError}</Text>
-                </View>
-
-                <Modal
-                    visible={modalVisible}
-                    animationType="fade"
-                    transparent={true}
+            <ContainerPicker>
+                <LabelInputs>Categoria</LabelInputs>
+                <Picker
+                    selectedValue={picker}
+                    onValueChange={(itemValue, itemIndex) => {
+                        if (itemValue == 'Nova categoria') {
+                            openModal(itemValue);
+                        } else {
+                            setPicker(itemValue);
+                        }
+                    }}
+                    style={{color: props.theme.descCard}}
+                    value={setPicker}
+                    mode="dropdown"
                 >
-                    <View style={styles.modalBox}>
-                        <View style={styles.modalBody}>
-                            <TextInput
-                                style={styles.inputNewCategory}
-                                placeholder=" Nova Categoria"
-                                autoFocus={true}
-                                value={newCategory}
-                                onChangeText={setNewCategory}
-                            />
+                    <Picker.Item key={0} value={''} label={'Selecione a categoria'} />
+                    <Picker.Item key={1} value={'Salário'} label={'Salário'} />
+                    <Picker.Item key={2} value={'Prêmio'} label={'Prêmio'} />
+                    <Picker.Item key={3} value={'Investimento'} label={'Investimento'} />
+                    <Picker.Item key={4} value={'Presente'} label={'Presente'} />
+                    <Picker.Item key={5} value={'Outros'} label={'Outros'} />
+                    {getNewCategory}
+                    <Picker.Item key={6} value={'Nova categoria'} label={'Nova categoria'} />
 
-                            <TouchableOpacity onPress={addNewCategory} style={styles.btnNewCategory} activeOpacity={0.8}>
-                                <Text style={styles.textBtnSave}>Salvar</Text>
-                            </TouchableOpacity>
+                </Picker>
+            </ContainerPicker>
+            <ContainerPicker>
+                <LabelInputs>Carteira</LabelInputs>
+                <Picker
+                    selectedValue={account}
+                    onValueChange={(itemValue) => {
+                        if (itemValue == 'Adicionar conta') {
+                            navigation.navigate('AddWallet');
+                        } else {
+                            setAccount(itemValue);
+                        }
+                    }}
+                    style={{color: props.theme.descCard}}
+                    value={setAccount}
+                    mode="dropdown"
+                >
+                    <Picker.Item key={0} value={''} label={'Selecione sua carteira'} />
+                    {getAccount}
+                    <Picker.Item key={0} value={'Adicionar carteira'} label={'Adicionar carteira'} />
+                </Picker>
+            </ContainerPicker>
 
-                            <TouchableHighlight style={styles.btnCancel} onPress={() => setModalVisible(false)} underlayColor="transparent">
-                                <Text style={styles.textBtnCancel}>Cancelar</Text>
-                            </TouchableHighlight>
-                        </View>
-                    </View>
-                </Modal>
+            <ContainerCalendar>
+                <LabelInputs>Data de pagamento</LabelInputs>
+                <BtnCalendar onPress={showDatepickerDate} underlayColor="#ff3b47">
+                    <>
+                        <CalendarImage source={Calendar} />
+                        <BtnTextCalendar>Selecionar data</BtnTextCalendar>
+                    </>
+                </BtnCalendar>
+            </ContainerCalendar>
+            {show && (
+                <DateTimePicker
+                    testID="dateTimePicker"
+                    value={date}
+                    mode={mode}
+                    is24Hour={true}
+                    display="default"
+                    onChange={onChangeDate}
+                />
+            )}
 
-            </ScrollView>
-        </View>
+            <ContainerCalendar>
+                <LabelInputs>Lembrar-me</LabelInputs>
+                <BtnCalendar onPress={showDatepickerRemember} underlayColor="#ff3b47">
+                    <>
+                        <CalendarImage source={Calendar} />
+                        <BtnTextCalendar>Selecionar data</BtnTextCalendar>
+                    </>
+                </BtnCalendar>
+            </ContainerCalendar>
+            {showRemember && (
+                <DateTimePicker
+                    testID="dateTimePicker"
+                    value={remember}
+                    mode={'datetime'}
+                    is24Hour={true}
+                    display="default"
+                    minimumDate={new Date(Date.now()).getTime()}
+                    onChange={onChangeRemember}
+                />
+            )}
+
+            <ContainerBtnSave>
+                <BtnSave onPress={addNewRevenue} underlayColor="#ff3b47">
+                    <TextBtnSave>Salvar</TextBtnSave>
+                </BtnSave>
+                <TextMessageError>{messageError}</TextMessageError>
+            </ContainerBtnSave>
+
+            <Modal
+                visible={modalVisible}
+                animationType="fade"
+                transparent={true}
+            >
+                <ModalBox>
+                    <ModalBody>
+                        <InputNewCategory
+                            placeholder=" Nova Categoria"
+                            autoFocus={true}
+                            value={newCategory}
+                            onChangeText={setNewCategory}
+                        />
+
+                        <BtnNewCategory onPress={addNewCategory} underlayColor="#ff3b47">
+                            <TextBtnSave>Salvar</TextBtnSave>
+                        </BtnNewCategory>
+
+                        <BtnCancel onPress={() => setModalVisible(false)} underlayColor="transparent">
+                            <TextBtnCancel>Cancelar</TextBtnCancel>
+                        </BtnCancel>
+
+                    </ModalBody>
+                </ModalBox>
+            </Modal>
+        </ContainerInputs>
+
+    </Container>
     );
 }
+
+const mapStateToProps = (state) => {
+    return {
+        theme: state.userReducer.theme
+    };
+}
+
+export default connect(mapStateToProps)(AddRevenue);

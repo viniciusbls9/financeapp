@@ -16,10 +16,8 @@ export default StyleSheet.create({
         alignItems: 'center',
         marginRight: 10,
         padding: 15,
-        backgroundColor: '#ccc',
         borderWidth: 1,
         borderColor: '#e0e0e0',
-        elevation: 4,
     },
     containerInitialBank: {
         width: 40,
@@ -91,6 +89,7 @@ export const InputName = styled.TextInput`
     border-bottom-width: 1px;
     border-color: #ccc;
     margin-bottom: 20px;
+    color: ${props => props.colorName}
 `;
 
 export const ContainerBtnSave = styled.View`

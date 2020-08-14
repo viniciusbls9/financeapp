@@ -416,7 +416,7 @@ export default function EditExpense() {
                 {showRemember && (
                     <DateTimePicker
                         testID="dateTimePicker"
-                        value={editRemember}
+                        value={editRemember == '' ? Date.now() : editRemember}
                         mode={'datetime'}
                         is24Hour={true}
                         display="default"

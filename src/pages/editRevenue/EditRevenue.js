@@ -343,7 +343,7 @@ export default function EditRevenue() {
                 {showRemember && (
                     <DateTimePicker
                         testID="dateTimePicker"
-                        value={editRemember}
+                        value={editRemember == '' ? Date.now() : editRemember}
                         mode={'datetime'}
                         is24Hour={true}
                         display="default"

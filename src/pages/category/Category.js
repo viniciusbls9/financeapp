@@ -4,7 +4,9 @@ import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import { useNavigation } from '@react-navigation/native';
 
-import styles from './styles';
+import { connect } from 'react-redux';
+
+import { Container, Header, BackButton, BackImage, TextHeader, ContainerInfo, Label } from './styles';
 import CategoryRevenueList from '../../components/categoryRevenueList/CategoryRevenueList';
 import CategoryExpenseList from '../../components/categoryExpenseList/CategoryExpenseList';
 import Arrow from '../../assets/arrows.png';
@@ -45,35 +47,29 @@ export default function Category() {
   }, [categoryExpense]);
 
   return (
-    <View style={styles.container}>
-
-      <View style={styles.header}>
-        <TouchableHighlight underlayColor="transparent" style={{ flexDirection: 'row' }} onPress={() => navigation.navigate('Profile')}>
+    <Container>
+      <Header>
+        <BackButton underlayColor="transparent" onPress={() => navigation.navigate('Profile')}>
           <>
-            <Image source={Arrow} style={styles.backImage} />
-            <Text style={styles.textHeader}>Categorias</Text>
+            <BackImage source={Arrow} />
+            <TextHeader>Categorias</TextHeader>
           </>
-        </TouchableHighlight>
-      </View>
+        </BackButton>
+      </Header>
 
-      <View style={styles.containerInfo}>
-
-        <Text style={styles.label}>Receita</Text>
+      <ContainerInfo>
+        <Label>Receita</Label>
         <FlatList
-          // style={styles.containerRevenue}
           data={categoryRevenue}
           renderItem={({ item }) => <CategoryRevenueList data={item} />}
         />
 
-        <Text style={styles.label}>Despesas</Text>
+        <Label>Despesas</Label>
         <FlatList
-          style={styles.containerRevenue}
           data={categoryExpense}
           renderItem={({ item }) => <CategoryExpenseList data={item} />}
         />
-
-      </View>
-
-    </View>
+      </ContainerInfo>
+    </Container>
   );
 }

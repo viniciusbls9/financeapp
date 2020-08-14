@@ -49,13 +49,6 @@ export default function Expenses() {
     const navigation = useNavigation();
 
     function handleBack() {
-        // navigation.dispatch(
-        //     CommonActions.reset({
-        //         index: 0,
-        //         routes: [
-        //             { name: 'Home'},
-        //         ]
-        //     }));
         navigation.navigate('Home');
     }
 

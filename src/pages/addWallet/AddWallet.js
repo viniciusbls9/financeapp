@@ -98,7 +98,7 @@ function AddWallet(props) {
                                 <View style={[styles.containerInitialBank, { backgroundColor: item.bgColor }]}>
                                     <Text style={styles.textInitialBank}>{item.name.substr(0, 1)}</Text>
                                 </View>
-                                <Text style={styles.nameBank}>{item.name}</Text>
+                                <Text style={[styles.nameBank, {color: item.bgColor}]}>{item.name}</Text>
                             </>
                         </TouchableHighlight>
                     }
@@ -125,6 +125,7 @@ function AddWallet(props) {
                     value={accountName}
                     onChangeText={setAccountName}
                     returnKeyType="done"
+                    colorName={props.theme.descCard}
                 />
 
                 <ContainerBtnSave>

@@ -3,11 +3,15 @@ import { Alert } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import { useNavigation, CommonActions } from '@react-navigation/native';
+
+import { connect } from 'react-redux';
+
 import { Container, Btns, Touchable, IconBtns, CategoryName, Modal, ModalBox, ModalBody, InputNewCategory, BtnNewCategory, TextBtnSave, BtnCancel, TextBtnCancel } from './styles';
 import TrashBlack from '../../assets/trash-black.png';
+import Trash from '../../assets/trash.png';
 import Edit from '../../assets/edit.png';
 
-export default function CategoryRevenueList(props) {
+function CategoryRevenueList(props) {
     const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
     const [newCategory, setNewCategory] = useState(props.data.category);
@@ -78,7 +82,7 @@ export default function CategoryRevenueList(props) {
                 </Touchable>
 
                 <Touchable onPress={handleDelete} underlayColor="#transparent">
-                    <IconBtns source={TrashBlack} />
+                    <IconBtns source={props.theme.title == 'light' ? TrashBlack : Trash} />
                 </Touchable>
             </Btns>
 
@@ -113,3 +117,11 @@ export default function CategoryRevenueList(props) {
         </Container>
     );
 }
+
+const mapStateToProps = (state) => {
+    return {
+        theme: state.userReducer.theme
+    };
+}
+
+export default connect(mapStateToProps)(CategoryRevenueList);

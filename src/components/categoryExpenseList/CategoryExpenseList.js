@@ -63,8 +63,6 @@ function CategoryExpenseList(props) {
         );
     }
 
-    console.log(props.theme.title)
-
     return (
         <Container>
             <Btns>
@@ -73,7 +71,7 @@ function CategoryExpenseList(props) {
                 </Touchable>
 
                 <Touchable onPress={handleDelete} underlayColor="#transparent">
-                    <IconBtns source={props.theme.title == parseInt('light') ? Trash : TrashBlack} />
+                    <IconBtns source={props.theme.title == 'light' ? TrashBlack : Trash} />
                 </Touchable>
             </Btns>
 

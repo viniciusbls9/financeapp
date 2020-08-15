@@ -1,6 +1,7 @@
 export default {
     title: 'dark',
     container: '#272727',
+    containerBudget: '#272727',
     card: '#2e2e2e',
     shadowCard: '#161714',
     descCard: '#fff',

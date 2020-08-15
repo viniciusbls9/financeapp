@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableHighlight, TouchableOpacity, Image, FlatList, StatusBar } from 'react-native';
+import { FlatList, StatusBar } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 
-import { useNavigation, CommonActions } from '@react-navigation/native';
-import styles from './styles';
+import { connect } from 'react-redux';
+
+import { useNavigation } from '@react-navigation/native';
+import { Container, Header, BackButton, BackImage, ContainerAddRevenue, IconMoreExpenses, TextHeader, ContainerInfo, ContainerTotalExpenses, WalletImage, ContainerValueExpense, ExpensesTotalText, ExpenseTotalValue, ContainerImage, Img, TextImg } from './styles';
 import Arrow from '../../assets/arrows.png';
 import Wallet from '../../assets/wallet.png';
+import WalletWhite from '../../assets/money-white.png';
 import ListExpense from '../../components/listExpenses';
 import MoreExpenses from '../../assets/more.png';
 import ImageExpense from '../../assets/image-expense.jpg';
 
-export default function Expenses() {
+function Expenses(props) {
 
     const [totalExpense, setTotalExpense] = useState([]);
     const [activity, setActivity] = useState([]);
@@ -20,58 +23,50 @@ export default function Expenses() {
         /** LOOP PARA RODAR 4 VEZES, QUE SÃO OS VALUES DE CADA CONTA ADICIONADA PELO USUÁRIO */
         let uid = auth().currentUser.uid;
         let n = 1;
-        for(let i = n; i <= 4; i++) {
+        for (let i = n; i <= 4; i++) {
             let int = n++
             database().ref('finance_wallet')
-            .child(uid)
-            .child(int.toString())
-            .child('finance_expense').once('value')
-            .then((snapshot) => {
-                snapshot.forEach((childItem) => {
-                    activity.push({
-                        category: childItem.val().category,
-                        date: childItem.val().date,
-                        description: childItem.val().description,
-                        remember: childItem.val().remember,
-                        tag: childItem.val().tag,
-                        toggle: childItem.val().toggle,
-                        value: childItem.val().value,
-                        account: childItem.val().account,
-                        key: childItem.key
+                .child(uid)
+                .child(int.toString())
+                .child('finance_expense').once('value')
+                .then((snapshot) => {
+                    snapshot.forEach((childItem) => {
+                        activity.push({
+                            category: childItem.val().category,
+                            date: childItem.val().date,
+                            description: childItem.val().description,
+                            remember: childItem.val().remember,
+                            tag: childItem.val().tag,
+                            toggle: childItem.val().toggle,
+                            value: childItem.val().value,
+                            account: childItem.val().account,
+                            key: childItem.key
+                        });
                     });
+                    let total = activity.reduce((t, v) => t + (parseFloat(v.value)), 0);
+                    setTotalExpense(total);
                 });
-                let total = activity.reduce((t, v) => t + (parseFloat(v.value)), 0);
-                setTotalExpense(total);
-            });
         }
     }, [activity]);
 
     const navigation = useNavigation();
 
-    function handleBack() {
-        navigation.navigate('Home');
-    }
-
-    function handleAddRevenue() {
-        navigation.navigate('AddExpenses');
-    }
-
     function formatarMoeda() {
         var elemento = totalExpense;
         var valor = elemento.valueOf();
-        
+
         valor = valor + '';
-        valor = valor > 0 ? parseInt(valor.replace(/[\D]+/g,'')) : parseInt('-'+valor.replace(/[\D]+/g,''));
+        valor = valor > 0 ? parseInt(valor.replace(/[\D]+/g, '')) : parseInt('-' + valor.replace(/[\D]+/g, ''));
         valor = valor + '';
         valor = valor.replace(/([0-9]{2})$/g, ",$1");
-        
+
         if (valor.length > 7) {
             valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
         }
-        
-        if(valor == 'NaN') {
+
+        if (valor == 'NaN') {
             return '0,00';
-        } else if(valor == 0) {
+        } else if (valor == 0) {
             return '0,00'
         } else {
             return valor;
@@ -79,34 +74,34 @@ export default function Expenses() {
     }
 
     return (
-        <View style={styles.container}>
+        <Container>
             <StatusBar barStyle="dark-content" />
-            <View style={styles.header}>
-                <TouchableHighlight onPress={handleBack} underlayColor="transparent">
-                    <Image source={Arrow} style={styles.backImage} />
-                </TouchableHighlight>
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={handleAddRevenue}>
-                    <Image source={MoreExpenses} style={styles.iconMoreExpenses} />
-                    <Text style={styles.textHeader}>Despesas</Text>
-                </TouchableOpacity>
-            </View>
+            <Header>
+                <BackButton underlayColor="#transparent" onPress={() => navigation.navigate('Home')}>
+                    <BackImage source={Arrow} />
+                </BackButton>
+                <ContainerAddRevenue underlayColor="#transparent" onPress={() => navigation.navigate('AddExpenses')}>
+                    <>
+                        <IconMoreExpenses source={MoreExpenses} />
+                        <TextHeader>Despesas</TextHeader>
+                    </>
+                </ContainerAddRevenue>
+            </Header>
 
-            <View style={styles.containerInfo}>
-                <View style={styles.containerTotalExpenses}>
-                    <Image source={Wallet} style={styles.walletImage} />
-                    <View style={{ marginLeft: 10 }}>
-                        <Text style={styles.expensesTotalText}>Total Pago</Text>
-                        <Text style={styles.expensesTotalValue}>
-                            R$ {formatarMoeda(totalExpense)}
-                        </Text>
-                    </View>
-                </View>
+            <ContainerInfo>
+                <ContainerTotalExpenses>
+                    <WalletImage source={props.theme.title == 'light' ? Wallet : WalletWhite} />
+                    <ContainerValueExpense>
+                        <ExpensesTotalText>Total pago</ExpensesTotalText>
+                        <ExpenseTotalValue>R$ {formatarMoeda(totalExpense)}</ExpenseTotalValue>
+                    </ContainerValueExpense>
+                </ContainerTotalExpenses>
 
                 {activity == '' &&
-                    <View style={{ justifyContent: 'center', alignItems: 'center', flex: 3 }}>
-                        <Image source={ImageExpense} style={styles.img} />
-                        <Text>Ops! Nenhuma despesa adicionada até o momento.</Text>
-                    </View>
+                    <ContainerImage>
+                        <Img source={ImageExpense} />
+                        <TextImg>Ops! Nenhuma despesa adicionada até o momento.</TextImg>
+                    </ContainerImage>
                 }
 
                 <FlatList
@@ -114,7 +109,16 @@ export default function Expenses() {
                     data={activity}
                     renderItem={({ item }) => <ListExpense data={item} />}
                 />
-            </View>
-        </View>
+            </ContainerInfo>
+
+        </Container>
     );
 }
+
+const mapStateToProps = (state) => {
+    return {
+        theme: state.userReducer.theme
+    };
+}
+
+export default connect(mapStateToProps)(Expenses);

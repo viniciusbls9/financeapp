@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+
+import { Container, TextContainer } from './styles';
 
 export default function Cards() {
     return (
-        <View>
-            <Text>Educação</Text>
-        </View>
+        <Container>
+            <TextContainer>Educação</TextContainer>
+        </Container>
     );
 }

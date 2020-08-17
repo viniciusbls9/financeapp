@@ -305,6 +305,7 @@ function AddExpense(props) {
 
                     </Picker>
                 </ContainerPicker>
+                
                 <ContainerPicker>
                     <LabelInputs>Carteira</LabelInputs>
                     <Picker

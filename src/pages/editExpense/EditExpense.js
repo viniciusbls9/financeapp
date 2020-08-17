@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableHighlight, TouchableOpacity, Image, StatusBar, TextInput, Switch, Alert, ScrollView, Modal } from 'react-native';
+import { View, Text, TouchableHighlight, TouchableOpacity, Image, StatusBar, TextInput, Switch, Alert, ScrollView } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+import { connect } from 'react-redux';
+
 import { useNavigation, useRoute, CommonActions } from '@react-navigation/native';
-import styles from './styles';
+import { Container, Header, BackExpense, BackImage, TextHeader, DeleteExpense, ContainerInputValue, TextFormValue, LabelFormValue, InputValue, ContainerInputs, ContainerSwitch, LabelSwitch, LabelInputs, InputDesc, ContainerPicker, ContainerCalendar, BtnCalendar, CalendarImage, BtnTextCalendar, ContainerBtnSave, BtnSave, TextBtnSave, TextMessageError, Modal, ModalBox, ModalBody, InputNewCategory, BtnNewCategory, BtnCancel, TextBtnCancel } from './styles';
 import Arrow from '../../assets/arrows.png';
 import Trash from '../../assets/trash.png';
 import Calendar from '../../assets/calendar.png';
 import ColorExpense from '../../components/colorsExpense/ColorExpense';
 
-export default function EditExpense() {
+function EditExpense(props) {
     const navigation = useNavigation();
     const route = useRoute();
 
@@ -75,9 +77,6 @@ export default function EditExpense() {
     /**CONSTANT TO RECEIVE VALUES ​​FROM THE BANK REGARDING THE ACCOUNTS CREATED BY THE USER  */
     const [getAccount, setGetAccouunt] = useState([]);
 
-    /** CONSTANT FOR ANIMATION THE TOOLTIP */
-    const [showTooltip, setShowTooltip] = useState(false);
-
     const key = route.params.key;
     const uid = auth().currentUser.uid;
 
@@ -113,28 +112,24 @@ export default function EditExpense() {
         );
     }
 
-    function handlebackExpense() {
-        navigation.navigate('Expenses');
-    }
-
     function formatarMoeda() {
         var elemento = editValue;
         var valor = elemento.valueOf();
 
         valor = valor + '';
-        valor = parseInt(valor.replace(/[\D]+/g,''));
+        valor = parseInt(valor.replace(/[\D]+/g, ''));
         valor = valor + '';
         valor = valor.replace(/([0-9]{2})$/g, ",$1");
         // console.log(valor);
-        
+
         if (valor.length > 6) {
             valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
         }
-        
-        if(valor == 'NaN') {
+
+        if (valor == 'NaN') {
             return false;
         } else {
-            return '-'+valor;
+            return '-' + valor;
         }
     }
 
@@ -157,11 +152,11 @@ export default function EditExpense() {
     function editExpense() {
         //INFORMAÇÕES DO USUÁRIO
         let newEditExpense = database().ref('finance_wallet').child(uid).child(account).child('finance_expense').child(key);
-        
+
         // let sumExpensePaid = database().ref('finance_wallet').child(uid).child('finance_sum_expense_paid');
         // let sumExpenseUnpaid = database().ref('finance_wallet').child(uid).child('finance_sum_expense_unpaid');
 
-        if (editValue != '' && editDescription != '' && editCategory != 'Selecione...') {
+        if (editValue != '' && editDescription != '' && editCategory != 'Selecione sua carteira') {
             // CADASTRO DA RECEITA
             newEditExpense.set({
                 value: editValue.replace(',', ''),
@@ -170,7 +165,7 @@ export default function EditExpense() {
                 category: editCategory,
                 tag: editCategory,
                 date: date,
-                remember: remember < new Date(Date.now()).getDate() ? remember : '',
+                remember: remember > new Date(Date.now()).getDate() ? remember : '',
                 account: account,
                 color: ColorExpense(editCategory),
             });
@@ -263,47 +258,25 @@ export default function EditExpense() {
         }
     }
 
-    function handleAnimation() {
-        setShowTooltip(true);
-        setTimeout(() => {
-            setShowTooltip(false);
-        }, 3000);
-    }
-
     return (
-        <View style={styles.container}>
-            <StatusBar backgroundColor="#ff4f5a" barStyle="light-content" />
-            <View style={styles.header}>
-                <TouchableHighlight underlayColor="transparent" onPress={handlebackExpense} style={styles.backExpense}>
+        <Container>
+            <Header>
+                <BackExpense onPress={() => navigation.navigate('Expenses')} underlayColor="#transparent">
                     <>
-                        <Image source={Arrow} style={styles.backImage} />
-                        <Text style={styles.textHeader}>Despesas</Text>
+                        <BackImage source={Arrow} />
+                        <TextHeader>Despesas</TextHeader>
                     </>
-                </TouchableHighlight>
+                </BackExpense>
+                <DeleteExpense underlayColor="transparent" onPress={deleteExpense}>
+                    <BackImage source={Trash} />
+                </DeleteExpense>
+            </Header>
 
-                <TouchableHighlight underlayColor="transparent" onPress={deleteExpense} style={styles.deleteExpense}>
-                    <Image source={Trash} style={styles.backImage} />
-                </TouchableHighlight>
-            </View>
-
-            {showTooltip ? (
-                <View style={styles.containerTooltip}>
-                    <View style={styles.tooltip}>
-                        <Text style={styles.tooltipMessage}>Separe os centavos incluindo ponto</Text>
-                    </View>
-                    <View style={styles.tooltipTriangle} />
-                </View>
-            ) : null}
-
-            <View style={styles.containerInputValue}>
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={styles.labelFormValue}>Valor da receita</Text>
-                    <TouchableHighlight style={styles.containerBtnTooltip} onPress={handleAnimation} underlayColor="#transparent">
-                        <Text style={styles.textTooltip}>?</Text>
-                    </TouchableHighlight>
-                </View>
-                <TextInput
-                    style={styles.inputValue}
+            <ContainerInputValue>
+                <TextFormValue>
+                    <LabelFormValue>Valor da despesa</LabelFormValue>
+                </TextFormValue>
+                <InputValue
                     placeholder=" R$ 00,00"
                     placeholderTextColor="#fff"
                     keyboardType="numeric"
@@ -311,11 +284,11 @@ export default function EditExpense() {
                     value={formatarMoeda(editValue)}
                     onChangeText={setEditValue}
                 />
-            </View>
+            </ContainerInputValue>
 
-            <ScrollView style={styles.containerInputs}>
-                <View style={styles.containerSwitch}>
-                    <Text style={styles.labelSwitch}>Recebido</Text>
+            <ContainerInputs>
+                <ContainerSwitch>
+                    <LabelSwitch>Pago</LabelSwitch>
                     <Switch
                         trackColor={{ false: "#767577", true: "#ff4f5a" }}
                         thumbColor={editToggle ? "#ff4f5a" : "#ff4f5a"}
@@ -323,17 +296,16 @@ export default function EditExpense() {
                         onValueChange={setEditToogle}
                         value={editToggle}
                     />
-                </View>
+                </ContainerSwitch>
 
-                <Text style={styles.labelInputs}>Descrição</Text>
-                <TextInput
-                    style={styles.input}
+                <LabelInputs>Descrição</LabelInputs>
+                <InputDesc
                     value={editDescription}
                     onChangeText={setEditDescription}
                 />
 
-                <View style={styles.picker}>
-                    <Text style={styles.labelInputs}>Categoria</Text>
+                <ContainerPicker>
+                    <LabelInputs>Categoria</LabelInputs>
                     <Picker
                         selectedValue={editCategory}
                         onValueChange={(itemValue, itemIndex) => {
@@ -343,27 +315,28 @@ export default function EditExpense() {
                                 setEditCategory(itemValue);
                             }
                         }}
+                        style={{ color: props.theme.descCard }}
                         value={setEditCategory}
                         mode="dropdown"
                     >
-                        <Picker.Item key={0} value={'Selecione...'} label={'Selecione...'} />
+                        <Picker.Item key={0} value={'Selecione sua carteira'} label={'Selecione sua categoria'} />
                         <Picker.Item key={1} value={'Alimentação'} label={'Alimentação'} />
                         <Picker.Item key={2} value={'Educação'} label={'Educação'} />
                         <Picker.Item key={3} value={'Lazer'} label={'Lazer'} />
                         <Picker.Item key={4} value={'Moradia'} label={'Moradia'} />
                         <Picker.Item key={5} value={'Pagamentos'} label={'Pagamentos'} />
-                        <Picker.Item key={5} value={'Roupas'} label={'Roupas'} />
-                        <Picker.Item key={5} value={'Saúde'} label={'Saúde'} />
-                        <Picker.Item key={5} value={'Transporte'} label={'Transporte'} />
-                        <Picker.Item key={5} value={'Outros'} label={'Outros'} />
+                        <Picker.Item key={6} value={'Roupas'} label={'Roupas'} />
+                        <Picker.Item key={7} value={'Saúde'} label={'Saúde'} />
+                        <Picker.Item key={8} value={'Transporte'} label={'Transporte'} />
+                        <Picker.Item key={9} value={'Outros'} label={'Outros'} />
                         {getNewCategory}
-                        <Picker.Item key={1} value={'Nova categoria'} label={'Nova categoria'} />
+                        <Picker.Item key={10} value={'Nova categoria'} label={'Nova categoria'} />
 
                     </Picker>
-                </View>
+                </ContainerPicker>
 
-                <View style={styles.picker}>
-                    <Text style={styles.labelInputs}>Carteira</Text>
+                <ContainerPicker>
+                    <LabelInputs>Carteira</LabelInputs>
                     <Picker
                         selectedValue={account}
                         onValueChange={(itemValue) => {
@@ -373,30 +346,29 @@ export default function EditExpense() {
                                 setAccount(itemValue);
                             }
                         }}
+                        style={{ color: props.theme.descCard }}
                         value={setAccount}
                         mode="dropdown"
                     >
-                        <Picker.Item key={0} value={'Selecione sua carteira'} label={'Selecione sua carteira'} />
+                        <Picker.Item key={0} value={''} label={'Selecione sua carteira'} />
                         {getAccount}
-                        {getAccount == '' &&
-                            <Picker.Item key={0} value={'Adicionar conta'} label={'Adicionar conta'} />
-                        }
+                        <Picker.Item key={0} value={'Adicionar conta'} label={'Adicionar conta'} />
                     </Picker>
-                </View>
+                </ContainerPicker>
 
-                <View style={styles.containerCalendar}>
-                    <Text style={styles.labelInputs}>Data de pagamento</Text>
-                    <TouchableOpacity onPress={showDatepickerDate} style={styles.btnCalendar}>
+                <ContainerCalendar>
+                    <LabelInputs>Data de pagamento</LabelInputs>
+                    <BtnCalendar onPress={showDatepickerDate} underlayColor="#ff3b47">
                         <>
-                            <Image source={Calendar} style={styles.calendarImage} />
-                            <Text style={styles.btnTextCalendar}>Selecionar data</Text>
+                            <CalendarImage source={Calendar} />
+                            <BtnTextCalendar>Selecionar data</BtnTextCalendar>
                         </>
-                    </TouchableOpacity>
-                </View>
+                    </BtnCalendar>
+                </ContainerCalendar>
                 {show && (
                     <DateTimePicker
                         testID="dateTimePicker"
-                        value={editDate}
+                        value={date}
                         mode={mode}
                         is24Hour={true}
                         display="default"
@@ -404,15 +376,15 @@ export default function EditExpense() {
                     />
                 )}
 
-                <View style={styles.containerRemember}>
-                    <Text style={styles.labelInputs}>Lembrar-me</Text>
-                    <TouchableOpacity onPress={showDatepickerRemember} style={styles.btnCalendar}>
+                <ContainerCalendar>
+                    <LabelInputs>Lembrar-me</LabelInputs>
+                    <BtnCalendar onPress={showDatepickerRemember} underlayColor="#ff3b47">
                         <>
-                            <Image source={Calendar} style={styles.calendarImage} />
-                            <Text style={styles.btnTextCalendar}>Selecionar data</Text>
+                            <CalendarImage source={Calendar} />
+                            <BtnTextCalendar>Selecionar data</BtnTextCalendar>
                         </>
-                    </TouchableOpacity>
-                </View>
+                    </BtnCalendar>
+                </ContainerCalendar>
                 {showRemember && (
                     <DateTimePicker
                         testID="dateTimePicker"
@@ -425,40 +397,49 @@ export default function EditExpense() {
                     />
                 )}
 
-                <View style={styles.containerbtnSave}>
-                    <TouchableOpacity onPress={editExpense} style={styles.btnSave}>
-                        <Text style={styles.textBtnSave}>Salvar</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.textMessageError}>{messageError}</Text>
-                </View>
+                <ContainerBtnSave>
+                    <BtnSave onPress={editExpense} underlayColor="#ff3b47">
+                        <TextBtnSave>Salvar</TextBtnSave>
+                    </BtnSave>
+                    <TextMessageError>{messageError}</TextMessageError>
+                </ContainerBtnSave>
 
                 <Modal
                     visible={modalVisible}
                     animationType="fade"
                     transparent={true}
                 >
-                    <View style={styles.modalBox}>
-                        <View style={styles.modalBody}>
-                            <TextInput
-                                style={styles.inputNewCategory}
+                    <ModalBox>
+                        <ModalBody>
+                            <InputNewCategory
                                 placeholder=" Nova Categoria"
                                 autoFocus={true}
                                 value={newCategory}
                                 onChangeText={setNewCategory}
                             />
 
-                            <TouchableOpacity onPress={addNewCategory} style={styles.btnNewCategory}>
-                                <Text style={styles.textBtnSave}>Salvar</Text>
-                            </TouchableOpacity>
+                            <BtnNewCategory onPress={addNewCategory} underlayColor="#ff3b47">
+                                <TextBtnSave>Salvar</TextBtnSave>
+                            </BtnNewCategory>
 
-                            <TouchableHighlight style={styles.btnCancel} onPress={() => setModalVisible(false)} underlayColor="transparent">
-                                <Text style={styles.textBtnCancel}>Cancelar</Text>
-                            </TouchableHighlight>
-                        </View>
-                    </View>
+                            <BtnCancel onPress={() => setModalVisible(false)} underlayColor="transparent">
+                                <TextBtnCancel>Cancelar</TextBtnCancel>
+                            </BtnCancel>
+
+                        </ModalBody>
+                    </ModalBox>
                 </Modal>
 
-            </ScrollView>
-        </View>
+            </ContainerInputs>
+        </Container>
     );
 }
+
+
+const mapStateToProps = (state) => {
+    return {
+        theme: state.userReducer.theme
+    };
+}
+
+export default connect(mapStateToProps)(EditExpense);

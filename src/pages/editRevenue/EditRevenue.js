@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableHighlight, TouchableOpacity, Image, StatusBar, TextInput, Switch, Alert, ScrollView, Modal } from 'react-native';
+import { Switch, Alert } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+import { connect } from 'react-redux';
+
 import { useNavigation, useRoute, CommonActions } from '@react-navigation/native';
-import styles from './styles';
+
+import { Container, Header, BackExpense, BackImage, TextHeader, DeleteExpense, ContainerInputValue, TextFormValue, LabelFormValue, InputValue, ContainerInputs, ContainerSwitch, LabelSwitch, LabelInputs, InputDesc, ContainerPicker, ContainerCalendar, BtnCalendar, CalendarImage, BtnTextCalendar, ContainerBtnSave, BtnSave, TextBtnSave, TextMessageError, Modal, ModalBox, ModalBody, InputNewCategory, BtnNewCategory, BtnCancel, TextBtnCancel } from './styles';
+
 import Arrow from '../../assets/arrows.png';
 import Trash from '../../assets/trash.png';
 import Calendar from '../../assets/calendar.png';
 
-export default function EditRevenue() {
+function EditRevenue(props) {
     const navigation = useNavigation();
     const route = useRoute();
 
@@ -47,6 +51,7 @@ export default function EditRevenue() {
     /** DATETIMEPICKER FOR REMEMBER DATE */
     const onChangeRemember = (event, selectedRemeber) => {
         const currentRemember = new Date(selectedRemeber).getTime() || remember;
+        console.log(currentRemember)
         setShowRemember(Platform.OS === 'ios');
         setRemember(currentRemember);
     };
@@ -72,27 +77,27 @@ export default function EditRevenue() {
 
     const key = route.params.key;
     const uid = auth().currentUser.uid;
-    
+
     function formatarMoeda() {
         var elemento = editValue;
         var valor = elemento.valueOf();
 
         valor = valor + '';
-        valor = parseInt(valor.replace(/[\D]+/g,''));
+        valor = parseInt(valor.replace(/[\D]+/g, ''));
         valor = valor + '';
         valor = valor.replace(/([0-9]{2})$/g, ",$1");
         // console.log(valor);
-        
+
         if (valor.length > 6) {
             valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
         }
-        
-        if(valor == 'NaN') {
+
+        if (valor == 'NaN') {
             return false;
         } else {
             return valor;
         }
-      }
+    }
 
     function deleteRevenue() {
         Alert.alert(
@@ -122,15 +127,11 @@ export default function EditRevenue() {
         );
     }
 
-    function handlebackRevenue() {
-        navigation.navigate('Revenue');
-    }
-
     function editRevenue() {
         //INFORMAÇÕES DO USUÁRIO
         let EditRevenue = database().ref('finance_wallet').child(uid).child(account).child('finance_revenue').child(key);
 
-        if (editValue != '' && editDescription != '' && editCategory != 'Selecione...') {
+        if (editValue != '' && editDescription != '' && editCategory != 'Selecione a categoria') {
             // CADASTRO DA RECEITA
             EditRevenue.set({
                 value: editValue.replace(',', ''),
@@ -139,8 +140,8 @@ export default function EditRevenue() {
                 category: editCategory,
                 tag: editCategory,
                 date: date,
-                remember: remember < new Date(Date.now()).getDate() ? remember : '',
-                account: account
+                remember: remember > new Date(Date.now()).getDate() ? remember : '',
+                account: account,
             });
 
             navigation.dispatch(
@@ -216,27 +217,24 @@ export default function EditRevenue() {
     }
 
     return (
-        <View style={styles.container}>
-            <StatusBar backgroundColor="#27B635" barStyle="light-content" />
-            <View style={styles.header}>
-                <TouchableHighlight underlayColor="transparent" onPress={handlebackRevenue} style={styles.backRevenue}>
+        <Container>
+            <Header>
+                <BackExpense onPress={() => navigation.navigate('Revenue')} underlayColor="#transparent">
                     <>
-                        <Image source={Arrow} style={styles.backImage} />
-                        <Text style={styles.textHeader}>Receitas</Text>
+                        <BackImage source={Arrow} />
+                        <TextHeader>Receitas</TextHeader>
                     </>
-                </TouchableHighlight>
+                </BackExpense>
+                <DeleteExpense underlayColor="transparent" onPress={deleteRevenue}>
+                    <BackImage source={Trash} />
+                </DeleteExpense>
+            </Header>
 
-                <TouchableHighlight underlayColor="transparent" onPress={deleteRevenue} style={styles.deleteRevenue}>
-                    <Image source={Trash} style={styles.backImage} />
-                </TouchableHighlight>
-            </View>
-
-            <View style={styles.containerInputValue}>
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={styles.labelFormValue}>Valor da receita</Text>
-                </View>
-                <TextInput
-                    style={styles.inputValue}
+            <ContainerInputValue>
+                <TextFormValue>
+                    <LabelFormValue>Valor da receita</LabelFormValue>
+                </TextFormValue>
+                <InputValue
                     placeholder=" R$ 00,00"
                     placeholderTextColor="#fff"
                     keyboardType="numeric"
@@ -244,11 +242,11 @@ export default function EditRevenue() {
                     value={formatarMoeda(editValue)}
                     onChangeText={setEditValue}
                 />
-            </View>
+            </ContainerInputValue>
 
-            <ScrollView style={styles.containerInputs}>
-                <View style={styles.containerSwitch}>
-                    <Text style={styles.labelSwitch}>Recebido</Text>
+            <ContainerInputs>
+                <ContainerSwitch>
+                    <LabelSwitch>Pago</LabelSwitch>
                     <Switch
                         trackColor={{ false: "#767577", true: "#27B635" }}
                         thumbColor={editToggle ? "#27B635" : "#27B635"}
@@ -256,17 +254,16 @@ export default function EditRevenue() {
                         onValueChange={setEditToogle}
                         value={editToggle}
                     />
-                </View>
+                </ContainerSwitch>
 
-                <Text style={styles.labelInputs}>Descrição</Text>
-                <TextInput
-                    style={styles.input}
+                <LabelInputs>Descrição</LabelInputs>
+                <InputDesc
                     value={editDescription}
                     onChangeText={setEditDescription}
                 />
 
-                <View style={styles.picker}>
-                    <Text style={styles.labelInputs}>Categoria</Text>
+                <ContainerPicker>
+                    <LabelInputs>Categoria</LabelInputs>
                     <Picker
                         selectedValue={editCategory}
                         onValueChange={(itemValue, itemIndex) => {
@@ -276,10 +273,11 @@ export default function EditRevenue() {
                                 setEditCategory(itemValue);
                             }
                         }}
+                        style={{ color: props.theme.descCard }}
                         value={setEditCategory}
                         mode="dropdown"
                     >
-                        <Picker.Item key={0} value={'Selecione...'} label={'Selecione...'} />
+                        <Picker.Item key={0} value={'Selecione a categoria'} label={'Selecione a categoria'} />
                         <Picker.Item key={1} value={'Salário'} label={'Salário'} />
                         <Picker.Item key={2} value={'Prêmio'} label={'Prêmio'} />
                         <Picker.Item key={3} value={'Investimento'} label={'Investimento'} />
@@ -287,12 +285,11 @@ export default function EditRevenue() {
                         <Picker.Item key={5} value={'Outros'} label={'Outros'} />
                         {getNewCategory}
                         <Picker.Item key={6} value={'Nova categoria'} label={'Nova categoria'} />
-
                     </Picker>
-                </View>
+                </ContainerPicker>
 
-                <View style={styles.picker}>
-                    <Text style={styles.labelInputs}>Carteira</Text>
+                <ContainerPicker>
+                    <LabelInputs>Carteira</LabelInputs>
                     <Picker
                         selectedValue={account}
                         onValueChange={(itemValue) => {
@@ -302,28 +299,29 @@ export default function EditRevenue() {
                                 setAccount(itemValue);
                             }
                         }}
+                        style={{ color: props.theme.descCard }}
                         value={setAccount}
                         mode="dropdown"
                     >
-                        <Picker.Item key={0} value={'Selecione sua carteira'} label={'Selecione sua carteira'} />
+                        <Picker.Item key={0} value={''} label={'Selecione sua carteira'} />
                         {getAccount}
                         <Picker.Item key={0} value={'Adicionar conta'} label={'Adicionar conta'} />
                     </Picker>
-                </View>
+                </ContainerPicker>
 
-                <View style={styles.containerCalendar}>
-                    <Text style={styles.labelInputs}>Data de recebimento</Text>
-                    <TouchableOpacity onPress={showDatepickerDate} style={styles.btnCalendar}>
+                <ContainerCalendar>
+                    <LabelInputs>Data de pagamento</LabelInputs>
+                    <BtnCalendar onPress={showDatepickerDate} underlayColor="#22a32f">
                         <>
-                            <Image source={Calendar} style={styles.calendarImage} />
-                            <Text style={styles.btnTextCalendar}>Selecionar data</Text>
+                            <CalendarImage source={Calendar} />
+                            <BtnTextCalendar>Selecionar data</BtnTextCalendar>
                         </>
-                    </TouchableOpacity>
-                </View>
+                    </BtnCalendar>
+                </ContainerCalendar>
                 {show && (
                     <DateTimePicker
                         testID="dateTimePicker"
-                        value={editDate}
+                        value={date}
                         mode={mode}
                         is24Hour={true}
                         display="default"
@@ -331,19 +329,19 @@ export default function EditRevenue() {
                     />
                 )}
 
-                <View style={styles.containerRemember}>
-                    <Text style={styles.labelInputs}>Lembrar-me</Text>
-                    <TouchableOpacity onPress={showDatepickerRemember} style={styles.btnCalendar}>
+                <ContainerCalendar>
+                    <LabelInputs>Lembrar-me</LabelInputs>
+                    <BtnCalendar onPress={showDatepickerRemember} underlayColor="#22a32f">
                         <>
-                            <Image source={Calendar} style={styles.calendarImage} />
-                            <Text style={styles.btnTextCalendar}>Selecionar data</Text>
+                            <CalendarImage source={Calendar} />
+                            <BtnTextCalendar>Selecionar data</BtnTextCalendar>
                         </>
-                    </TouchableOpacity>
-                </View>
+                    </BtnCalendar>
+                </ContainerCalendar>
                 {showRemember && (
                     <DateTimePicker
                         testID="dateTimePicker"
-                        value={editRemember == '' ? Date.now() : editRemember}
+                        value={editRemember == '' ? new Date(Date.now()).getTime() : editRemember}
                         mode={'datetime'}
                         is24Hour={true}
                         display="default"
@@ -352,40 +350,48 @@ export default function EditRevenue() {
                     />
                 )}
 
-                <View style={styles.containerbtnSave}>
-                    <TouchableOpacity onPress={editRevenue} style={styles.btnSave}>
-                        <Text style={styles.textBtnSave}>Salvar</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.textMessageError}>{messageError}</Text>
-                </View>
+                <ContainerBtnSave>
+                    <BtnSave onPress={editRevenue} underlayColor="#22a32f">
+                        <TextBtnSave>Salvar</TextBtnSave>
+                    </BtnSave>
+                    <TextMessageError>{messageError}</TextMessageError>
+                </ContainerBtnSave>
 
                 <Modal
                     visible={modalVisible}
                     animationType="fade"
                     transparent={true}
                 >
-                    <View style={styles.modalBox}>
-                        <View style={styles.modalBody}>
-                            <TextInput
-                                style={styles.inputNewCategory}
+                    <ModalBox>
+                        <ModalBody>
+                            <InputNewCategory
                                 placeholder=" Nova Categoria"
                                 autoFocus={true}
                                 value={newCategory}
                                 onChangeText={setNewCategory}
                             />
 
-                            <TouchableOpacity onPress={addNewCategory} style={styles.btnNewCategory}>
-                                <Text style={styles.textBtnSave}>Salvar</Text>
-                            </TouchableOpacity>
+                            <BtnNewCategory onPress={addNewCategory} underlayColor="#22a32f">
+                                <TextBtnSave>Salvar</TextBtnSave>
+                            </BtnNewCategory>
 
-                            <TouchableHighlight style={styles.btnCancel} onPress={() => setModalVisible(false)} underlayColor="transparent">
-                                <Text style={styles.textBtnCancel}>Cancelar</Text>
-                            </TouchableHighlight>
-                        </View>
-                    </View>
+                            <BtnCancel onPress={() => setModalVisible(false)} underlayColor="transparent">
+                                <TextBtnCancel>Cancelar</TextBtnCancel>
+                            </BtnCancel>
+
+                        </ModalBody>
+                    </ModalBox>
                 </Modal>
 
-            </ScrollView>
-        </View>
+            </ContainerInputs>
+        </Container>
     );
 }
+
+const mapStateToProps = (state) => {
+    return {
+        theme: state.userReducer.theme
+    };
+}
+
+export default connect(mapStateToProps)(EditRevenue);

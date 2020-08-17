@@ -109,9 +109,8 @@ function AddRevenue(props) {
                 category: picker,
                 tag: picker,
                 date: date,
-                remember: remember < new Date(Date.now()).getDate() ? remember : '',
+                remember: remember > new Date(Date.now()).getDate() ? remember : '',
                 account: account,
-                key: key
             });
 
             // if(value != '' && description != '' && picker != '' && account != '' && isEnabled === true) {
@@ -307,7 +306,7 @@ function AddRevenue(props) {
 
             <ContainerCalendar>
                 <LabelInputs>Data de pagamento</LabelInputs>
-                <BtnCalendar onPress={showDatepickerDate} underlayColor="#ff3b47">
+                <BtnCalendar onPress={showDatepickerDate} underlayColor="#22a32f">
                     <>
                         <CalendarImage source={Calendar} />
                         <BtnTextCalendar>Selecionar data</BtnTextCalendar>
@@ -327,7 +326,7 @@ function AddRevenue(props) {
 
             <ContainerCalendar>
                 <LabelInputs>Lembrar-me</LabelInputs>
-                <BtnCalendar onPress={showDatepickerRemember} underlayColor="#ff3b47">
+                <BtnCalendar onPress={showDatepickerRemember} underlayColor="#22a32f">
                     <>
                         <CalendarImage source={Calendar} />
                         <BtnTextCalendar>Selecionar data</BtnTextCalendar>
@@ -347,7 +346,7 @@ function AddRevenue(props) {
             )}
 
             <ContainerBtnSave>
-                <BtnSave onPress={addNewRevenue} underlayColor="#ff3b47">
+                <BtnSave onPress={addNewRevenue} underlayColor="#22a32f">
                     <TextBtnSave>Salvar</TextBtnSave>
                 </BtnSave>
                 <TextMessageError>{messageError}</TextMessageError>
@@ -367,7 +366,7 @@ function AddRevenue(props) {
                             onChangeText={setNewCategory}
                         />
 
-                        <BtnNewCategory onPress={addNewCategory} underlayColor="#ff3b47">
+                        <BtnNewCategory onPress={addNewCategory} underlayColor="#22a32f">
                             <TextBtnSave>Salvar</TextBtnSave>
                         </BtnNewCategory>
 

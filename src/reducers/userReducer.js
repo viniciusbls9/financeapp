@@ -3,6 +3,7 @@ import light from '../themes/light';
 
 const initialTheme = {
     theme: light,
+    touchID: false,
 };
 
 export default (state = initialTheme, action) => {

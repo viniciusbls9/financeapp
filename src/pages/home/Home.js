@@ -1,23 +1,27 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableHighlight, Image, TouchableOpacity, StatusBar, ScrollView, Dimensions, RefreshControl } from 'react-native';
-import styles from './styles';
+
 import { useNavigation, CommonActions } from '@react-navigation/native';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 
-import Bars from '../../assets/bars.png';
-import Eye from '../../assets/eye.png';
+import BarsIcon from '../../assets/bars.png';
+import EyeGrey from '../../assets/eye-grey.png';
 import Sight from '../../assets/sight.png';
 import UserMale from '../../assets/user-male.png';
 import UserFemale from '../../assets/user-female.png';
 import Button from '../../assets/button.png';
+
+import { connect } from 'react-redux';
 
 import PendenciesRevenue from '../../components/pendenciesRevenue';
 import PendenciesExpenses from '../../components/pendenciesExpenses';
 import Presentation from '../../assets/presentation.png';
 import Chart from '../../components/chart/Chart';
 
-export default function Login(props) {
+import { Container, ContainerInfo, Header, HeaderBtn, HeaderButtons, Bars, Users, LabelInfoMoney, ValueMoney, TotalMoney, ContainerHidden, HiddenValue, HiddenMoney, InfoMoney, ContainerAddMoney, AddIcon, AddMoneyText, InfoActivity, LabelinfoActivity, Pendencies, ContainerMsg, ImageMsg, TextMsg, ContainerChart } from './styles';
+
+function Home(props) {
 
     const navigation = useNavigation();
 
@@ -103,22 +107,26 @@ export default function Login(props) {
     function formatarMoeda() {
         var elemento = sumTotal;
         var valor = elemento.valueOf();
-        
+
         valor = valor + '';
-        valor = valor > 0 ? parseInt(valor.replace(/[\D]+/g,'')) : parseInt('-'+valor.replace(/[\D]+/g,''));
+        valor = valor > 0 ? parseInt(valor.replace(/[\D]+/g, '')) : parseInt('-' + valor.replace(/[\D]+/g, ''));
         valor = valor + '';
         valor = valor.replace(/([0-9]{2})$/g, ",$1");
-        
+
         if (parseInt(valor) < 0 && valor.length > 7) {
             valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
-        } else if(parseInt(valor) > 0 && valor.length > 6) {
+        } else if (parseInt(valor) > 0 && valor.length > 6) {
             valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
         }
-        
-        if(valor == 'NaN') {
+
+        let st = '-,'
+
+        if (valor == 'NaN') {
             return '0,00';
-        } else if(valor == 0) {
+        } else if (valor == 0) {
             return '0,00'
+        } else if (valor.includes('-,')) {
+            return '-' + valor.replace('-', 0);
         } else {
             return valor;
         }
@@ -140,92 +148,95 @@ export default function Login(props) {
                     { name: 'Home' },
                 ]
             }));
-        
+
         wait(2000).then(() => setRefreshing(false));
     }, []);
 
     return (
-        <ScrollView
+        <Container
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.container}
             refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              }
-            >
-            <View style={{ height: Dimensions.get('screen').height }}>
+            }
+        >
+            <ContainerInfo>
                 <StatusBar backgroundColor="#fff" barStyle="dark-content" />
-                <View style={styles.header}>
-                    <View style={styles.headerButtons}>
-                        <TouchableHighlight underlayColor="transparent" onPress={() => props.navigation.openDrawer()}>
-                            <Image source={Bars} style={styles.bars} />
-                        </TouchableHighlight>
-                        <TouchableHighlight onPress={() => navigation.navigate('Profile')} underlayColor="transparent">
-                            <Image source={gender === 'Feminino' ? UserFemale : UserMale} style={styles.users} />
-                        </TouchableHighlight>
-                    </View>
-                    <Text style={styles.labelInfoMoney}>
+                <Header>
+                    <HeaderButtons>
+                        <HeaderBtn underlayColor="transparent" onPress={() => props.navigation.openDrawer()}>
+                            <Bars source={BarsIcon} />
+                        </HeaderBtn>
+                        <HeaderBtn onPress={() => navigation.navigate('Profile')} underlayColor="transparent">
+                            <Users source={gender === 'Feminino' ? UserFemale : UserMale} />
+                        </HeaderBtn>
+                    </HeaderButtons>
+
+                    <LabelInfoMoney>
                         Valor em contas:
-                    </Text>
-                    <View style={styles.infoMoney}>
-                        <View style={{ flexDirection: 'row' }}>
+                    </LabelInfoMoney>
+
+                    <InfoMoney>
+                        <ValueMoney>
                             {hidden === false &&
-                                <Text style={styles.totalMoney}>
+                                <TotalMoney>
                                     R$ {formatarMoeda(sumTotal)}
-                                </Text>
+                                </TotalMoney>
                             }
 
                             {hidden &&
-                                <View style={styles.containerHidden}></View>
+                                <ContainerHidden></ContainerHidden>
                             }
 
-                            <TouchableHighlight onPress={hiddenValue} underlayColor="#transparent">
-                                <Image source={hidden === true ? Sight : Eye} style={styles.hiddenMoney} />
-                            </TouchableHighlight>
-                        </View>
+                            <HiddenValue onPress={hiddenValue} underlayColor="#transparent">
+                                <HiddenMoney source={hidden === true ? Sight : EyeGrey} />
+                            </HiddenValue>
+                        </ValueMoney>
+                        <ContainerAddMoney onPress={() => navigation.navigate('AddRevenue')} underlayColor="#transparent">
+                            <>
+                                <AddIcon source={Button} />
+                                <AddMoneyText>Dinheiro</AddMoneyText>
+                            </>
+                        </ContainerAddMoney>
+                    </InfoMoney>
+                </Header>
 
-                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => navigation.navigate('AddRevenue')}>
-                            <Image source={Button} style={styles.addMoneyIcon} />
-                            <Text style={styles.addMoneyText}>Dinheiro</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-                <View style={styles.infoActivity}>
-
-                    <Text style={styles.labelinfoActivity}>Pendências</Text>
-                    <ScrollView
-                        style={styles.pendencies}
+                <InfoActivity>
+                    <LabelinfoActivity>Pendências</LabelinfoActivity>
+                    <Pendencies
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                     >
                         <PendenciesRevenue />
                         <PendenciesExpenses />
-                        
-                    </ScrollView>
+                    </Pendencies>
 
-                    {/* <Text style={styles.labelinfoActivity}>Cartões</Text>
-                    <FlatList
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        renderItem={({ item }) => <Cards data={item} />}
-                        data={cards}
-                    /> */}
-
-                    <Text style={styles.labelinfoActivity}>Despesas por categoria</Text>
+                    <LabelinfoActivity>Despesas por categoria</LabelinfoActivity>
                     {totalExpense == '' &&
-                        <View style={styles.containerMsg}>
-                            <Image source={Presentation} style={styles.imageMsg} />
-                            <Text style={{ textAlign: 'center' }}>Ops! Você ainda não tem gastos cadastrados. Adicione gastos e veja o gráfico</Text>
-                        </View>
+                        <ContainerMsg>
+                            <ImageMsg source={Presentation} />
+                            <TextMsg>Ops! Você ainda não tem gastos cadastrados. Adicione gastos e veja o gráfico</TextMsg>
+                        </ContainerMsg>
                     }
                     {totalExpense != '' &&
-                        <View style={styles.containerChart}>
+                        <ContainerChart>
                             <Chart />
-                        </View>
-                        
+                        </ContainerChart>
+
                     }
-                </View>
-            </View>
-        </ScrollView>
+
+                </InfoActivity>
+
+
+
+            </ContainerInfo>
+        </Container>
     );
 }
+
+const mapStateToProps = (state) => {
+    return {
+        theme: state.userReducer.theme
+    };
+}
+
+export default connect(mapStateToProps)(Home);

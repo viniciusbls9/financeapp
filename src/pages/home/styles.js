@@ -1,106 +1,146 @@
-import { StyleSheet, StatusBar, Dimensions } from 'react-native';
+import { StatusBar, Dimensions } from 'react-native';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
+const screenHeight = Math.round(Dimensions.get('screen').height);
 
-export default StyleSheet.create({
-    container:{
-        flex: 1,
-        backgroundColor: '#f7f7f7',
-        height: 80
-    },
-    header: {
-        paddingTop: StatusBar.currentHeight + 10,
-        paddingHorizontal: 24,
-        backgroundColor: '#fff',
-        height: undefined,
-        paddingBottom: 20,
-        marginBottom: 30,
-        borderBottomLeftRadius: 20,
-        borderBottomRightRadius: 20,
-        elevation: 4
-    },
-    headerButtons: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingBottom: 20
-    },
-    bars: {
-        width: 25,
-        height: 25,
-    },
-    users: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        borderWidth: 1,
-        borderColor: '#ccc'
-    },
-    labelInfoMoney: {
-        color: '#1c2e35',
-        fontSize: 15,
-        marginBottom: 10
-    },
-    infoMoney: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
-    addMoneyIcon: {
-        width: 15,
-        height: 15
-    },
-    addMoneyText: {
-        color: '#1c2e35',
-        marginLeft: 10,
-    },
-    hiddenMoney: {
-        width: 20,
-        height: 20,
-        marginLeft: 5
-    },
-    containerHidden: {
-        height: 10,
-        width: 120,
-        backgroundColor: '#ebebeb'
-    },
-    totalMoney: {
-        color: '#1c2e35',
-        fontSize: 30
-    },
-    pendencies: {
-        width: screenWidth,
-    },
-    infoActivity: {
-        paddingHorizontal: 20,
-    },
-    labelinfoActivity: {
-        color: '#1c2e35',
-        fontWeight: 'bold',
-        fontSize: 15,
-    },
-    containerChart: {
-        backgroundColor: '#fff',
-        borderRadius: 25,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        marginTop: 20,
-        marginBottom: 20,
-        paddingLeft: 12,
-    },
-    containerMsg: {
-        backgroundColor: '#fff',
-        borderRadius: 25,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        marginTop: 20,
-        marginBottom: 20,
-        alignItems: 'center',
-        padding: 20
-    },
-    imageMsg: {
-        width: 40,
-        height: 40,
-        marginBottom: 10
-    },
-});
+import styled from 'styled-components/native';
+
+export const Container = styled.ScrollView `
+    flex: 1;
+    background-color: ${props => props.theme.containerBudget};
+    height: 80px;
+`;
+
+export const ContainerInfo = styled.View `
+    height: ${screenHeight}px;
+`;
+
+export const Header = styled.View `
+    padding-top: ${StatusBar.currentHeight}px;
+    padding-horizontal: 24px;
+    background-color: ${props => props.theme.card};
+    height: undefined;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    elevation: 4;
+`;
+
+export const HeaderButtons = styled.View `
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+`;
+
+export const HeaderBtn = styled.TouchableHighlight ``;
+
+export const Bars = styled.Image `
+    width: 25px;
+    height: 25px;
+`;
+
+export const Users = styled.Image `
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    border-width: 1px;
+    border-color: #ccc;
+`;
+
+export const LabelInfoMoney = styled.Text `
+    color: ${props => props.theme.titlePendencies};
+    font-size: 15px;
+    margin-bottom: 10px;
+`;
+
+export const InfoMoney = styled.View `
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+export const ValueMoney = styled.View `
+    flex-direction: row;
+`;
+
+export const TotalMoney = styled.Text `
+    color: ${props => props.theme.titlePendencies};
+    font-size: 30px;
+`;
+
+export const ContainerHidden = styled.View `
+    height: 10px;
+    width: 120px;
+    background-color: #ebebeb;
+`;
+
+export const HiddenValue = styled.TouchableHighlight ``;
+
+export const HiddenMoney = styled.Image `
+    width: 20px;
+    height: 20px;
+    margin-left: 5px;
+`;
+
+export const ContainerAddMoney = styled.TouchableHighlight `
+    flex-direction: row;
+    align-items: center; 
+`;
+
+export const AddIcon = styled.Image `
+    width: 15px;
+    height: 15px;
+`;
+
+export const AddMoneyText = styled.Text `
+    color: ${props => props.theme.titlePendencies};
+    margin-left: 10px;
+`;
+
+export const InfoActivity = styled.View `
+    padding: 0 20px 0 20px;
+`;
+
+export const LabelinfoActivity = styled.Text `
+    color: ${props => props.theme.titlePendencies};
+    font-weight: bold;
+    font-size: 15px;
+`;
+
+export const Pendencies = styled.ScrollView `
+    width: ${screenWidth}px;
+`;
+
+export const ContainerMsg = styled.View `
+    background-color: ${props => props.theme.card};
+    border-radius: 25px;
+    border-width: 1px;
+    border-color: ${props => props.theme.shadowCard};
+    margin-top: 20px;
+    margin-bottom: 20px;
+    align-items: center;
+    padding: 20px
+`;
+
+export const ImageMsg = styled.Image `
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+`;
+
+export const TextMsg = styled.Text `
+    text-align: center;
+    color: ${props => props.theme.titlePendencies};
+`;
+
+export const ContainerChart = styled.View `
+    background-color: ${props => props.theme.card};
+    border-radius: 25px;
+    border-width: 1px;
+    border-color: ${props => props.theme.shadowCard};
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-left: 12px;
+`;

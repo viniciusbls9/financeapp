@@ -140,7 +140,7 @@ function EditRevenue(props) {
                 category: editCategory,
                 tag: editCategory,
                 date: date,
-                remember: remember > new Date(Date.now()).getDate() ? remember : '',
+                remember: remember < new Date(Date.now()).getDate() ? remember : '',
                 account: account,
             });
 

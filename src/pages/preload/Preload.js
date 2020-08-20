@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import TouchID from 'react-native-touch-id';
 
-import styles from './styles';
+import { connect } from 'react-redux';
 
-export default function Welcome() {
+import { Container, Load, TextPreload } from './styles';
+
+function Preload() {
     const navigation = useNavigation();
     const [supported, setSupported] = useState(null);
 
@@ -59,9 +60,17 @@ export default function Welcome() {
     });
 
     return (
-        <View style={styles.container}>
-            <ActivityIndicator size="large" color="#27B635" style={{ marginBottom: 20 }} style={styles.load} />
-            <Text>Carregando dados...</Text>
-        </View>
+        <Container>
+            <Load size="large" color="#27B635" />
+            <TextPreload>Carregando dados...</TextPreload>
+        </Container>
     );
 }
+
+const mapStateToProps = (state) => {
+    return {
+        theme: state.userReducer.theme
+    };
+}
+
+export default connect(mapStateToProps)(Preload);

@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 
-import styles from './styles';
+import { Scroll, Container, ContainerFlex, Header, TextHeader, TouchableHeader, UserInfo, UserImg, UserName, ContainerWallet, WalletLabel, BtnWallet, WalletImg, TextWallet } from './styles';
 import UserMale from '../../assets/user-male.png';
 import UserFemale from '../../assets/user-female.png';
 import Mastercard from '../../assets/wallet.png';
@@ -48,19 +48,19 @@ export default function Profile() {
       'Atenção',
       'Deseja realmente sair?',
       [
-          {
-              text: 'Sim',
-              onPress: async () => { await AsyncStorage.clear(); navigation.navigate('Welcome'); },
-              style: 'cancel',
-          },
-          {
-            text: 'Não',
-            onPress: () => {  },
-            style: 'cancel',
-          }
+        {
+          text: 'Sim',
+          onPress: async () => { await AsyncStorage.clear(); navigation.navigate('Welcome'); },
+          style: 'cancel',
+        },
+        {
+          text: 'Não',
+          onPress: () => { },
+          style: 'cancel',
+        }
       ],
       { cancelable: false },
-  );
+    );
   }
 
   const onShare = async () => {
@@ -85,102 +85,100 @@ export default function Profile() {
       'Atenção',
       'Em breve essa funcionalidade estará ativa ;)',
       [
-          {
-              text: 'Ok',
-              onPress: () => { },
-              style: 'cancel',
-          },
+        {
+          text: 'Ok',
+          onPress: () => { },
+          style: 'cancel',
+        },
       ],
       { cancelable: false },
-  );
+    );
   }
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View style={{ flex: 3 }}>
-          <View style={styles.header}>
-            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => navigation.navigate('Home')}>
-              <Text style={styles.textHeader}>Perfil</Text>
-            </TouchableOpacity>
-          </View>
+    <Scroll>
+      <Container>
+        <ContainerFlex>
+          <Header>
+            <TouchableHeader onPress={() => navigation.navigate('Home')} underlayColor="#transparent">
+              <TextHeader>Perfil</TextHeader>
+            </TouchableHeader>
+          </Header>
 
-          <View style={styles.userInfo}>
-            <Image source={gender === 'Feminino' ? UserFemale : UserMale} style={styles.userImg} />
-            <Text style={styles.userName}>{userName}</Text>
-            {/* <Text style={styles.typeUserAccount}>Conta Premium</Text> */}
-          </View>
+          <UserInfo>
+            <UserImg source={gender === 'Feminino' ? UserFemale : UserMale} />
+            <UserName>{userName}</UserName>
+          </UserInfo>
 
-          <View style={styles.containerWallet}>
-            <Text style={styles.WalletLabel}>Carteiras</Text>
-            <TouchableHighlight style={styles.btnLabel} onPress={() => navigation.navigate('Wallet')} underlayColor="#f7f7f7">
+          <ContainerWallet>
+            <WalletLabel>Carteiras</WalletLabel>
+            <BtnWallet onPress={() => navigation.navigate('Wallet')} underlayColor="#transparent">
               <>
-                <Image source={Mastercard} style={styles.walletImage} />
-                <Text>Contas</Text>
+                <WalletImg source={Mastercard} />
+                <TextWallet>Contas</TextWallet>
               </>
-            </TouchableHighlight>
+            </BtnWallet>
 
-            <TouchableHighlight style={styles.btnLabel} onPress={message} underlayColor="#f7f7f7">
+            <BtnWallet onPress={message} underlayColor="#transparent">
               <>
-                <Image source={CreditCard} style={styles.walletImage} />
-                <Text>Cartões de Crédito</Text>
+                <WalletImg source={CreditCard} />
+                <TextWallet>Cartões de crédito</TextWallet>
               </>
-            </TouchableHighlight>
-          </View>
+            </BtnWallet>
+          </ContainerWallet>
 
-          <View style={styles.containerWallet}>
-            <Text style={styles.WalletLabel}>Organizações</Text>
-            <TouchableHighlight style={styles.btnLabel} onPress={() => navigation.navigate('Category')} underlayColor="#f7f7f7">
+          <ContainerWallet>
+            <WalletLabel>Organizações</WalletLabel>
+            <BtnWallet onPress={() => navigation.navigate('Category')} underlayColor="#transparent">
               <>
-                <Image source={Category} style={styles.walletImage} />
-                <Text>Categorias</Text>
+                <WalletImg source={Category} />
+                <TextWallet>Categorias</TextWallet>
               </>
-            </TouchableHighlight>
-          </View>
+            </BtnWallet>
+          </ContainerWallet>
 
-          <View style={styles.containerWallet}>
-            <Text style={styles.WalletLabel}>Configurações</Text>
-            <TouchableHighlight style={styles.btnLabel} onPress={message} underlayColor="#f7f7f7">
+          <ContainerWallet>
+            <WalletLabel>Configurações</WalletLabel>
+            <BtnWallet onPress={message} underlayColor="#transparent">
               <>
-                <Image source={Settings} style={styles.walletImage} />
-                <Text>Geral</Text>
+                <WalletImg source={Settings} />
+                <TextWallet>Geral</TextWallet>
               </>
-            </TouchableHighlight>
-          </View>
+            </BtnWallet>
+          </ContainerWallet>
 
-          <View style={styles.containerWallet}>
-            <Text style={styles.WalletLabel}>Outros</Text>
-            <TouchableHighlight style={styles.btnLabel} onPress={message} underlayColor="#f7f7f7">
+          <ContainerWallet>
+            <WalletLabel>Outros</WalletLabel>
+            <BtnWallet onPress={message} underlayColor="#transparent">
               <>
-                <Image source={Education} style={styles.walletImage} />
-                <Text>Educação</Text>
+                <WalletImg source={Education} />
+                <TextWallet>Educação</TextWallet>
               </>
-            </TouchableHighlight>
+            </BtnWallet>
 
-            <TouchableHighlight style={styles.btnLabel} onPress={() => Linking.openURL('https://play.google.com/store/apps/details?id=com.myfinanceapp')} underlayColor="#f7f7f7">
+            <BtnWallet onPress={() => Linking.openURL('https://play.google.com/store/apps/details?id=com.myfinanceapp')} underlayColor="#transparent">
               <>
-                <Image source={Star} style={styles.walletImage} />
-                <Text>Avalie</Text>
+                <WalletImg source={Star} />
+                <TextWallet>Avaliar</TextWallet>
               </>
-            </TouchableHighlight>
+            </BtnWallet>
 
-            <TouchableHighlight style={styles.btnLabel} onPress={onShare} underlayColor="#f7f7f7">
+            <BtnWallet onPress={onShare} underlayColor="#transparent">
               <>
-                <Image source={Heart} style={styles.walletImage} />
-                <Text>Indique</Text>
+                <WalletImg source={Heart} />
+                <TextWallet>Indique</TextWallet>
               </>
-            </TouchableHighlight>
+            </BtnWallet>
 
-            <TouchableHighlight style={styles.btnLabel} onPress={handleLogout} underlayColor="#f7f7f7">
+            <BtnWallet onPress={handleLogout} underlayColor="#transparent">
               <>
-                <Image source={Logout} style={styles.walletImage} />
-                <Text>Sair</Text>
+                <WalletImg source={Logout} />
+                <TextWallet>Sair</TextWallet>
               </>
-            </TouchableHighlight>
-          </View>
-
-        </View>
-      </View>
-    </ScrollView>
+            </BtnWallet>
+          </ContainerWallet>
+        </ContainerFlex>
+      </Container>
+    </Scroll>
   );
 }

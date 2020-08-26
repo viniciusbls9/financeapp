@@ -144,3 +144,9 @@ export const ContainerChart = styled.View `
     margin-bottom: 20px;
     padding-left: 12px;
 `;
+
+export const LoveMsg = styled.Text `
+    margin-bottom: 10px;
+    text-align: center;
+    color: ${props => props.theme.titlePendencies};
+`;

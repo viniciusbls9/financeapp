@@ -1,67 +1,75 @@
-import { StyleSheet } from 'react-native';
+import styled from 'styled-components/native';
 
-export default StyleSheet.create({
-    container:{
-        backgroundColor: '#f7f7f7',
-        flex:2,
-        padding: 20
-    },
-    header: {
-        height: 100,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
-    textHeader: {
-        fontSize: 16,
-        color: '#1c2e35',
-    },
-    userInfo: {
-        alignItems: 'center',
-    },
-    userImg: {
-        width: 60,
-        height: 60,
-    },
-    userName: {
-        color: '#1c2e35',
-        fontWeight: 'bold',
-        fontSize: 15,
-        marginTop: 10,
-    },
-    typeUserAccount: {
-        color: '#1c2e35',
-        fontSize: 12
-    },
-    containerWallet: {
-        backgroundColor: '#fff',
-        padding: 20,
-        marginTop: 20,
-        elevation: 2,
-        borderRadius: 25
-    },
-    WalletLabel: {
-        marginBottom: 10
-    },
-    btnLabel: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 10,
-        padding: 6
-    },
-    walletImage: {
-        width: 25,
-        height: 25,
-        marginRight: 10
-    },
-    btnLogout: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        marginHorizontal: 20,
-        marginBottom: 10,
-        padding: 5
-    },
-});
+export const Scroll = styled.ScrollView ``;
+
+export const Container = styled.View `
+    background-color: ${props => props.theme.container};
+    flex: 2;
+    padding: 20px;
+`;
+
+export const ContainerFlex = styled.View `
+    flex:3;
+`;
+
+export const Header = styled.View `
+    height: 100px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+export const TouchableHeader = styled.TouchableHighlight `
+    flex-direction: row;
+    align-items: center;
+`;
+
+export const TextHeader = styled.Text `
+    font-size: 16px;
+    color: ${props => props.theme.titlePendencies};
+`;
+
+export const UserInfo = styled.View `
+    align-items: center;
+`;
+
+export const UserImg = styled.Image `
+    width: 60px;
+    height: 60px;
+`;
+
+export const UserName = styled.Text `
+    color: ${props => props.theme.titlePendencies};
+    font-weight: bold;
+    font-size: 15px;
+    margin-top: 10px;
+`;
+
+export const ContainerWallet = styled.View `
+    background-color: ${props => props.theme.card};
+    padding: 20px;
+    margin-top: 20px;
+    elevation: 2;
+    border-radius: 25px;
+`;
+
+export const WalletLabel = styled.Text `
+    margin-bottom: 10px;
+`;
+
+export const BtnWallet = styled.TouchableHighlight `
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 6px;
+`;
+
+export const WalletImg = styled.Image `
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+`;
+
+export const TextWallet = styled.Text `
+    color: ${props => props.theme.titlePendencies};
+`;

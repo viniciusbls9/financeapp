@@ -2,7 +2,7 @@ import dark from '../themes/dark';
 import light from '../themes/light';
 
 const initialTheme = {
-    theme: light,
+    theme: dark,
     touchID: false,
 };
 

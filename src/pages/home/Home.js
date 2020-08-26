@@ -19,7 +19,7 @@ import PendenciesExpenses from '../../components/pendenciesExpenses';
 import Presentation from '../../assets/presentation.png';
 import Chart from '../../components/chart/Chart';
 
-import { Container, ContainerInfo, Header, HeaderBtn, HeaderButtons, Bars, Users, LabelInfoMoney, ValueMoney, TotalMoney, ContainerHidden, HiddenValue, HiddenMoney, InfoMoney, ContainerAddMoney, AddIcon, AddMoneyText, InfoActivity, LabelinfoActivity, Pendencies, ContainerMsg, ImageMsg, TextMsg, ContainerChart } from './styles';
+import { Container, ContainerInfo, Header, HeaderBtn, HeaderButtons, Bars, Users, LabelInfoMoney, ValueMoney, TotalMoney, ContainerHidden, HiddenValue, HiddenMoney, InfoMoney, ContainerAddMoney, AddIcon, AddMoneyText, InfoActivity, LabelinfoActivity, Pendencies, ContainerMsg, ImageMsg, TextMsg, ContainerChart, LoveMsg } from './styles';
 
 function Home(props) {
 
@@ -228,7 +228,10 @@ function Home(props) {
 
 
 
+
+
             </ContainerInfo>
+                <LoveMsg>Feito com ❤️ por FinanceApp</LoveMsg>
         </Container>
     );
 }

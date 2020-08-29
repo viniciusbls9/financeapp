@@ -10,12 +10,12 @@ export const ContainerActivity = styled.View `
     justify-content: space-between;
     margin-top: 20px;
     padding: 20px;
+    border-color: ${props => props.theme.shadowCard};
     border-radius: 20px;
-    border-color: #ccc;
     border-width: 1px;
     background-color: #fff;
     elevation: 4;
-    background-color: ${props => props.theme.container};
+    background-color: ${props => props.theme.card};
 `;
 
 export const ContainerBank = styled.View `

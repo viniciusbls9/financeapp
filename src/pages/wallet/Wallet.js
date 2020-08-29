@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 
-import styles from './styles';
+import { Container, Header, TextHeader, Touchable } from './styles';
 
 import ContaCorrente from '../../components/wallets/ContaCorrente';
 import Investimento from '../../components/wallets/Investimento';
@@ -15,20 +14,21 @@ export default function Wallet(props) {
     const uid = auth().currentUser.uid;
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => navigation.navigate('Profile')}>
-                    <Text style={styles.textHeader}>Carteiras</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => navigation.navigate('AddWallet')}>
-                    <Text style={styles.textHeader}>Nova Carteira</Text>
-                </TouchableOpacity>
-            </View>
+        <Container>
+            <Header>
+                <Touchable onPress={() => navigation.navigate('Profile')}>
+                    <TextHeader>Carteiras</TextHeader>
+                </Touchable>
+
+                <Touchable onPress={() => navigation.navigate('AddWallet')}>
+                    <TextHeader>Nova carteira</TextHeader>
+                </Touchable>
+            </Header>
 
             <Poupanca />
             <ContaCorrente />
             <Investimento />
             <Outros />
-        </View>
+        </Container>
     );
 }

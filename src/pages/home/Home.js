@@ -226,12 +226,8 @@ function Home(props) {
 
                 </InfoActivity>
 
-
-
-
-
             </ContainerInfo>
-                <LoveMsg>Feito com ❤️ por FinanceApp</LoveMsg>
+                <LoveMsg>Feito com ❤️</LoveMsg>
         </Container>
     );
 }

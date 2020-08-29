@@ -55,6 +55,7 @@ export const ContainerWallet = styled.View `
 
 export const WalletLabel = styled.Text `
     margin-bottom: 10px;
+    color: ${props => props.theme.titlePendencies};
 `;
 
 export const BtnWallet = styled.TouchableHighlight `

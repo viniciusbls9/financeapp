@@ -1,15 +1,14 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
 import { Picker } from '@react-native-community/picker';
 
-import { useNavigation, CommonActions } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import dark from '../../themes/dark';
 import light from '../../themes/light';
 
 import { View, Text, Switch, ScrollView } from 'react-native';
-import { ThemeContext } from 'styled-components'
 
 function Cards(props) {
 
@@ -22,8 +21,6 @@ function Cards(props) {
         setIsEnabled(!isEnabled);
         console.log(isEnabled)
     }
-
-    const { title } = useContext(ThemeContext);
 
     return (
         <ScrollView>

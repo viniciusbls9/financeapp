@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableHighlight, TouchableOpacity, Image, FlatList, StatusBar } from 'react-native';
+import { FlatList, StatusBar } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 
-import { useNavigation, CommonActions } from '@react-navigation/native';
-import styles from './styles';
+import { connect } from 'react-redux';
+
+import { useNavigation } from '@react-navigation/native';
 import Arrow from '../../assets/arrows.png';
 import Wallet from '../../assets/wallet.png';
 import ListRevenue from '../../components/listRevenue';
-import MoreExpenses from '../../assets/more.png';
+import MoreRevenue from '../../assets/more.png';
 import ImageRevenue from '../../assets/image-revenue.jpg';
-export default function Revenue() {
+import WalletWhite from '../../assets/money-white.png';
+
+import { Container, Header, BackButton, BackImage, ContainerAddRevenue, IconMoreRevenue, TextHeader, ContainerInfo, ContainerTotalRevenue, WalletImage, ContainerValueExpense, RevenueTotalText, ExpenseTotalValue, ContainerImage, Img, TextImg } from './styles';
+
+function Revenue(props) {
 
     const [activity, setActivity] = useState([]);
     const [totalRevenue, setTotalRevenue] = useState([]);
@@ -48,21 +53,6 @@ export default function Revenue() {
 
     const navigation = useNavigation();
 
-    function handleBack() {
-        // navigation.dispatch(
-        //     CommonActions.reset({
-        //         index: 0,
-        //         routes: [
-        //             { name: 'Home' },
-        //         ]
-        //     }));
-        navigation.navigate('Home');
-    }
-
-    function handleAddRevenue() {
-        navigation.navigate('AddRevenue');
-    }
-
     function formatarMoeda() {
         var elemento = totalRevenue;
         var valor = elemento.valueOf();
@@ -86,34 +76,34 @@ export default function Revenue() {
     }
 
     return (
-        <View style={styles.container}>
+        <Container>
             <StatusBar barStyle="dark-content" />
-            <View style={styles.header}>
-                <TouchableHighlight onPress={handleBack} underlayColor="transparent">
-                    <Image source={Arrow} style={styles.backImage} />
-                </TouchableHighlight>
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={handleAddRevenue}>
-                    <Image source={MoreExpenses} style={styles.iconMoreExpenses} />
-                    <Text style={styles.textHeader}>Receitas</Text>
-                </TouchableOpacity>
-            </View>
+            <Header>
+                <BackButton underlayColor="#transparent" onPress={() => navigation.navigate('Home')}>
+                    <BackImage source={Arrow} />
+                </BackButton>
+                <ContainerAddRevenue underlayColor="#transparent" onPress={() => navigation.navigate('AddRevenue')}>
+                    <>
+                        <IconMoreRevenue source={MoreRevenue} />
+                        <TextHeader>Receitas</TextHeader>
+                    </>
+                </ContainerAddRevenue>
+            </Header>
 
-            <View style={styles.containerInfo}>
-                <View style={styles.containerTotalExpenses}>
-                    <Image source={Wallet} style={styles.walletImage} />
-                    <View style={{ marginLeft: 10 }}>
-                        <Text style={styles.revenueTotalText}>Total Recebido</Text>
-                        <Text style={styles.revenueTotalValue}>
-                            R$ {formatarMoeda(totalRevenue)}
-                        </Text>
-                    </View>
-                </View>
+            <ContainerInfo>
+                <ContainerTotalRevenue>
+                    <WalletImage source={props.theme.title == 'light' ? Wallet : WalletWhite} />
+                    <ContainerValueExpense>
+                        <RevenueTotalText>Total recebido</RevenueTotalText>
+                        <ExpenseTotalValue>R$ {formatarMoeda(totalRevenue)}</ExpenseTotalValue>
+                    </ContainerValueExpense>
+                </ContainerTotalRevenue>
 
                 {activity == '' &&
-                    <View style={{ justifyContent: 'center', alignItems: 'center', flex: 3 }}>
-                        <Image source={ImageRevenue} style={styles.img} />
-                        <Text>Ops! Nenhuma receita adicionada até o momento.</Text>
-                    </View>
+                    <ContainerImage>
+                        <Img source={ImageRevenue} />
+                        <TextImg>Ops! Nenhuma receita adicionada até o momento.</TextImg>
+                    </ContainerImage>
                 }
 
                 <FlatList
@@ -121,7 +111,16 @@ export default function Revenue() {
                     data={activity}
                     renderItem={({ item }) => <ListRevenue data={item} />}
                 />
-            </View>
-        </View>
+            </ContainerInfo>
+
+        </Container>
     );
 }
+
+const mapStateToProps = (state) => {
+    return {
+        theme: state.userReducer.theme
+    };
+}
+
+export default connect(mapStateToProps)(Revenue);

@@ -153,7 +153,7 @@ function Profile(props) {
 
           <ContainerWallet>
             <WalletLabel>Configurações</WalletLabel>
-            <BtnWallet onPress={message} underlayColor="#transparent">
+            <BtnWallet onPress={() => navigation.navigate('Configurations')} underlayColor="#transparent">
               <>
                 <WalletImg source={props.theme.title == 'light' ? Settings : SettingsGrey} />
                 <TextWallet>Geral</TextWallet>

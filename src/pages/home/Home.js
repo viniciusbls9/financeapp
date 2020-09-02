@@ -17,6 +17,7 @@ import { connect } from 'react-redux';
 import PendenciesRevenue from '../../components/pendenciesRevenue';
 import PendenciesExpenses from '../../components/pendenciesExpenses';
 import Presentation from '../../assets/presentation.png';
+import PresentationGrey from '../../assets/presentation-grey.png';
 import Chart from '../../components/chart/Chart';
 
 import { Container, ContainerInfo, Header, HeaderBtn, HeaderButtons, Bars, Users, LabelInfoMoney, ValueMoney, TotalMoney, ContainerHidden, HiddenValue, HiddenMoney, InfoMoney, ContainerAddMoney, AddIcon, AddMoneyText, InfoActivity, LabelinfoActivity, Pendencies, ContainerMsg, ImageMsg, TextMsg, ContainerChart, LoveMsg } from './styles';
@@ -213,7 +214,7 @@ function Home(props) {
                     <LabelinfoActivity>Despesas por categoria</LabelinfoActivity>
                     {totalExpense == '' &&
                         <ContainerMsg>
-                            <ImageMsg source={Presentation} />
+                            <ImageMsg source={props.theme.title == 'light' ? Presentation: PresentationGrey} />
                             <TextMsg>Ops! Você ainda não tem gastos cadastrados. Adicione gastos e veja o gráfico</TextMsg>
                         </ContainerMsg>
                     }

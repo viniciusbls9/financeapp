@@ -51,6 +51,7 @@ export const ContainerWallet = styled.View `
     margin-top: 20px;
     elevation: 2;
     border-radius: 25px;
+    border-color: ${props => props.theme.shadowCard};
 `;
 
 export const WalletLabel = styled.Text `

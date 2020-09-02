@@ -1,16 +1,3 @@
-import { StyleSheet } from 'react-native';
-
-export default StyleSheet.create({
-    container: {
-        flex:1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    load: {
-        marginBottom: 20
-    }
-});
-
 import styled from 'styled-components/native';
 
 export const Container = styled.View `

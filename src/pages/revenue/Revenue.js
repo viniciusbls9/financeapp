@@ -24,30 +24,30 @@ function Revenue(props) {
         /** LOOP PARA RODAR 4 VEZES, QUE SÃO OS VALUES DE CADA CONTA ADICIONADA PELO USUÁRIO */
         let uid = auth().currentUser.uid;
         let n = 1;
-        for(let i = n; i <= 4; i++) {
+        for (let i = n; i <= 4; i++) {
             let int = n++
             database().ref('finance_wallet')
-            .child(uid)
-            .child(int.toString())
-            .child('finance_revenue')
-            .once('value')
-            .then((snapshot) => {
-                snapshot.forEach(childItem => {
-                    activity.push({
-                        category: childItem.val().category,
-                        date: childItem.val().date,
-                        description: childItem.val().description,
-                        remember: childItem.val().remember,
-                        tag: childItem.val().tag,
-                        toggle: childItem.val().toggle,
-                        value: childItem.val().value,
-                        account: childItem.val().account,
-                        key: childItem.key
+                .child(uid)
+                .child(int.toString())
+                .child('finance_revenue')
+                .once('value')
+                .then((snapshot) => {
+                    snapshot.forEach(childItem => {
+                        activity.push({
+                            category: childItem.val().category,
+                            date: childItem.val().date,
+                            description: childItem.val().description,
+                            remember: childItem.val().remember,
+                            tag: childItem.val().tag,
+                            toggle: childItem.val().toggle,
+                            value: childItem.val().value,
+                            account: childItem.val().account,
+                            key: childItem.key
+                        });
                     });
+                    let total = activity.reduce((t, v) => t + (parseFloat(v.value)), 0);
+                    setTotalRevenue(total);
                 });
-                let total = activity.reduce((t, v) => t + (parseFloat(v.value)), 0);
-                setTotalRevenue(total);
-            });
         }
     }, []);
 
@@ -56,19 +56,19 @@ function Revenue(props) {
     function formatarMoeda() {
         var elemento = totalRevenue;
         var valor = elemento.valueOf();
-        
+
         valor = valor + '';
-        valor = valor > 0 ? parseInt(valor.replace(/[\D]+/g,'')) : parseInt('-'+valor.replace(/[\D]+/g,''));
+        valor = valor > 0 ? parseInt(valor.replace(/[\D]+/g, '')) : parseInt('-' + valor.replace(/[\D]+/g, ''));
         valor = valor + '';
         valor = valor.replace(/([0-9]{2})$/g, ",$1");
-        
+
         if (valor.length > 6) {
             valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
         }
-        
-        if(valor == 'NaN') {
+
+        if (valor == 'NaN') {
             return '0,00';
-        } else if(valor == 0) {
+        } else if (valor == 0) {
             return '0,00'
         } else {
             return valor;
@@ -99,9 +99,15 @@ function Revenue(props) {
                     </ContainerValueExpense>
                 </ContainerTotalRevenue>
 
-                {activity == '' &&
+                {activity == '' && props.theme.title == 'light' &&
                     <ContainerImage>
                         <Img source={ImageRevenue} />
+                        <TextImg>Ops! Nenhuma receita adicionada até o momento.</TextImg>
+                    </ContainerImage>
+                }
+
+                {activity == '' && props.theme.title != 'light' &&
+                    <ContainerImage>
                         <TextImg>Ops! Nenhuma receita adicionada até o momento.</TextImg>
                     </ContainerImage>
                 }

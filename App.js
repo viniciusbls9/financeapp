@@ -1,31 +1,31 @@
 console.disableYellowBox = true;
 import React, { useState } from 'react';
+import { PersistGate } from 'redux-persist/es/integration/react';
 import { NavigationContainer } from '@react-navigation/native';
 import { ThemeProvider } from 'styled-components';
 
 import { Provider } from 'react-redux';
-import Store from './src/Store';
+import { store, persistor } from './src/Store';
 
 import MainStack from './src/navigators/MainStack';
 
-// import Config from './src/pages/configurations/Configurations';
-
 export default function App() {
 
-  const [theme, setTheme] = useState(Store.getState().userReducer.theme);
+  const [theme, setTheme] = useState(store.getState().userReducer.theme);
 
-  Store.subscribe(() => {
-    setTheme(Store.getState().userReducer.theme);
+  store.subscribe(() => {
+    setTheme(store.getState().userReducer.theme);
   });
 
-
   return (
-    <Provider store={Store}>
-      <NavigationContainer>
-        <ThemeProvider theme={theme}>
-          <MainStack />
-        </ThemeProvider>
-      </NavigationContainer>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <NavigationContainer>
+          <ThemeProvider theme={theme}>
+            <MainStack />
+          </ThemeProvider>
+        </NavigationContainer>
+      </PersistGate>
     </Provider>
   );
 }

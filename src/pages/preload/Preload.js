@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import { Container, Load, TextPreload } from './styles';
 
-function Preload() {
+function Preload(props) {
     const navigation = useNavigation();
     const [supported, setSupported] = useState(null);
 
@@ -35,8 +35,10 @@ function Preload() {
     //     });
     // }
 
+    console.log(props.touchID);
+
     AsyncStorage.getItem('@password').then(password => {
-        if (password && supported == true) {
+        if (password && supported == true && props.touchID == true) {
             const configs = {
                 title: 'Autenticação Touch ID',
                 color: '#ff0000',
@@ -51,7 +53,6 @@ function Preload() {
             .catch(error => {
                 navigation.navigate('Welcome');
             });
-            // navigation.navigate('Home');
         } else if(password && supported == null) {
             navigation.navigate('Home');
         } else {
@@ -69,7 +70,8 @@ function Preload() {
 
 const mapStateToProps = (state) => {
     return {
-        theme: state.userReducer.theme
+        theme: state.userReducer.theme,
+        touchID: state.userReducer.touchID
     };
 }
 

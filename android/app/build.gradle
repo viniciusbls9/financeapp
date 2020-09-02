@@ -132,8 +132,8 @@ android {
         applicationId "com.myfinanceapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "1.2.3.2"
+        versionCode 10
+        versionName "1.2.4.1"
         multiDexEnabled true
     }
     splits {

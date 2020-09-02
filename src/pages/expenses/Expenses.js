@@ -97,9 +97,15 @@ function Expenses(props) {
                     </ContainerValueExpense>
                 </ContainerTotalExpenses>
 
-                {activity == '' &&
+                {activity == '' && props.theme.title.title == 'dark' &&
                     <ContainerImage>
                         <Img source={ImageExpense} />
+                        <TextImg>Ops! Nenhuma despesa adicionada até o momento.</TextImg>
+                    </ContainerImage>
+                }
+
+                {activity == '' && props.theme.title.title != 'dark' &&
+                    <ContainerImage>
                         <TextImg>Ops! Nenhuma despesa adicionada até o momento.</TextImg>
                     </ContainerImage>
                 }

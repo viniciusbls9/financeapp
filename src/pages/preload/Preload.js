@@ -35,10 +35,8 @@ function Preload(props) {
     //     });
     // }
 
-    console.log(props.touchID);
-
     AsyncStorage.getItem('@password').then(password => {
-        if (password && supported == true && props.touchID == true) {
+        if (password && supported && props.touchID) {
             const configs = {
                 title: 'Autenticação Touch ID',
                 color: '#ff0000',
@@ -53,9 +51,9 @@ function Preload(props) {
             .catch(error => {
                 navigation.navigate('Welcome');
             });
-        } else if(password && supported == null) {
+        } else if(password && supported == null && props.touchID == false) {
             navigation.navigate('Home');
-        } else {
+        } else if(password == false) {
             navigation.navigate('Welcome');
         }
     });
